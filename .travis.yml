@@ -1,0 +1,22 @@
+language: android
+
+env:
+  matrix:
+    - ANDROID_TARGET=android-17  ANDROID_ABI=armeabi-v7a
+
+android:
+  components:
+    # BuildTools version
+    - build-tools-20.0.0
+    # Android SDK version
+    - android-17
+    # System image
+    - sys-img-armeabi-v7a-android-17
+
+before_script:
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - adb wait-for-device
+  - adb shell input keyevent 82 &
+
+script: ./gradlew connectedAndroidTest
