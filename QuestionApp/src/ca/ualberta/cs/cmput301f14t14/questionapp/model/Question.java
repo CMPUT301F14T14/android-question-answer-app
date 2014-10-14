@@ -7,6 +7,14 @@ public class Question extends Model {
 	public Question(String title, String body, Image image) {
 		super();
 	}
+	
+	public void addAnswer(Answer a) {
+		
+	}
+	
+	public boolean hasAnswer(Answer a) {
+		return false;
+	}
 
 	public String getTitle() {
 		return null;
