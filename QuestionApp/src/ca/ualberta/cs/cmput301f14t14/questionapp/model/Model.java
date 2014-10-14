@@ -3,19 +3,23 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.view.View;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.IView;
 
 public abstract class Model {
-	protected List<View> mViews;
+	protected List<IView> mViews;
 	
 	public Model() {
-		mViews = new ArrayList<View>();
+		mViews = new ArrayList<IView>();
 	}
 	
-	abstract public void registerView(View v);
+	abstract public void registerView(IView v);
 	
-	abstract public void unregisterView(View v);
+	abstract public void unregisterView(IView v);
 	
-	abstract public void notifyViews();
+	public void notifyViews() {
+		for (IView v: mViews) {
+			v.update();
+		}
+	}
 
 }

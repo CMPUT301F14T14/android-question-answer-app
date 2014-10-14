@@ -1,6 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
-import android.view.View;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.IView;
 
 public class Question extends Model {
 
@@ -21,19 +21,13 @@ public class Question extends Model {
 	}
 	
 	@Override
-	public void registerView(View v) {
+	public void registerView(IView v) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void unregisterView(View v) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void notifyViews() {
+	public void unregisterView(IView v) {
 		// TODO Auto-generated method stub
 
 	}
