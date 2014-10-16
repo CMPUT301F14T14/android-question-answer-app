@@ -4,15 +4,15 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.view.IView;
 
 public class Question extends Model {
 	
-	private String title;
-	private String body;
-	private Image image;
+	private String mTitle;
+	private String mBody;
+	private Image mImage;
 	
 	public Question(String t, String b, Image i) {
 		super();
-		title = t;
-		body = b;
-		image = i;
+		mTitle = t;
+		mBody = b;
+		mImage = i;
 	}
 	
 	public void addAnswer(Answer a) {
@@ -24,15 +24,15 @@ public class Question extends Model {
 	}
 
 	public String getTitle() {
-		return title;
+		return mTitle;
 	}
 	
 	public String getBody() {
-		return body;
+		return mBody;
 	}
 	
 	public Image getImage() {
-		return image;
+		return mImage;
 	}
 	
 	@Override

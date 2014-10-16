@@ -4,10 +4,12 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.view.IView;
 
 public class Answer extends Model {
 
-	private Image image;
+	private Image mImage;
+	private String mBody;
 	
 	public Answer(String body, Image image) {
-		
+		mBody = body;
+		mImage = image;
 	}
 	
 	@Override
@@ -23,7 +25,7 @@ public class Answer extends Model {
 	}
 	
 	public Image getImage() {
-		return this.image;
+		return mImage;
 	}
 
 }

@@ -2,20 +2,20 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
 public class Comment {
 	
-	private String body;
-	private String userName;
+	private String mBody;
+	private String mUsername;
 	
 	public Comment(String text, String createdBy) {
-		body = text;
-		createdBy = userName;
+		mBody = text;
+		mUsername = createdBy;
 	}
 
 	public String getBody() {
-		return body;
+		return mBody;
 	}
 
 	public String getUserName() {
-		return userName;
+		return mUsername;
 	}
 	
 	
