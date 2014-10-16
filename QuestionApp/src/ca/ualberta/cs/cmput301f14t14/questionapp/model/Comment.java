@@ -9,4 +9,14 @@ public class Comment {
 		body = text;
 		createdBy = userName;
 	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+	
+	
 }
