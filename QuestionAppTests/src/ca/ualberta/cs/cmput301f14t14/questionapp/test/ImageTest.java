@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import android.net.Uri;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -11,7 +12,7 @@ public class ImageTest extends TestCase {
 	Answer mAnswer;
 
 	protected void setUp() throws Exception {
-		super.setUp();
+		super.setUp();;
 	}
 
 	protected void tearDown() throws Exception {
@@ -23,11 +24,32 @@ public class ImageTest extends TestCase {
 	 */
 	
 	public void testAddImage() {
-		Image image = new Image("localPath", "remotePath");
+		Image image = new Image(null, null);
 		mAnswer = new Answer("ABody", image);
 		mQuestion = new Question("Title", "QBody", image);
 		assertNotNull(mAnswer.getImage());
 		assertNotNull(mQuestion.getImage());
 	}
+	
+	public void testPathFileTooBig() {
+		try {
+			Uri local = null;
+			local = Uri.parse("/path/2/file");
+			Image tooBig = new Image(local, null);
+			fail("Try giving a smaller image.");
+		}
+		catch(IllegalArgumentException e){
+			//Passed
+		}
+	}
+	
+	public void testPathFileRightSize() {
+			Uri local = null;
+			local = Uri.parse("/rightpath/good/3");
+			Image rightSize = new Image(local, null);
+			assertNotNull(rightSize);
+			assertEquals(rightSize.getLocalUrl(), local );
+	}
+
 	
 }
