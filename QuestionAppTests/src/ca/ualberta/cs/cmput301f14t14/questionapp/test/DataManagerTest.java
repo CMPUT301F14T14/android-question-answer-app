@@ -18,10 +18,42 @@ public class DataManagerTest extends TestCase{
 	}
 	
 	public void testAddQuestion() {
-		//TODO	
+		
 	}
 	
 	public void testAddAnswer() {
-		//TODO
+		
+	}
+	
+	public void testFavoriteQuestion() {
+		
+	}
+	
+	public void testUpvoteQuestion() {
+		
+	}
+	
+	public void testAddCommentQuestion() {
+		
+	}
+	
+	public void testAddCommentAnswer() {
+		
+	}
+	
+	public void testFindQuestion() {
+		
+	}
+	
+	public void testFavoriteAnswer() {
+		
+	}
+	
+	public void testUpvoteAnswer() {
+		
+	}
+	
+	public void testFindAnswer() {
+		
 	}
 }

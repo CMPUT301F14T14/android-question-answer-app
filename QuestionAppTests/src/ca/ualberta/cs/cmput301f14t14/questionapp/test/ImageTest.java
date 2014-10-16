@@ -50,6 +50,27 @@ public class ImageTest extends TestCase {
 			assertNotNull(rightSize);
 			assertEquals(rightSize.getLocalUrl(), local );
 	}
+	
+	public void testRemoteTooBig() {
+		try {
+			Uri remote = null;
+			remote = Uri.parse("/REMOTED/q/");
+			Image tooBig = new Image(null, remote);
+			fail("Try giving a smaller image.");
+		}
+		catch(IllegalArgumentException e){
+			//Passed
+		}
+		
+	}
+	
+	public void testRemoteRightSize() {
+		Uri remote = null;
+		remote = Uri.parse("/STILLREMOTED/n/");
+		Image rightSize = new Image(null, remote);
+		assertNotNull(rightSize);
+		assertEquals(rightSize.getRemoteUrl(), remote );
+	}
 
 	
 }
