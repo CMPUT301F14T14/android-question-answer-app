@@ -29,4 +29,5 @@ public class ImageTest extends TestCase {
 		assertNotNull(mAnswer.getImage());
 		assertNotNull(mQuestion.getImage());
 	}
+	
 }
