@@ -3,9 +3,16 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.IView;
 
 public class Question extends Model {
-
-	public Question(String title, String body, Image image) {
+	
+	private String title;
+	private String body;
+	private Image image;
+	
+	public Question(String t, String b, Image i) {
 		super();
+		title = t;
+		body = b;
+		image = i;
 	}
 	
 	public void addAnswer(Answer a) {
@@ -17,15 +24,15 @@ public class Question extends Model {
 	}
 
 	public String getTitle() {
-		return null;
+		return title;
 	}
 	
 	public String getBody() {
-		return null;
+		return body;
 	}
 	
 	public Image getImage() {
-		return null;
+		return image;
 	}
 	
 	@Override
