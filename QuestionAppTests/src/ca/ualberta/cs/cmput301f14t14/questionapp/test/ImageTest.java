@@ -12,7 +12,6 @@ public class ImageTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		mQuestion = new Question("Title", "QBody", null);
 	}
 
 	protected void tearDown() throws Exception {
@@ -26,6 +25,8 @@ public class ImageTest extends TestCase {
 	public void testAddImage() {
 		Image image = new Image("localPath", "remotePath");
 		mAnswer = new Answer("ABody", image);
+		mQuestion = new Question("Title", "QBody", image);
 		assertNotNull(mAnswer.getImage());
+		assertNotNull(mQuestion.getImage());
 	}
 }
