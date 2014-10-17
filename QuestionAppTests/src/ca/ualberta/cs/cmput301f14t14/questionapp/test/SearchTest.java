@@ -5,6 +5,7 @@ import java.util.List;
 import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.RemoteDataStore;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Model;
 import junit.framework.TestCase;
 
 public class SearchTest extends TestCase {
@@ -29,7 +30,7 @@ public class SearchTest extends TestCase {
 	 */
 	
 	public void testEmptySearch() {
-		List<Object> results = manager.queryKeywords("1-9xkjshdiused999999999fihskdfjfsfkj");
+		List<? extends Model> results = manager.queryKeywords("1-9xkjshdiused999999999fihskdfjfsfkj");
 		assertNull(results);
 	}
 	
@@ -40,7 +41,7 @@ public class SearchTest extends TestCase {
 	public void testOfflineSearch() {
 		try {
 		manager.disableNetworkAccess();
-		List<Object> results = manager.queryKeywords("");
+		List<? extends Model> results = manager.queryKeywords("");
 		fail();
 		}
 		catch(Exception e) {

@@ -1,5 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
@@ -24,7 +26,7 @@ public class ImageTest extends TestCase {
 	 */
 	
 	public void testAddImage() {
-		Image image = new Image(Uri.parse("~\\QuestionAppTests\\res\\drawable-hdpi\\under64.jpg"), null);
+		Image image = new Image(Uri.parse("android.resource://QuestionAppTests/drawable/under64"), null);
 		mAnswer = new Answer("ABody", image);
 		mQuestion = new Question("Title", "QBody", image);
 		assertNotNull(mAnswer.getImage());
@@ -37,7 +39,7 @@ public class ImageTest extends TestCase {
 	public void testPathFileTooBig() {
 		try {
 			Uri local = null;
-			local = Uri.parse("~\\QuestionAppTests\\res\\drawable-hdpi\\over64.jpg");
+			local = Uri.parse("android.resource://QuestionAppTests/drawable/over64");
 			Image tooBig = new Image(local, null);
 			fail("Try giving a smaller image.");
 		}
