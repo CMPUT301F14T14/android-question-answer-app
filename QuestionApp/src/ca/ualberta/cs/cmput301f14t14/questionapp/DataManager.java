@@ -36,4 +36,9 @@ public class DataManager {
 		
 	}
 
+	public void favoriteAnswer(Answer validA) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
