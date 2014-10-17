@@ -34,4 +34,12 @@ public class RemoteDataStoreTest extends TestCase{
 		assertEquals(mQuestion, manager.getQuestion(mQuestion.getId()));
 	}
 	
+	public void testPushAnswer() {
+		
+	}
+	
+	public void testPushComment() {
+		
+	}
+	
 }
