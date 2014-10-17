@@ -29,10 +29,18 @@ public class DataManagerTest extends TestCase{
 		
 	}
 	
+	/**
+	 * UC4 TC 4.1 - Create a Question
+	 */
+	
 	public void testAddQuestion() {
 		manager.addQuestion(validQ);
 		assertNotNull(manager.getQuestion(validQ.getId()));
 	}
+	
+	/**
+	 * UC5 TC 5.1 - Answer a Question
+	 */
 	
 	public void testAddAnswer() {
 		

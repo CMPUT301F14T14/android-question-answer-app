@@ -25,5 +25,10 @@ public class LocalDataStore {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public boolean isQuestion(Integer id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

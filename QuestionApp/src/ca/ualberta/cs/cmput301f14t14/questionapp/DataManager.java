@@ -41,4 +41,14 @@ public class DataManager {
 		
 	}
 
+	public void disableNetworkAccess() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void enableNetworkAccess() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
