@@ -7,7 +7,7 @@ public class DataManager {
 		
 	}
 
-	public String getQuestion(Object object) {
+	public Question getQuestion(Object object) {
 		// TODO Auto-generated method stub
 		return null;
 	}

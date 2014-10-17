@@ -11,11 +11,13 @@ public class RemoteDataStoreTest extends TestCase{
 
 	private RemoteDataStore mRemoteStore;
 	private Question mQuestion;
+	private DataManager manager;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 		mRemoteStore = new RemoteDataStore();
 		mQuestion = new Question("TITLE", "BODY", null);
+		manager = new DataManager();
 		
 	}
 
@@ -29,6 +31,7 @@ public class RemoteDataStoreTest extends TestCase{
 	
 	public void testPushQuestion() {
 		mRemoteStore.pushQuestion(mQuestion);
+		assertEquals(mQuestion, manager.getQuestion(mQuestion.getId()));
 	}
 	
 }
