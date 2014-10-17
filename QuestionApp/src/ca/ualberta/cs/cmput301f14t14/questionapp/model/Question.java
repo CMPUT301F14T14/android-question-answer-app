@@ -59,4 +59,15 @@ public class Question extends Model {
 
 	}
 
+	public boolean hasComment(Comment mComment) {
+		return false;
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addComment(Comment mComment) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

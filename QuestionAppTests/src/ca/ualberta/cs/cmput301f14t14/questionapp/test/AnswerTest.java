@@ -61,7 +61,7 @@ public class AnswerTest extends TestCase {
 	}
 	
 	/**
-	 * UC5 TC5.4- Create Local Answer, and push
+	 * UC5 TC5.3- Create Local Answer, and push
 	 * to remote server on network restoration
 	 */
 	

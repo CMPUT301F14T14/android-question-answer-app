@@ -36,4 +36,9 @@ public class RemoteDataStore {
 		return false;
 	}
 
+	public boolean isComment(Integer id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
