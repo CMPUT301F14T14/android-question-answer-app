@@ -1,6 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -40,7 +41,11 @@ public class DataManagerTest extends TestCase{
 	}
 	
 	public void testFavoriteQuestion() {
-		
+		// user indicates that they wish to favorite a question
+		manager.favoriteQuestion(validQ);
+		LocalDataStore local = new LocalDataStore();
+		boolean favorited = local.isFavorite(validQ.getId());
+		assertTrue(favorited);
 	}
 	
 	public void testUpvoteQuestion() {

@@ -20,5 +20,10 @@ public class LocalDataStore {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public boolean isFavorite(Integer id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }
