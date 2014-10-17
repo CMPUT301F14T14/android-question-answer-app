@@ -54,7 +54,7 @@ public class SearchTest extends TestCase {
 	 */
 	
 	public void testRealSearch() {
-		List<Object> results = manager.queryKeywords("jeans");
+		List<? extends Model> results = manager.queryKeywords("jeans");
 		assertTrue(results.size() > 0);
 	}
 	
