@@ -61,4 +61,14 @@ public class DataManager {
 		return results;
 	}
 
+	public void readLater(Question q) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void readLater(Answer mAnswer) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

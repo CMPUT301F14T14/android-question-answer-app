@@ -125,5 +125,16 @@ public class QuestionTest extends TestCase {
 		int newVotes = q.getUpvotes();
 		assertEquals(oldVotes + 1, newVotes);
 	}
+	
+	/**
+	 * U11 TC11.1 - Indicate read Question later
+	 */
+	
+	public void testReadQuestionLater() {
+		Question q = new Question(title, body, null);
+		manager.readLater(q);
+		int id = q.getId();
+		assertTrue(local.isQuestion(id));
+	}
 
 }

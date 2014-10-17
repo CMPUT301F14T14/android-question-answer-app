@@ -104,4 +104,14 @@ public class AnswerTest extends TestCase {
 		int newVotes = mAnswer.getUpvotes();
 		assertEquals(oldVotes + 1, newVotes);
 	}
+	
+	/**
+	 * U11 TC11.2 - Indicate read Answer later
+	 */
+	
+	public void testReadQuestionLater() {
+		manager.readLater(mAnswer);
+		int id = mAnswer.getId();
+		assertTrue(local.isAnswer(id));
+	}
 }

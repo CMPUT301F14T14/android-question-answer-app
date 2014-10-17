@@ -31,5 +31,10 @@ public class LocalDataStore {
 		return false;
 	}
 
+	public boolean isAnswer(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 }
