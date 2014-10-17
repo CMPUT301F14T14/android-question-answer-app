@@ -1,0 +1,32 @@
+package ca.ualberta.cs.cmput301f14t14.questionapp.test;
+
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.LocalDataStore;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
+import junit.framework.TestCase;
+
+public class LocalDataStoreTest extends TestCase {
+
+	private LocalDataStore mLocalStore;
+	private Question mQuestion;
+	private DataManager manager;
+	private Answer mAnswer;
+	private Comment mComment;
+	
+	protected void setUp() throws Exception {
+		super.setUp();
+		mLocalStore = new LocalDataStore();
+		mQuestion = new Question("TITLE", "BODY", null);
+		mAnswer = new Answer("ANSWERBODY", null);
+		mComment = new Comment("COMMENTBODY", "Boris");
+		manager = new DataManager();
+		
+	}
+
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+	
+}

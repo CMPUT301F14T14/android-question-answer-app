@@ -34,20 +34,20 @@ public class RemoteDataStoreTest extends TestCase{
 		assertTrue(mRemoteStore.hasAccess());
 	}
 	
-	public void testPushQuestion() {
-		mRemoteStore.pushQuestion(mQuestion);
+	public void testPutQuestion() {
+		mRemoteStore.putQuestion(mQuestion);
 		Question retrieved = manager.getQuestion(mQuestion.getId());
 		assertEquals(mQuestion, retrieved);
 	}
 	
-	public void testPushAnswer() {
-		mRemoteStore.pushAnswer(mAnswer);
+	public void testPutAnswer() {
+		mRemoteStore.putAnswer(mAnswer);
 		Answer retrieved = manager.getAnswer(mAnswer.getId());
 		assertEquals(mAnswer, retrieved);
 	}
 	
-	public void testPushComment() {
-		mRemoteStore.pushComment(mComment);
+	public void testPutComment() {
+		mRemoteStore.putComment(mComment);
 		Comment retrieved = manager.getComment(mComment.getId());
 		assertEquals(mComment, retrieved);
 	}

@@ -7,17 +7,17 @@ public class RemoteDataStore {
 		return false;
 	}
 
-	public void pushQuestion(Question mQuestion) {
+	public void putQuestion(Question mQuestion) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void pushAnswer(Answer mAnswer) {
+	public void putAnswer(Answer mAnswer) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void pushComment(Comment mComment) {
+	public void putComment(Comment mComment) {
 		// TODO Auto-generated method stub
 		
 	}
