@@ -5,6 +5,7 @@ import java.util.List;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Model;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class DataManager {
@@ -54,10 +55,9 @@ public class DataManager {
 		
 	}
 
-	public List<Object> queryKeywords(String string) {
+	public List<? extends Model> queryKeywords(String string) {
 		// TODO Auto-generated method stub
-		List<Object> results = new ArrayList<Object>();
-		results.add(string);
+		List<? extends Model> results = new ArrayList<Model>();
 		return results;
 	}
 
