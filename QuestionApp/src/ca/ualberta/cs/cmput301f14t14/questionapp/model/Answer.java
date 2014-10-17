@@ -28,4 +28,9 @@ public class Answer extends Model {
 		return mImage;
 	}
 
+	public Integer getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
