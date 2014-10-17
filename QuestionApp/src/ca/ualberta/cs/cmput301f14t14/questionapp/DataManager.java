@@ -1,5 +1,8 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -49,6 +52,13 @@ public class DataManager {
 	public void enableNetworkAccess() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public List<Object> queryKeywords(String string) {
+		// TODO Auto-generated method stub
+		List<Object> results = new ArrayList<Object>();
+		results.add(string);
+		return results;
 	}
 
 }

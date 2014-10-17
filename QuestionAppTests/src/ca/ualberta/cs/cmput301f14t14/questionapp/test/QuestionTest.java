@@ -110,6 +110,7 @@ public class QuestionTest extends TestCase {
 		int newVotes = q.getUpvotes();
 		assertEquals(oldVotes + 1, newVotes);
 	}
+	
 	/**
 	 * UC9 TC9.3- Multiple Upvotes on a Question
 	 */
