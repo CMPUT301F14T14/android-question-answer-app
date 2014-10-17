@@ -29,4 +29,22 @@ public class LocalDataStoreTest extends TestCase {
 		super.tearDown();
 	}
 	
+	public void testPutQuestion() {
+		mLocalStore.putQuestion(mQuestion);
+		Question retrieved = manager.getQuestion(mQuestion.getId());
+		assertEquals(mQuestion, retrieved);
+	}
+	
+	public void testPutAnswer() {
+		mLocalStore.putAnswer(mAnswer);
+		Answer retrieved = manager.getAnswer(mAnswer.getId());
+		assertEquals(mAnswer, retrieved);
+	}
+	
+	public void testPutComment() {
+		mLocalStore.putComment(mComment);
+		Comment retrieved = manager.getComment(mComment.getId());
+		assertEquals(mComment, retrieved);
+	}
+	
 }
