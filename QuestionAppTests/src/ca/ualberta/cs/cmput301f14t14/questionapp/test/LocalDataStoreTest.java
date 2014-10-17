@@ -1,9 +1,9 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import junit.framework.TestCase;
 
