@@ -17,6 +17,11 @@ public class Comment {
 	public String getUserName() {
 		return mUsername;
 	}
+
+	public Integer getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

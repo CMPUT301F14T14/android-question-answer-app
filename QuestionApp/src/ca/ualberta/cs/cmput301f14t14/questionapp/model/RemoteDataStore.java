@@ -12,4 +12,14 @@ public class RemoteDataStore {
 		
 	}
 
+	public void pushAnswer(Answer mAnswer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void pushComment(Comment mComment) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

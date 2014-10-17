@@ -12,7 +12,7 @@ public class DataManager {
 		return null;
 	}
 
-	public Object getAnswer(Integer id) {
+	public Answer getAnswer(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -20,6 +20,11 @@ public class DataManager {
 	public void putQuestion(Question validQ) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Comment getComment(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
