@@ -1,11 +1,21 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.IView;
 
 public class Question extends Model {
+	
+	private String mTitle;
+	private String mBody;
+	private Image mImage;
+	private Integer mId;
 
 	public Question(String title, String body, Image image) {
 		super();
+		this.mTitle = title;
+		this.mBody = body;
+		this.mImage = image;
+		this.mId = generateId();
 	}
 	
 	public void addAnswer(Answer a) {
@@ -17,17 +27,26 @@ public class Question extends Model {
 	}
 
 	public String getTitle() {
-		return null;
+		return mTitle;
 	}
 	
 	public String getBody() {
-		return null;
+		return mBody;
 	}
 	
 	public Image getImage() {
-		return null;
+		return mImage;
 	}
 	
+	public Integer getId() {
+		return mId;
+	}
+	
+	private Integer generateId() {
+		//Random r = new Random();
+		//return r.nextInt();
+		return null;
+	}
 	@Override
 	public void registerView(IView v) {
 		// TODO Auto-generated method stub
