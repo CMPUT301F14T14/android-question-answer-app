@@ -29,6 +29,7 @@ public class AnswerTest extends TestCase {
 		mQuestion.addAnswer(answer);
 		assertTrue(mQuestion.hasAnswer(answer));
 		
+		// Test invalid body
 		try {
 			new Answer(null, image);
 			fail();

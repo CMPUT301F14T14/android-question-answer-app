@@ -34,7 +34,7 @@ public class ImageTest extends TestCase {
 	public void testPathFileTooBig() {
 		try {
 			Uri local = null;
-			local = Uri.parse("/path/2/file");
+			local = Uri.parse("~\\QuestionAppTests\\res\\drawable-hdpi\\over64.jpg");
 			Image tooBig = new Image(local, null);
 			fail("Try giving a smaller image.");
 		}
@@ -45,7 +45,7 @@ public class ImageTest extends TestCase {
 	
 	public void testPathFileRightSize() {
 			Uri local = null;
-			local = Uri.parse("/rightpath/good/3");
+			local = Uri.parse("~\\QuestionAppTests\\res\\drawable-hdpi\\under64.jpg");
 			Image rightSize = new Image(local, null);
 			assertNotNull(rightSize);
 			assertEquals(rightSize.getLocalUrl(), local );
