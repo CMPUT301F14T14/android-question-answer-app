@@ -78,4 +78,30 @@ public class AnswerTest extends TestCase {
 		assertTrue(inRemote);
 		assertTrue(mQuestion.hasAnswer(mAnswer));
 	}
+	
+	
+	/**
+	 * UC9 TC9.2- Upvote an Answer
+	 */
+
+	public void testUpvoteAnswer() {
+		int oldVotes = mAnswer.getUpvotes();
+		mAnswer.addUpvote();
+		int newVotes = mAnswer.getUpvotes();
+		assertEquals(oldVotes + 1, newVotes);
+	}
+	
+	/**
+	 * UC9 TC9.4- Multiple Upvotes on an Answer
+	 */
+	
+	public void testMultipleUpvoteQuestion() {
+		int oldVotes = mAnswer.getUpvotes();
+		// notice multiple upvotes
+		mAnswer.addUpvote();
+		mAnswer.addUpvote();
+		mAnswer.addUpvote();
+		int newVotes = mAnswer.getUpvotes();
+		assertEquals(oldVotes + 1, newVotes);
+	}
 }

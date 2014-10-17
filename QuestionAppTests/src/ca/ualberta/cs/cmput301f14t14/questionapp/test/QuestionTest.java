@@ -98,6 +98,31 @@ public class QuestionTest extends TestCase {
 		boolean inRemote = remote.isQuestion(id);
 		assertTrue(inRemote);
 	}
-
 	
+	/**
+	 * UC9 TC9.1- Upvote a Question
+	 */
+
+	public void testUpvoteQuestion() {
+		Question q = new Question(title, body, null);
+		int oldVotes = q.getUpvotes();
+		q.addUpvote();
+		int newVotes = q.getUpvotes();
+		assertEquals(oldVotes + 1, newVotes);
+	}
+	/**
+	 * UC9 TC9.3- Multiple Upvotes on a Question
+	 */
+	
+	public void testMultipleUpvoteQuestion() {
+		Question q = new Question(title, body, null);
+		int oldVotes = q.getUpvotes();
+		// notice multiple upvotes added here
+		q.addUpvote();
+		q.addUpvote();
+		q.addUpvote();
+		int newVotes = q.getUpvotes();
+		assertEquals(oldVotes + 1, newVotes);
+	}
+
 }

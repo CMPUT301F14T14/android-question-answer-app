@@ -83,12 +83,6 @@ public class DataManagerTest extends TestCase{
 	public void testAddCommentAnswer() {
 		
 	}
-
-	
-	
-	public void testUpvoteAnswer() {
-		
-	}
 	
 	public void testFindAnswer() {
 		

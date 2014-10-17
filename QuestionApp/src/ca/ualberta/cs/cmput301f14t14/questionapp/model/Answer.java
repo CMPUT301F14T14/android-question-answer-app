@@ -43,4 +43,14 @@ public class Answer extends Model {
 		
 	}
 
+	public int getUpvotes() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void addUpvote() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

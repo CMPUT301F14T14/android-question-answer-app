@@ -70,4 +70,14 @@ public class Question extends Model {
 		
 	}
 
+	public void addUpvote() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Integer getUpvotes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
