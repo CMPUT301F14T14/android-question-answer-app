@@ -31,4 +31,9 @@ public class RemoteDataStore {
 		return false;
 	}
 
+	public boolean isAnswer(Integer id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -1,5 +1,8 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
+import ca.ualberta.cs.cmput301f14t14.questionapp.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -8,10 +11,18 @@ import junit.framework.TestCase;
 public class AnswerTest extends TestCase {
 
 	Question mQuestion;
+	private Answer mAnswer;
+	private DataManager manager;
+	private LocalDataStore local;
+	private RemoteDataStore remote;
 
 	protected void setUp() throws Exception {
 		super.setUp();
 		mQuestion = new Question("Title", "Body", null);
+		mAnswer = new Answer("Answer body.", null);
+		manager = new DataManager();
+		local =  new LocalDataStore();
+		remote = new RemoteDataStore();
 	}
 
 	protected void tearDown() throws Exception {
@@ -19,17 +30,21 @@ public class AnswerTest extends TestCase {
 	}
 
 	/**
-	 * Test UC3 - Add an Answer
+	 * UC5 TC5.1 - Add an Answer normally
 	 */
 	public void testAddAnswer() {
-		String body = "Answer body.";
-		Image image = null;
-		Answer answer = new Answer(body, image);
-		assertFalse(mQuestion.hasAnswer(answer));
-		mQuestion.addAnswer(answer);
-		assertTrue(mQuestion.hasAnswer(answer));
 		
+		assertFalse(mQuestion.hasAnswer(mAnswer));
+		mQuestion.addAnswer(mAnswer);
+		assertTrue(mQuestion.hasAnswer(mAnswer));
+	}
+	
+	/**
+	 * UC5 TC5.2 - Invalid Answer body
+	 */
+	public void testInvalidBody() {
 		// Test invalid body
+		Image image = new Image(null,null);
 		try {
 			new Answer(null, image);
 			fail();
@@ -43,5 +58,24 @@ public class AnswerTest extends TestCase {
 		} catch (IllegalArgumentException ex) {
 			// Passed
 		}
+	}
+	
+	/**
+	 * UC5 TC5.4- Create Local Answer, and push
+	 * to remote server on network restoration
+	 */
+	
+	public void testLocalAnswerCreate() {
+		manager.disableNetworkAccess();
+		local.putAnswer(mAnswer);
+		mQuestion.addAnswer(mAnswer);
+		Integer id = mAnswer.getId();
+		assertNotNull(manager.getAnswer(id));
+		manager.enableNetworkAccess();
+		remote.putAnswer(mAnswer);
+		remote.putQuestion(mQuestion);
+		boolean inRemote = remote.isAnswer(id);
+		assertTrue(inRemote);
+		assertTrue(mQuestion.hasAnswer(mAnswer));
 	}
 }
