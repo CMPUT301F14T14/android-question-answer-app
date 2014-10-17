@@ -5,17 +5,17 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.view.IView;
 
 public class Question extends Model {
 	
-	private Integer mId;
 	private String mTitle;
 	private String mBody;
 	private Image mImage;
-	
-	public Question(String t, String b, Image i) {
+	private Integer mId;
+
+	public Question(String title, String body, Image image) {
 		super();
-		mTitle = t;
-		mBody = b;
-		mImage = i;
-		mId = generateId();
+		this.mTitle = title;
+		this.mBody = body;
+		this.mImage = image;
+		this.mId = generateId();
 	}
 	
 	public void addAnswer(Answer a) {
