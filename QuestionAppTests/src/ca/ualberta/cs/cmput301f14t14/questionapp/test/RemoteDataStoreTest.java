@@ -1,8 +1,8 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.RemoteDataStore;
