@@ -1,13 +1,29 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
+import ca.ualberta.cs.cmput301f14t14.questionapp.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import junit.framework.TestCase;
 
 public class QuestionTest extends TestCase {
 
+	
+	private String title;
+	private String body;
+	private Image image;
+	private DataManager manager;
+	private LocalDataStore local;
+	private RemoteDataStore remote;
 	protected void setUp() throws Exception {
 		super.setUp();
+		title = "Question Title";
+		body = "Question body?";
+		image = null;
+		manager = new DataManager();
+		local =  new LocalDataStore();
+		remote = new RemoteDataStore();
 	}
 
 	protected void tearDown() throws Exception {
@@ -15,33 +31,22 @@ public class QuestionTest extends TestCase {
 	}
 
 	/**
-	 * Test UC1 - Add a Question
+	 * UC4 TC4.1- Add a Question while online
 	 */
 	public void testAddQuestion() {
-		String title = "Question Title";
-		String body = "Question body?";
-		Image image = null;
+		
 		
 		// Test successful creation of a question
 		Question q = new Question(title, body, image);
 		assertEquals(title, q.getTitle());
 		assertEquals(body, q.getBody());
 		assertEquals(image, q.getImage());
-		
-		// Test invalid title
-		try {
-			new Question("", body, image);
-			fail();
-		} catch (IllegalArgumentException ex) {
-			// Passed
-		}
-		try {
-			new Question(null, body, image);
-			fail();
-		} catch (IllegalArgumentException ex) {
-			// Passed
-		}
-		
+	}
+	
+	/**
+	 * UC4 TC4.2- Invalid Question Title
+	 */
+	public void testInvalidBody() {
 		// Test invalid body
 		try {
 			new Question(title, "", image);
@@ -56,5 +61,43 @@ public class QuestionTest extends TestCase {
 			// Passed
 		}
 	}
+	
+	/**
+	 * UC4 TC4.3- Invalid Question Title
+	 */
+	
+	public void testInvalidTitle() {
+		// Test invalid title
+		try {
+			new Question("", body, image);
+			fail();
+		} catch (IllegalArgumentException ex) {
+			// Passed
+		}
+		try {
+			new Question(null, body, image);
+			fail();
+		} catch (IllegalArgumentException ex) {
+			// Passed
+		}
+	}
+	
+	/**
+	 * UC4 TC4.4- Create Local Question, and push
+	 * to remote server on network restoration
+	 */
+	
+	public void testLocalQuestionCreate() {
+		manager.disableNetworkAccess();
+		Question q = new Question(title, body, image);
+		local.putQuestion(q);
+		Integer id = q.getId();
+		assertNotNull(manager.getQuestion(id));
+		manager.enableNetworkAccess();
+		remote.putQuestion(q);
+		boolean inRemote = remote.isQuestion(id);
+		assertTrue(inRemote);
+	}
+
 	
 }

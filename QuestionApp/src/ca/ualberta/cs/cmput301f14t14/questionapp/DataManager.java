@@ -11,7 +11,7 @@ public class DataManager {
 		
 	}
 
-	public Question getQuestion(Object object) {
+	public Question getQuestion(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -29,6 +29,26 @@ public class DataManager {
 	public Comment getComment(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void favoriteQuestion(Question validQ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void favoriteAnswer(Answer validA) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void disableNetworkAccess() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void enableNetworkAccess() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
