@@ -52,4 +52,12 @@ public class RemoteDataStoreTest extends TestCase{
 		assertEquals(mComment, retrieved);
 	}
 	
+	/* UC1 TC 1.2 */
+	public void testDispRemoteQ() {
+		
+		mRemoteStore.putQuestion(mQuestion);
+		Question retrieved = manager.getQuestion(mQuestion.getId());
+		assertEquals(false, true);
+	}
+	
 }

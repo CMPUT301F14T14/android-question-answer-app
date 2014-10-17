@@ -1,7 +1,10 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import java.util.List;
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Model;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class DataManager {
@@ -50,5 +53,10 @@ public class DataManager {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public int getItemCount() {
+		return 0;}
+	
+	public List<Model> getItems() { return null;}
 
 }
