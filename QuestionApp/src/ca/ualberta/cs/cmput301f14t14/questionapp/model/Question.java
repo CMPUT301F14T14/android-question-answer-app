@@ -9,6 +9,7 @@ public class Question extends Model {
 	private String mBody;
 	private Image mImage;
 	private Integer mId;
+	private String author;
 
 	public Question(String title, String body, Image image) {
 		super();
@@ -57,6 +58,11 @@ public class Question extends Model {
 	public void unregisterView(IView v) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public String getAuthor() {
+		// TODO Auto-generated method stub
+		return this.author;
 	}
 
 }

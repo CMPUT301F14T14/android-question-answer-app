@@ -1,8 +1,5 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
-import java.util.ArrayList;
-
-import android.accounts.AccountManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -32,7 +29,7 @@ public class LocalDataStore {
 		
 	}
 
-	public ArrayList<String> getAccountUsernames() {
+	public String getAccountUsername() {
 		// TODO Auto-generated method stub
 		return null;
 	}
