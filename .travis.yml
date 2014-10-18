@@ -20,3 +20,8 @@ before_script:
   - adb shell input keyevent 82 &
 
 script: ./gradlew connectedAndroidTest
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
