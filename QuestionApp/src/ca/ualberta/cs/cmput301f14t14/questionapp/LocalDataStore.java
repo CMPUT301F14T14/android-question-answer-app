@@ -16,6 +16,7 @@ public class LocalDataStore {
 	public String getUsername(){
 		return this.username;
 	}
+	
 	public void putQuestion(Question mQuestion) {
 		// TODO Auto-generated method stub
 		
@@ -27,11 +28,6 @@ public class LocalDataStore {
 	}
 
 	public void putComment(Comment mComment) {
-		// TODO Auto-generated method stub
-		
-	}
-	public AccountManager getAccountManager() {
-		return null;
 		// TODO Auto-generated method stub
 		
 	}
