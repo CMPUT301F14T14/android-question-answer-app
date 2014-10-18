@@ -4,7 +4,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
-public class RemoteDataStore {
+public class RemoteDataStore implements IDataStore {
 
 	public boolean hasAccess() {
 		// TODO Auto-generated method stub
@@ -40,5 +40,4 @@ public class RemoteDataStore {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }
