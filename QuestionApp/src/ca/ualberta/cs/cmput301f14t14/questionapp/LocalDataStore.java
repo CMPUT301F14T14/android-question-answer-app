@@ -4,7 +4,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
-public class LocalDataStore {
+public class LocalDataStore implements IDataStore {
 
 	public void putQuestion(Question mQuestion) {
 		// TODO Auto-generated method stub
@@ -31,7 +31,7 @@ public class LocalDataStore {
 		return false;
 	}
 
-	public boolean isAnswer(int id) {
+	public boolean isAnswer(Integer id) {
 		// TODO Auto-generated method stub
 		return false;
 	}

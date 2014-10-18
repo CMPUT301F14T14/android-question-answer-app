@@ -12,9 +12,15 @@ public abstract class Model {
 		mViews = new ArrayList<IView>();
 	}
 	
-	abstract public void registerView(IView v);
+	public void registerView(IView v) {
+		if (!mViews.contains(v)) {
+			mViews.add(v);
+		}
+	}
 	
-	abstract public void unregisterView(IView v);
+	public void unregisterView(IView v) {
+		mViews.remove(v);
+	}
 	
 	public void notifyViews() {
 		for (IView v: mViews) {
