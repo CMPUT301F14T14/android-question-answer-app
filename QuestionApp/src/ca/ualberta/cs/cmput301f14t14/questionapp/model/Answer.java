@@ -32,6 +32,10 @@ public class Answer extends Model {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public String getBody() {
+		return mBody;
+	}
 
 	public boolean hasComment(Comment mComment) {
 		// TODO Auto-generated method stub
