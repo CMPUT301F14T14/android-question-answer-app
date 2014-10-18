@@ -25,29 +25,6 @@ public class DataManagerTest extends TestCase{
 	}
 	
 	
-	public void testFindQuestion() {
-		
-	}
-	
-	/**
-	 * UC4 TC 4.1 - Create a Question
-	 */
-	
-	public void testAddQuestion() {
-		manager.addQuestion(validQ);
-		assertNotNull(manager.getQuestion(validQ.getId()));
-	}
-	
-	/**
-	 * UC5 TC 5.1 - Answer a Question
-	 */
-	
-	public void testAddAnswer() {
-		
-		validQ.addAnswer(validA);
-		manager.putQuestion(validQ);
-		assertNotNull(manager.getAnswer(validA.getId()));
-	}
 	
 	/**
 	 * UC12 TC 12.1 - Favorite a Question
@@ -72,25 +49,4 @@ public class DataManagerTest extends TestCase{
 		assertTrue(favorited);
 	}
 	
-	public void testUpvoteQuestion() {
-		
-	}
-	
-	public void testAddCommentQuestion() {
-		
-	}
-	
-	public void testAddCommentAnswer() {
-		
-	}
-
-	
-	
-	public void testUpvoteAnswer() {
-		
-	}
-	
-	public void testFindAnswer() {
-		
-	}
 }

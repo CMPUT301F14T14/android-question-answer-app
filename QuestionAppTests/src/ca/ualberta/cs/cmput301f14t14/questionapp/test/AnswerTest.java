@@ -61,7 +61,7 @@ public class AnswerTest extends TestCase {
 	}
 	
 	/**
-	 * UC5 TC5.4- Create Local Answer, and push
+	 * UC5 TC5.3- Create Local Answer, and push
 	 * to remote server on network restoration
 	 */
 	
@@ -77,5 +77,41 @@ public class AnswerTest extends TestCase {
 		boolean inRemote = remote.isAnswer(id);
 		assertTrue(inRemote);
 		assertTrue(mQuestion.hasAnswer(mAnswer));
+	}
+	
+	
+	/**
+	 * UC9 TC9.2- Upvote an Answer
+	 */
+
+	public void testUpvoteAnswer() {
+		int oldVotes = mAnswer.getUpvotes();
+		mAnswer.addUpvote();
+		int newVotes = mAnswer.getUpvotes();
+		assertEquals(oldVotes + 1, newVotes);
+	}
+	
+	/**
+	 * UC9 TC9.4- Multiple Upvotes on an Answer
+	 */
+	
+	public void testMultipleUpvoteQuestion() {
+		int oldVotes = mAnswer.getUpvotes();
+		// notice multiple upvotes
+		mAnswer.addUpvote();
+		mAnswer.addUpvote();
+		mAnswer.addUpvote();
+		int newVotes = mAnswer.getUpvotes();
+		assertEquals(oldVotes + 1, newVotes);
+	}
+	
+	/**
+	 * U11 TC11.2 - Indicate read Answer later
+	 */
+	
+	public void testReadQuestionLater() {
+		manager.readLater(mAnswer);
+		int id = mAnswer.getId();
+		assertTrue(local.isAnswer(id));
 	}
 }

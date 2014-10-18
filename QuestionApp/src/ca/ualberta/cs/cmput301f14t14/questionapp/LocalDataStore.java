@@ -31,6 +31,11 @@ public class LocalDataStore {
 		return false;
 	}
 
+	public boolean isAnswer(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 	public void clear() {
 		// Empty the data store

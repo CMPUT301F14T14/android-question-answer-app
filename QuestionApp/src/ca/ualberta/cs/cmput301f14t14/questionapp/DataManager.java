@@ -59,4 +59,16 @@ public class DataManager {
 	
 	public List<Model> getItems() { return null;}
 
+
+
+	public void readLater(Question q) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void readLater(Answer mAnswer) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -33,4 +33,24 @@ public class Answer extends Model {
 		return null;
 	}
 
+	public boolean hasComment(Comment mComment) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void addComment(Comment mComment) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getUpvotes() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void addUpvote() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
