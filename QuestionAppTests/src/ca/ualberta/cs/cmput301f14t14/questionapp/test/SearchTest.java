@@ -1,11 +1,14 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.RemoteDataStore;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Model;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import junit.framework.TestCase;
 
 public class SearchTest extends TestCase {
@@ -13,12 +16,14 @@ public class SearchTest extends TestCase {
 	private DataManager manager;
 	private LocalDataStore local;
 	private RemoteDataStore remote;
+	private MockElasticSearch remoteSearch;
 
 	protected void setUp() throws Exception {
 		super.setUp();
 		manager = new DataManager();
 		local =  new LocalDataStore();
 		remote = new RemoteDataStore();
+		remoteSearch = new MockElasticSearch();
 	}
 
 	protected void tearDown() throws Exception {
@@ -30,7 +35,11 @@ public class SearchTest extends TestCase {
 	 */
 	
 	public void testEmptySearch() {
-		List<? extends Model> results = manager.queryKeywords("1-9xkjshdiused999999999fihskdfjfsfkj");
+		//given query results, data manager can get answers and questions
+		List<Integer> results = remoteSearch.query("");
+		for (int i: results) {
+			// do Nothing
+		}
 		assertNull(results);
 	}
 	
@@ -41,7 +50,7 @@ public class SearchTest extends TestCase {
 	public void testOfflineSearch() {
 		try {
 		manager.disableNetworkAccess();
-		List<? extends Model> results = manager.queryKeywords("");
+		List<Integer> results = remoteSearch.query("");
 		fail();
 		}
 		catch(Exception e) {
@@ -54,8 +63,18 @@ public class SearchTest extends TestCase {
 	 */
 	
 	public void testRealSearch() {
-		List<? extends Model> results = manager.queryKeywords("jeans");
-		assertTrue(results.size() > 0);
+		List<Integer> results = remoteSearch.query("jeans");
+		List<Answer> resultAnswers = new ArrayList<Answer>();
+		List<Question> resultQuestions = new ArrayList<Question>();
+		for(int i : results) {
+			if(manager.getAnswer(i) != null) {
+				resultAnswers.add(manager.getAnswer(i));
+			}
+			else {
+				resultQuestions.add(manager.getQuestion(i));
+			}
+		}
+		assertTrue(resultQuestions.size() > 0 || resultAnswers.size() > 0);
 	}
 	
 }

@@ -55,9 +55,9 @@ public class DataManager {
 		
 	}
 
-	public List<? extends Model> queryKeywords(String string) {
+	public List<Integer> queryKeywords(String string) {
 		// TODO Auto-generated method stub
-		List<? extends Model> results = new ArrayList<Model>();
+		List<Integer> results = new ArrayList<Integer>();
 		return results;
 	}
 
