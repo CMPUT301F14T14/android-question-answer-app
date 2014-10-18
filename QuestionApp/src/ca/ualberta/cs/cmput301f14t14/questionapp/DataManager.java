@@ -8,7 +8,8 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Model;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class DataManager {
-
+	private LocalDataStore localDataStore;
+	
 	public void addQuestion(Question validQ) {
 		// TODO Auto-generated method stub
 		
@@ -68,7 +69,11 @@ public class DataManager {
 
 	public void readLater(Answer mAnswer) {
 		// TODO Auto-generated method stub
-		
+	}
+
+	public String getAuthor() {
+		// TODO Auto-generated method stub
+		return localDataStore.getUsername();
 	}
 
 }
