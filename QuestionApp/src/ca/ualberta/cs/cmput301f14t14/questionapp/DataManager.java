@@ -1,6 +1,5 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
@@ -54,12 +53,13 @@ public class DataManager {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public int getItemCount() {
+		return 0;}
+	
+	public List<Model> getItems() { return null;}
 
-	public List<Integer> queryKeywords(String string) {
-		// TODO Auto-generated method stub
-		List<Integer> results = new ArrayList<Integer>();
-		return results;
-	}
+
 
 	public void readLater(Question q) {
 		// TODO Auto-generated method stub

@@ -37,4 +37,8 @@ public class LocalDataStore {
 	}
 
 	
+	public void clear() {
+		// Empty the data store
+	}
+	
 }
