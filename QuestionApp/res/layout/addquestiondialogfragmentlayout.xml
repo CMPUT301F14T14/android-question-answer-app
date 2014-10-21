@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+   
+    <EditText
+        android:id="@+id/add_question_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/add_question_title_hint"
+        android:inputType="textAutoCorrect"
+        />
+    
+    <EditText
+        android:id="@+id/add_question_body"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/add_question_body_hint"
+        android:inputType="textMultiLine"
+        android:gravity="top|left"
+        android:scrollbars="vertical"
+        android:singleLine="false"
+        android:minLines="14"
+        />
+    <ImageButton
+        android:id="@+id/add_question_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_image"
+        android:contentDescription="@string/add_question_image"
+        />
+    
+    <CheckBox 
+        android:id="@+id/add_question_include_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_question_include_location"
+    	/>
+
+</LinearLayout>

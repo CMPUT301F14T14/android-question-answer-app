@@ -4,5 +4,11 @@
     <string name="app_name">QuestionApp</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+	<string name="add_question_title_hint">Title your question</string>
+	<string name="add_question_body_hint">Add a body to your question</string>
+	<string name="add_question_image">Add an image to the question</string>
+	<string name="add_question_include_location">Include Location</string>
+	
+	<string name="OK">OK</string>
+	<string name="cancel">Cancel</string>
 </resources>
