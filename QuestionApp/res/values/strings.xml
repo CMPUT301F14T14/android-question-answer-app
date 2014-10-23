@@ -4,6 +4,7 @@
     <string name="app_name">QuestionApp</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+<<<<<<< HEAD
     <string name="welcome_to_qasper">Welcome to Qasper</string>
     <string name="use_google_account_email">Use Google Account email</string>
     <string name="please_choose_how_to_specify_your_username">Please choose how to specify your username</string>
@@ -12,4 +13,14 @@
     <string name="enter">Enter</string>
     <string name="title_activity_welcomes_screen">WelcomesScreen</string>
 
+=======
+	<string name="add_question_title_hint">Title your question</string>
+	<string name="add_question_body_hint">Add a body to your question</string>
+	<string name="add_question_image">Add an image to the question</string>
+	<string name="add_question_include_location">Include Location</string>
+	
+	<string name="OK">OK</string>
+	<string name="cancel">Cancel</string>
+	<string name="question_list_add_question">Add Question</string>
+>>>>>>> 36ed6b5c451d471cf4fdf7d855710cc7d0513e29
 </resources>

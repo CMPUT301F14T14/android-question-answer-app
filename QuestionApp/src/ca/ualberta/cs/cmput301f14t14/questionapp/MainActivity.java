@@ -1,9 +1,12 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 
 public class MainActivity extends Activity {
@@ -12,6 +15,31 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        //Create a spinner adapter for sorting choices
+        ArrayAdapter<CharSequence> sortadapter = 
+        		ArrayAdapter.createFromResource(
+        					getActionBar().getThemedContext(),
+        					R.array.sort_spinner_data, 
+        					android.R.layout.simple_spinner_item
+        				);
+        // Specify the layout to use when the list of choices appears
+        sortadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        
+        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        getActionBar().setListNavigationCallbacks(sortadapter, changeSort());
+    }
+    
+    public OnNavigationListener changeSort() {
+    	//This is the callback that is called when the user chooses 
+    	//a sorting order from the spinner in the action bar.
+    	return new OnNavigationListener() {
+			@Override
+			public boolean onNavigationItemSelected(int itemposition, long itemid) {
+				// Auto-generated method stub
+				return false;
+			}
+		};
     }
 
 
