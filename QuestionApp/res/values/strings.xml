@@ -12,4 +12,6 @@
 	<string name="OK">OK</string>
 	<string name="cancel">Cancel</string>
 	<string name="question_list_add_question">Add Question</string>
+	
+	<string name="add_comment_body_hint">Add your comment</string>
 </resources>
