@@ -13,7 +13,7 @@
         android:text="@string/welcome_to_qasper"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="32sp"
-        android:typeface="sans" />"
+        android:typeface="sans" />
 
     <Button
         android:id="@+id/googleAccountButton"
@@ -41,14 +41,15 @@
         android:layout_alignStart="@+id/googleAccountButton"
         android:layout_alignEnd="@+id/googleAccountButton"
         android:layout_centerVertical="true"
-        android:text="@string/choose_your_own_" />
+        android:text="@string/choose_your_own_"
+        android:onClick="onCreateUsername" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/specifyUsernameButton"
         android:orientation="vertical" >
 
