@@ -11,4 +11,5 @@
 	
 	<string name="OK">OK</string>
 	<string name="cancel">Cancel</string>
+	<string name="question_list_add_question">Add Question</string>
 </resources>

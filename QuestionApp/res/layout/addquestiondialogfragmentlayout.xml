@@ -32,11 +32,6 @@
         android:contentDescription="@string/add_question_image"
         />
     
-    <CheckBox 
-        android:id="@+id/add_question_include_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_question_include_location"
-    	/>
+
 
 </LinearLayout>
