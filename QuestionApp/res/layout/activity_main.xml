@@ -8,9 +8,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity" >
 
-    <TextView
+    <ListView
+        android:id="@+id/question_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1" />
+
+    <Button
+        android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/question_list"
+        android:text="@string/question_list_add_question" />
 
 </RelativeLayout>
