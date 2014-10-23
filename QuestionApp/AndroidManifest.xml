@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WelcomesScreenActivity"
+            android:name=".WelcomeScreenActivity"
             android:label="@string/title_activity_welcomes_screen" >
         </activity>
     </application>

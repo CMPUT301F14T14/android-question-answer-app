@@ -3,38 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/enterUsernameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp"
-        android:text="@string/please_enter_a_username_below_"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="20sp"
-        android:typeface="sans" />
-
     <EditText
         android:id="@+id/usernameText"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/enterUsernameTextView"
-        android:layout_alignRight="@+id/enterUsernameTextView"
-        android:layout_below="@+id/enterUsernameTextView"
+        
         android:layout_marginTop="20dp"
         android:ems="10" >
 
         <requestFocus />
     </EditText>
-
-    <Button
-        android:id="@+id/enterUsernameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/usernameText"
-        android:layout_below="@+id/usernameText"
-        android:layout_marginTop="18dp"
-        android:text="@string/enter" />
 
 </RelativeLayout>

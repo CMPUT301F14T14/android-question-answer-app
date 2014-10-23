@@ -3,19 +3,24 @@ package ca.ualberta.cs.cmput301f14t14.questionapp;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
 
+	private String username = null;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        
+
+       	setContentView(R.layout.activity_main);
+       
         //Create a spinner adapter for sorting choices
         ArrayAdapter<CharSequence> sortadapter = 
         		ArrayAdapter.createFromResource(
@@ -28,6 +33,10 @@ public class MainActivity extends Activity {
         
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getActionBar().setListNavigationCallbacks(sortadapter, changeSort());
+        
+        //This is test that the welcome screen works!!!
+        Intent intent = new Intent(this.getBaseContext(), WelcomeScreenActivity.class);
+        startActivityForResult(intent, Activity.RESULT_FIRST_USER);
     }
     
     public OnNavigationListener changeSort() {
@@ -60,5 +69,14 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    public void onActivityResult(int requestCode, int resultCode,Intent intent){
+    	
+    	if (requestCode == Activity.RESULT_FIRST_USER || resultCode == Activity.RESULT_OK){
+    		username = intent.getStringExtra("username");
+    		Toast.makeText(this, "Welcome " + username + " to Qasper", Toast.LENGTH_SHORT).show();
+    	}
+    	
     }
 }
