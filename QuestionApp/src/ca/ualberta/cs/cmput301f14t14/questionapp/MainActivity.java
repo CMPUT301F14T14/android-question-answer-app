@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
-
-	private String username = null;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +72,10 @@ public class MainActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode,Intent intent){
     	
     	if (requestCode == Activity.RESULT_FIRST_USER || resultCode == Activity.RESULT_OK){
-    		username = intent.getStringExtra("username");
+    		String username = intent.getStringExtra("username");
     		Toast.makeText(this, "Welcome " + username + " to Qasper", Toast.LENGTH_SHORT).show();
+    		
+    		DataManager.getLocalDataStore().setUsername(username);
     	}
     	
     }
