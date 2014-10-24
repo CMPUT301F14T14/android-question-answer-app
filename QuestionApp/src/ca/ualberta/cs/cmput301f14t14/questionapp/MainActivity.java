@@ -75,7 +75,6 @@ public class MainActivity extends Activity {
     		String username = intent.getStringExtra("username");
     		Toast.makeText(this, "Welcome " + username + " to Qasper", Toast.LENGTH_SHORT).show();
     		
-    		DataManager.getLocalDataStore().setUsername(username);
     	}
     	
     }

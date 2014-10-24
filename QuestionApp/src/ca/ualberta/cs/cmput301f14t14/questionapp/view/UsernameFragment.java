@@ -21,6 +21,7 @@ public class UsernameFragment extends DialogFragment {
 		
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		
+		builder.setTitle(R.string.please_enter_a_username_below_);
 		builder.setView(inflater.inflate(R.layout.username_fragment, null))
 		.setPositiveButton(R.string.enter, 
 				new DialogInterface.OnClickListener() {
@@ -44,6 +45,7 @@ public class UsernameFragment extends DialogFragment {
 		
 			
 		});
+		
 		return builder.create();
 	}
 
