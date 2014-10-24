@@ -26,6 +26,10 @@
             android:name=".WelcomeScreenActivity"
             android:label="@string/title_activity_welcomes_screen" >
         </activity>
+        <activity
+            android:name=".QuestionActivity"
+            android:label="@string/title_activity_question" >
+        </activity>
     </application>
 
 </manifest>
