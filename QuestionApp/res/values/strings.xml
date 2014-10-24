@@ -11,11 +11,17 @@
     <string name="please_enter_a_username_below_">Please enter a Username below:</string>
     <string name="enter">Enter</string>
     <string name="title_activity_welcomes_screen">WelcomesScreen</string>
-	<string name="add_question_title_hint">Title your question</string>
-	<string name="add_question_body_hint">Add a body to your question</string>
-	<string name="add_question_image">Add an image to the question</string>
-	<string name="add_question_include_location">Include Location</string>
-	<string name="OK">OK</string>
-	<string name="cancel">Cancel</string>
-	<string name="question_list_add_question">Add Question</string>
+    <string name="add_question_title_hint">Title your question</string>
+    <string name="add_question_body_hint">Add a body to your question</string>
+    <string name="add_question_image">Add an image to the question</string>
+    <string name="add_question_include_location">Include Location</string>
+    <string name="OK">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="question_list_add_question">Add Question</string>
+
+    <!-- Question View -->
+    <string name="title_activity_question">Question</string>
+    <string name="tab_answers">Answers</string>
+    <string name="tab_comments">Comments</string>
+
 </resources>
