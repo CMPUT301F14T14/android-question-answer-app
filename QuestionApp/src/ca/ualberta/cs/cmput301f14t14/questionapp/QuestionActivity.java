@@ -4,13 +4,29 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TabHost;
 
 public class QuestionActivity extends Activity {
+	static final String TAB_ANSWERS = "answer";
+	static final String TAB_COMMENTS = "comment";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question);
+
+		TabHost tabs = (TabHost) findViewById(android.R.id.tabhost);
+		tabs.setup();
+
+		TabHost.TabSpec aTab = tabs.newTabSpec(TAB_ANSWERS);
+		aTab.setContent(R.id.answerSummaryList);
+		aTab.setIndicator(getString(R.string.tab_answers));
+		tabs.addTab(aTab);
+
+		TabHost.TabSpec cTab = tabs.newTabSpec(TAB_COMMENTS);
+		cTab.setContent(R.id.commentList);
+		cTab.setIndicator(getString(R.string.tab_comments));
+		tabs.addTab(cTab);
 	}
 
 	@Override
