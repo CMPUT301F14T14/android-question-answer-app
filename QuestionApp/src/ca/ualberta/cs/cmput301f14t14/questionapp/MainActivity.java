@@ -20,17 +20,17 @@ public class MainActivity extends Activity {
        	setContentView(R.layout.activity_main);
        
         //Create a spinner adapter for sorting choices
-        ArrayAdapter<CharSequence> sortadapter = 
+        ArrayAdapter<CharSequence> sortAdapter = 
         		ArrayAdapter.createFromResource(
         					getActionBar().getThemedContext(),
         					R.array.sort_spinner_data, 
         					android.R.layout.simple_spinner_item
         				);
         // Specify the layout to use when the list of choices appears
-        sortadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        getActionBar().setListNavigationCallbacks(sortadapter, changeSort());
+        getActionBar().setListNavigationCallbacks(sortAdapter, changeSort());
         
         //This is test that the welcome screen works!!!
         Intent intent = new Intent(this.getBaseContext(), WelcomeScreenActivity.class);
