@@ -1,5 +1,8 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Question extends Model {
 	
@@ -8,6 +11,8 @@ public class Question extends Model {
 	private Image mImage;
 	private Integer mId;
 	private String author;
+	private List<Answer> answerList; 
+	private List<Comment> commentList;
 
 	public Question(String title, String body, Image image) {
 		super();
@@ -15,6 +20,8 @@ public class Question extends Model {
 		this.mBody = body;
 		this.mImage = image;
 		this.mId = generateId();
+		this.setAnswerList(new ArrayList<Answer>());
+		this.setCommentList(new ArrayList<Comment>());
 	}
 	
 	public void addAnswer(Answer a) {
@@ -71,6 +78,22 @@ public class Question extends Model {
 	public String getAuthor() {
 		// TODO Auto-generated method stub
 		return this.author;
+	}
+
+	public List<Comment> getCommentList() {
+		return commentList;
+	}
+
+	public void setCommentList(List<Comment> commentList) {
+		this.commentList = commentList;
+	}
+
+	public List<Answer> getAnswerList() {
+		return answerList;
+	}
+
+	public void setAnswerList(List<Answer> answerList) {
+		this.answerList = answerList;
 	}
 
 }

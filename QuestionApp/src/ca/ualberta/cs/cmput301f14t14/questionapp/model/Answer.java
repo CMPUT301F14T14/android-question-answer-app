@@ -1,13 +1,18 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Answer extends Model {
 
 	private Image mImage;
 	private String mBody;
+	private List<Comment> commentList;
 	
 	public Answer(String body, Image image) {
 		mBody = body;
 		mImage = image;
+		setCommentList(new ArrayList<Comment>());
 	}
 	
 	public Image getImage() {
@@ -41,6 +46,14 @@ public class Answer extends Model {
 	public void addUpvote() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public List<Comment> getCommentList() {
+		return commentList;
+	}
+
+	public void setCommentList(List<Comment> commentList) {
+		this.commentList = commentList;
 	}
 
 }

@@ -9,42 +9,94 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class DataManager {
 	private LocalDataStore localDataStore;
+	private List<Question> questionList;
+	private List<Integer> favouriteQuestions;
+	private List<Integer> favouriteAnswers;
+	private List<Integer> recentVisit;
+	private List<Integer> readLater;
+	String Username;
 	
+	public DataManager getInstance(){
+		return this;
+	}
+	
+	//View Interface Begins
 	public void addQuestion(Question validQ) {
-		// TODO Auto-generated method stub
+		//questionList = localDataStore.getQuestionList();
+		/*Implement Method*/
+		//localDataStore.save(questionList);
 		
 	}
 
 	public Question getQuestion(Integer id) {
-		// TODO Auto-generated method stub
+		//questionList = localDataStore.getQuestionList();
+		/*Implement Method*/
 		return null;
 	}
 
-	public Answer getAnswer(Integer id) {
-		// TODO Auto-generated method stub
+	public void addAnswer(Integer Qid, Answer A){
+		//questionList = localDataStore.getQuestionList();
+		/*Implement Method*/
+		//localDataStore.save(questionList);
+	}
+	
+	public Answer getAnswer(Integer Qid, Integer Aid) {
+		//questionList = localDataStore.getQuestionList();
+				/*Implement Method*/
 		return null;
 	}
+	
+	public void addQuestionComment(Integer Qid, Comment C){
+		//questionList = localDataStore.getQuestionList();
+		/*Implement Method*/
+		//localDataStore.save(questionList);
+	}
 
-	public void putQuestion(Question validQ) {
+	public Comment getQuestionComment(Integer Qid, Integer cid) {
+		//questionList = localDataStore.getQuestionList();
+				/*Implement Method*/
+		return null;
+	}
+	
+	public void addAnswerComment(Integer Qid, Integer Aid, Comment C){
+		//questionList = localDataStore.getQuestionList();
+		/*Implement Method*/
+		//localDataStore.save(questionList);
+	}
+	
+	public Comment getAnswerComment(Integer Qid, Integer Aid, Integer Cid){
+		//questionList = localDataStore.getQuestionList();
+				/*Implement Method*/
+		return null;
+	}
+	
+	public List<Question> load(){
+		//questionList = localDataStore.getQuestionList();
+		return questionList;
+	}
+	
+
+	public void favoriteQuestion(Integer Qid) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public Comment getComment(Integer id) {
+	public void favoriteAnswer(Integer Aid) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
-
-	public void favoriteQuestion(Question validQ) {
+	
+	public void readQuestionLater(Integer Qid) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void favoriteAnswer(Answer validA) {
-		// TODO Auto-generated method stub
-		
+	public String getUsername() {
+		return localDataStore.getUsername();
 	}
 
+	//End View Interface
+	
 	public void disableNetworkAccess() {
 		// TODO Auto-generated method stub
 		
@@ -59,21 +111,5 @@ public class DataManager {
 		return 0;}
 	
 	public List<Model> getItems() { return null;}
-
-
-
-	public void readLater(Question q) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void readLater(Answer mAnswer) {
-		// TODO Auto-generated method stub
-	}
-
-	public String getAuthor() {
-		// TODO Auto-generated method stub
-		return localDataStore.getUsername();
-	}
 
 }

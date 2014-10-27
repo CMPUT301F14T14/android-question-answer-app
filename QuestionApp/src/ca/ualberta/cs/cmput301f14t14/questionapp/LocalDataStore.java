@@ -10,6 +10,7 @@ public class LocalDataStore implements IDataStore {
 	public void setUsername(String accountName){
 		this.username = accountName;
 	}
+	
 	public String getUsername(){
 		return this.username;
 	}
@@ -44,7 +45,6 @@ public class LocalDataStore implements IDataStore {
 		return false;
 	}
 
-	
 	public void clear() {
 		// Empty the data store
 	}
