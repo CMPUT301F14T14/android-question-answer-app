@@ -4,6 +4,7 @@ public class Answer extends Model {
 
 	private Image mImage;
 	private String mBody;
+	private String mAuthor;
 	
 	public Answer(String body, Image image) {
 		mBody = body;
@@ -21,6 +22,10 @@ public class Answer extends Model {
 	
 	public String getBody() {
 		return mBody;
+	}
+	
+	public String getAuthor() {
+		return mAuthor;
 	}
 
 	public boolean hasComment(Comment mComment) {
