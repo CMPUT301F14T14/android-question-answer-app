@@ -30,5 +30,9 @@
     <string name="tab_answers">Answers</string>
     <string name="tab_comments">Comments</string>
 
+    <!-- Comment List -->
+    <string name="commentlist_comment_placeholder">The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.</string>
+    <string name="commentlist_author_placeholder">Boris</string>
+
 </resources>
 
