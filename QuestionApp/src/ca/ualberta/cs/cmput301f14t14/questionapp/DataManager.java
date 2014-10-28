@@ -9,6 +9,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Model;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class DataManager {
+	private static DataManager instance;
 	private LocalDataStore localDataStore;
 	private List<Question> questionList;
 	private List<Integer> favouriteQuestions;
@@ -17,8 +18,14 @@ public class DataManager {
 	private List<Integer> readLater;
 	String Username;
 	
-	public DataManager getInstance(){
-		return this;
+	private DataManager(){
+		instance = new DataManager();
+		//localDataStore = new localDataStore();
+	}
+	
+	public static DataManager getInstance(){
+		if (instance == null){return new DataManager();}
+		else return instance;
 	}
 	
 	//View Interface Begins
@@ -80,7 +87,7 @@ public class DataManager {
 		Integer position = questionList.indexOf(question);
 		Answer answer = question.getAnswer(Aid);
 		answer.addComment(C);
-		question.setAnswer(Aid,A);
+		question.setAnswer(Aid,answer);
 		questionList.set(position, question);
 		localDataStore.save(questionList);
 	}
