@@ -3,7 +3,9 @@ package ca.ualberta.cs.cmput301f14t14.questionapp;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AnswerListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
 import android.app.Activity;
 import android.os.Bundle;
@@ -34,11 +36,19 @@ public class QuestionActivity extends Activity {
 		cTab.setIndicator(getString(R.string.tab_comments));
 		tabs.addTab(cTab);
 
+		List<Answer> al = new ArrayList<Answer>();
+		// Populate list with dummy data for now...
+		al.add(new Answer("The answer to your question is moot.", null));
+		
 		List<Comment> cl = new ArrayList<Comment>();
 		// Populate list with dummy data for now...
 		cl.add(new Comment("This is a demo comment which will exceed the screen width.", "Boris"));
 		cl.add(new Comment("Shorter comment.", "Natasha"));
 
+		AnswerListAdapter ala = new AnswerListAdapter(this, R.layout.list_answer, al);
+		ListView answerView = (ListView) findViewById(R.id.answerSummaryList);
+		answerView.setAdapter(ala);
+		
 		CommentListAdapter cla = new CommentListAdapter(this, R.layout.list_comment, cl);
 		ListView commentView = (ListView) findViewById(R.id.commentList);
 		commentView.setAdapter(cla);
