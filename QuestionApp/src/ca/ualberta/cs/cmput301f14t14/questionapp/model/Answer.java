@@ -11,6 +11,8 @@ public class Answer extends Model {
 	private String mBody;
 	private List<Comment> commentList;
 	private UUID mId;
+	private String mAuthor;
+
 	
 	public Answer(String body, Image image) {
 		mBody = body;
@@ -25,6 +27,10 @@ public class Answer extends Model {
 	
 	public String getBody() {
 		return mBody;
+	}
+	
+	public String getAuthor() {
+		return mAuthor;
 	}
 
 	public boolean hasComment(Comment mComment) {

@@ -10,6 +10,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Model;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class DataManager {
+
 	private static DataManager instance;
 	private LocalDataStore localDataStore;
 	private List<Question> questionList;
@@ -18,6 +19,7 @@ public class DataManager {
 	private List<UUID> recentVisit;
 	private List<UUID> readLater;
 	String Username;
+
 	
 	private DataManager(){
 		
@@ -143,5 +145,26 @@ public class DataManager {
 		return 0;}
 	
 	public List<Model> getItems() { return null;}
+
+
+
+	public void readLater(Question q) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void readLater(Answer mAnswer) {
+		// TODO Auto-generated method stub
+	}
+
+	public String getAuthor() {
+		// TODO Auto-generated method stub
+		return this.localDataStore.getUsername();
+	}
+	
+	public static LocalDataStore getLocalDataStore(){
+		return localDataStore;
+	}
+
 
 }
