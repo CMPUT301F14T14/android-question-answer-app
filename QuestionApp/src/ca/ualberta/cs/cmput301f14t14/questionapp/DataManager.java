@@ -1,6 +1,8 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -8,43 +10,127 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Model;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class DataManager {
-	private static LocalDataStore localDataStore;
+
+	private static DataManager instance;
+	private LocalDataStore localDataStore;
+	private List<Question> questionList;
+	private List<UUID> favouriteQuestions;
+	private List<UUID> favouriteAnswers;
+	private List<UUID> recentVisit;
+	private List<UUID> readLater;
+	String Username;
+
 	
+	private DataManager(){
+		
+		//localDataStore = new localDataStore();
+	}
+	
+	public static DataManager getInstance(){
+		if (instance == null){
+			instance = new DataManager();
+		}
+		return instance;
+	}
+	
+	//View Interface Begins
 	public void addQuestion(Question validQ) {
-		// TODO Auto-generated method stub
+		questionList = localDataStore.getQuestionList();
+		questionList.add(validQ);
+		localDataStore.save(questionList);
 		
 	}
 
-	public Question getQuestion(Integer id) {
-		// TODO Auto-generated method stub
+	public Question getQuestion(UUID id) {
+		questionList = localDataStore.getQuestionList();
+		Iterator<Question> list = questionList.iterator();
+		while(list.hasNext()){
+			Question question = list.next();
+			UUID qid = question.getId();
+			if(id.equals(qid)){
+				return question;
+			}
+		}
 		return null;
 	}
 
-	public Answer getAnswer(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public void addAnswer(UUID Qid, Answer A){
+		questionList = localDataStore.getQuestionList();
+		Question question = getQuestion(Qid);
+		Integer position = questionList.indexOf(question);
+		question.addAnswer(A);
+		questionList.set(position, question);
+		localDataStore.save(questionList);
+	}
+	
+	public Answer getAnswer(UUID Qid, UUID Aid) {
+		questionList = localDataStore.getQuestionList();
+		Question question = getQuestion(Qid);
+		Answer answer = question.getAnswer(Aid);
+		return answer;
+	}
+	
+	public void addQuestionComment(UUID Qid, Comment C){
+		questionList = localDataStore.getQuestionList();
+		Question question = getQuestion(Qid);
+		Integer position = questionList.indexOf(question);
+		question.addComment(C);
+		questionList.set(position, question);
+		localDataStore.save(questionList);
 	}
 
-	public void putQuestion(Question validQ) {
-		// TODO Auto-generated method stub
-		
+	public Comment getQuestionComment(UUID Qid, UUID cid) {
+		questionList = localDataStore.getQuestionList();
+		Question question = getQuestion(Qid);
+		Comment comment = question.getComment(cid);
+		return comment;
+	}
+	
+	public void addAnswerComment(UUID Qid, UUID Aid, Comment C){
+		questionList = localDataStore.getQuestionList();
+		Question question = getQuestion(Qid);
+		Integer position = questionList.indexOf(question);
+		Answer answer = question.getAnswer(Aid);
+		answer.addComment(C);
+		question.setAnswer(Aid,answer);
+		questionList.set(position, question);
+		localDataStore.save(questionList);
+	}
+	
+	public Comment getAnswerComment(UUID Qid, UUID Aid, UUID Cid){
+		questionList = localDataStore.getQuestionList();
+		Question question = getQuestion(Qid);
+		Answer answer = question.getAnswer(Aid);
+		Comment comment = answer.getComment(Cid);
+		return comment;
+	}
+	
+	public List<Question> load(){
+		questionList = localDataStore.getQuestionList();
+		return questionList;
 	}
 
-	public Comment getComment(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public void favoriteQuestion(UUID Qid) {
+		favouriteQuestions.add(Qid);
+		//localdatamanager.save(favouriteQuestions);
 	}
 
-	public void favoriteQuestion(Question validQ) {
-		// TODO Auto-generated method stub
-		
+	public void favoriteAnswer(UUID Aid) {
+		favouriteAnswers.add(Aid);
+		//localdatamanager.save(favouriteAnswers)
+	}
+	
+	public void readQuestionLater(UUID Qid) {
+		readLater.add(Qid);
+		//localdatamanager.save(readLater);
 	}
 
-	public void favoriteAnswer(Answer validA) {
-		// TODO Auto-generated method stub
-		
+	public String getUsername() {
+		return localDataStore.getUsername();
 	}
 
+	//End View Interface
+	
 	public void disableNetworkAccess() {
 		// TODO Auto-generated method stub
 		
@@ -79,5 +165,6 @@ public class DataManager {
 	public static LocalDataStore getLocalDataStore(){
 		return localDataStore;
 	}
+
 
 }

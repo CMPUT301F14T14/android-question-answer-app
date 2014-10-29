@@ -1,17 +1,29 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import java.util.List;
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class LocalDataStore implements IDataStore {
 	private String username;
+	private List<Question> questionList;
 	
 	public void setUsername(String accountName){
 		this.username = accountName;
 	}
+	
 	public String getUsername(){
 		return this.username;
+	}
+	
+	public List<Question> getQuestionList(){
+		return questionList;
+	}
+	
+	public void save(List<Question> questionList){
+		this.questionList = questionList;
 	}
 
 	public void putQuestion(Question mQuestion) {
@@ -44,7 +56,6 @@ public class LocalDataStore implements IDataStore {
 		return false;
 	}
 
-	
 	public void clear() {
 		// Empty the data store
 	}
