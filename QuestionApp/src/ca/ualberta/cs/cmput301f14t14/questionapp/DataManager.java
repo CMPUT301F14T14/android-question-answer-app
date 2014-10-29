@@ -2,6 +2,7 @@ package ca.ualberta.cs.cmput301f14t14.questionapp;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -12,20 +13,22 @@ public class DataManager {
 	private static DataManager instance;
 	private LocalDataStore localDataStore;
 	private List<Question> questionList;
-	private List<Integer> favouriteQuestions;
-	private List<Integer> favouriteAnswers;
-	private List<Integer> recentVisit;
-	private List<Integer> readLater;
+	private List<UUID> favouriteQuestions;
+	private List<UUID> favouriteAnswers;
+	private List<UUID> recentVisit;
+	private List<UUID> readLater;
 	String Username;
 	
 	private DataManager(){
-		instance = new DataManager();
+		
 		//localDataStore = new localDataStore();
 	}
 	
 	public static DataManager getInstance(){
-		if (instance == null){return new DataManager();}
-		else return instance;
+		if (instance == null){
+			instance = new DataManager();
+		}
+		return instance;
 	}
 	
 	//View Interface Begins
@@ -36,12 +39,12 @@ public class DataManager {
 		
 	}
 
-	public Question getQuestion(Integer id) {
+	public Question getQuestion(UUID id) {
 		questionList = localDataStore.getQuestionList();
 		Iterator<Question> list = questionList.iterator();
 		while(list.hasNext()){
 			Question question = list.next();
-			Integer qid = question.getId();
+			UUID qid = question.getId();
 			if(id.equals(qid)){
 				return question;
 			}
@@ -49,7 +52,7 @@ public class DataManager {
 		return null;
 	}
 
-	public void addAnswer(Integer Qid, Answer A){
+	public void addAnswer(UUID Qid, Answer A){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Integer position = questionList.indexOf(question);
@@ -58,14 +61,14 @@ public class DataManager {
 		localDataStore.save(questionList);
 	}
 	
-	public Answer getAnswer(Integer Qid, Integer Aid) {
+	public Answer getAnswer(UUID Qid, UUID Aid) {
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Answer answer = question.getAnswer(Aid);
 		return answer;
 	}
 	
-	public void addQuestionComment(Integer Qid, Comment C){
+	public void addQuestionComment(UUID Qid, Comment C){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Integer position = questionList.indexOf(question);
@@ -74,14 +77,14 @@ public class DataManager {
 		localDataStore.save(questionList);
 	}
 
-	public Comment getQuestionComment(Integer Qid, Integer cid) {
+	public Comment getQuestionComment(UUID Qid, UUID cid) {
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Comment comment = question.getComment(cid);
 		return comment;
 	}
 	
-	public void addAnswerComment(Integer Qid, Integer Aid, Comment C){
+	public void addAnswerComment(UUID Qid, UUID Aid, Comment C){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Integer position = questionList.indexOf(question);
@@ -92,10 +95,12 @@ public class DataManager {
 		localDataStore.save(questionList);
 	}
 	
-	public Comment getAnswerComment(Integer Qid, Integer Aid, Integer Cid){
+	public Comment getAnswerComment(UUID Qid, UUID Aid, UUID Cid){
 		questionList = localDataStore.getQuestionList();
-				/*Implement Method*/
-		return null;
+		Question question = getQuestion(Qid);
+		Answer answer = question.getAnswer(Aid);
+		Comment comment = answer.getComment(Cid);
+		return comment;
 	}
 	
 	public List<Question> load(){
@@ -103,19 +108,19 @@ public class DataManager {
 		return questionList;
 	}
 
-	public void favoriteQuestion(Integer Qid) {
-		// TODO Auto-generated method stub
-		
+	public void favoriteQuestion(UUID Qid) {
+		favouriteQuestions.add(Qid);
+		//localdatamanager.save(favouriteQuestions);
 	}
 
-	public void favoriteAnswer(Integer Aid) {
-		// TODO Auto-generated method stub
-		
+	public void favoriteAnswer(UUID Aid) {
+		favouriteAnswers.add(Aid);
+		//localdatamanager.save(favouriteAnswers)
 	}
 	
-	public void readQuestionLater(Integer Qid) {
-		// TODO Auto-generated method stub
-		
+	public void readQuestionLater(UUID Qid) {
+		readLater.add(Qid);
+		//localdatamanager.save(readLater);
 	}
 
 	public String getUsername() {

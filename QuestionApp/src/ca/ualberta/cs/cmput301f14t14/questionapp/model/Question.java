@@ -1,7 +1,9 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 
 public class Question extends Model {
@@ -9,7 +11,7 @@ public class Question extends Model {
 	private String mTitle;
 	private String mBody;
 	private Image mImage;
-	private Integer mId;
+	private UUID mId;
 	private String author;
 	private List<Answer> answerList; 
 	private List<Comment> commentList;
@@ -19,7 +21,7 @@ public class Question extends Model {
 		this.mTitle = title;
 		this.mBody = body;
 		this.mImage = image;
-		this.mId = generateId();
+		this.mId = new UUID(0, 0);
 		this.setAnswerList(new ArrayList<Answer>());
 		this.setCommentList(new ArrayList<Comment>());
 	}
@@ -44,16 +46,10 @@ public class Question extends Model {
 		return mImage;
 	}
 	
-	public Integer getId() {
+	public UUID getId() {
 		return mId;
 	}
 	
-	private Integer generateId() {
-		//Random r = new Random();
-		//return r.nextInt();
-		return null;
-	}
-
 	public boolean hasComment(Comment mComment) {
 		return false;
 		// TODO Auto-generated method stub
@@ -95,5 +91,37 @@ public class Question extends Model {
 	public void setAnswerList(List<Answer> answerList) {
 		this.answerList = answerList;
 	}
+	
+	public Answer getAnswer(UUID Aid){
+		Iterator<Answer> list = answerList.iterator();
+		while(list.hasNext()){
+			Answer answer = list.next();
+			UUID aid = answer.getmId();
+			if(aid.equals(Aid)){
+				return answer;
+			}
+		}
+		return null;
+	}
+	
+	public Comment getComment(UUID Cid){
+		Iterator<Comment> list = commentList.iterator();
+		while(list.hasNext()){
+			Comment comment = list.next();
+			UUID cid = comment.getmId();
+			if(cid.equals(Cid)){
+				return comment;
+			}
+		}
+		return null;
+	}
+	
+	public void setAnswer(UUID Aid, Answer answer){
+		Answer ans = getAnswer(Aid);
+		Integer position = answerList.indexOf(ans);
+		answerList.set(position, answer);
+	}
+	
+
 
 }

@@ -1,27 +1,26 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 public class Answer extends Model {
 
 	private Image mImage;
 	private String mBody;
 	private List<Comment> commentList;
+	private UUID mId;
 	
 	public Answer(String body, Image image) {
 		mBody = body;
 		mImage = image;
+		this.setmId(new UUID(0, 0));
 		setCommentList(new ArrayList<Comment>());
 	}
 	
 	public Image getImage() {
 		return mImage;
-	}
-
-	public Integer getId() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	public String getBody() {
@@ -54,6 +53,26 @@ public class Answer extends Model {
 
 	public void setCommentList(List<Comment> commentList) {
 		this.commentList = commentList;
+	}
+
+	public UUID getmId() {
+		return mId;
+	}
+
+	public void setmId(UUID mId) {
+		this.mId = mId;
+	}
+	
+	public Comment getComment(UUID Cid){
+		Iterator<Comment> list = commentList.iterator();
+		while(list.hasNext()){
+			Comment comment = list.next();
+			UUID cid = comment.getmId();
+			if(cid.equals(Cid)){
+				return comment;
+			}
+		}
+		return null;
 	}
 
 }
