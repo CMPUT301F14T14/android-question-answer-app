@@ -162,9 +162,6 @@ public class DataManager {
 		return this.localDataStore.getUsername();
 	}
 	
-	public static LocalDataStore getLocalDataStore(){
-		return localDataStore;
-	}
-
+	
 
 }
