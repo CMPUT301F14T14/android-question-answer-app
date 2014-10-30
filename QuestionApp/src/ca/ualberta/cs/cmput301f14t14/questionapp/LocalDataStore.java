@@ -8,6 +8,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class LocalDataStore implements IDataStore {
 	private String username;
+	private String textSave = "localSave";
 	private List<Question> questionList;
 	
 	public void setUsername(String accountName){

@@ -12,7 +12,8 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 public class DataManager {
 
 	private static DataManager instance;
-	private LocalDataStore localDataStore;
+	private IDataStore localDataStore;
+	private IDataStore remoteDataStore;
 	private List<Question> questionList;
 	private List<UUID> favouriteQuestions;
 	private List<UUID> favouriteAnswers;
@@ -159,12 +160,8 @@ public class DataManager {
 
 	public String getAuthor() {
 		// TODO Auto-generated method stub
-		return this.localDataStore.getUsername();
+		return localDataStore.getUsername();
 	}
 	
-	public static LocalDataStore getLocalDataStore(){
-		return localDataStore;
-	}
-
 
 }
