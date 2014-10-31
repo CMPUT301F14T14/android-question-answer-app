@@ -95,6 +95,7 @@ public class WelcomeScreenActivity extends Activity implements IView {
 				intent.putExtra("username", user);
 				setResult(Activity.RESULT_OK, intent);
 				finish();
+				return;
 	        }
 	    }
 	    else if (accounts.length == 1 && !accounts[0].equals(null) && !accounts[0].equals("")){
@@ -104,6 +105,7 @@ public class WelcomeScreenActivity extends Activity implements IView {
 			intent.putExtra("username", user);
 			setResult(Activity.RESULT_OK, intent);
 			finish();
+			return;
 	    }
 	    Toast.makeText(getBaseContext(), "No google account", Toast.LENGTH_SHORT).show();
 		return;
