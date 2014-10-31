@@ -1,31 +1,38 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import android.test.ActivityInstrumentationTestCase2;
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
-import junit.framework.TestCase;
 
 
-public class DataManagerTest extends TestCase{
+public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivity> {
+
+	public DataManagerTest() {
+		super(MainActivity.class);
+	}
 
 	private DataManager manager;
 	private Question validQ;
 	private Answer validA;
-	
+
 	protected void setUp() throws Exception {
 		super.setUp();
-		manager = DataManager.getInstance();
+		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
+		manager.clearClientData();
+		manager.setUsername("User");
 		validQ = new Question("TITLE", "BODY", null);
 		validA = new Answer("aBody", null);
 	}
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
+	public void testSetUsername() {
+		assertEquals("User", manager.getUsername());
+		manager.setUsername("Different user");
+		assertEquals("Different user", manager.getUsername());
 	}
-	
-	
-	
+
 	/**
 	 * UC12 TC 12.1 - Favorite a Question
 	 */

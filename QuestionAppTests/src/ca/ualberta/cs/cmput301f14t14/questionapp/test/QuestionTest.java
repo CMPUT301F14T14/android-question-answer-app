@@ -2,6 +2,9 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
 import java.util.UUID;
 
+import android.test.ActivityInstrumentationTestCase2;
+
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
@@ -9,21 +12,25 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import junit.framework.TestCase;
 
-public class QuestionTest extends TestCase {
+public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
-	
 	private String title;
 	private String body;
 	private Image image;
 	private DataManager manager;
 	private LocalDataStore local;
 	private RemoteDataStore remote;
+
+	public QuestionTest() {
+		super(MainActivity.class);
+	}
+
 	protected void setUp() throws Exception {
 		super.setUp();
 		title = "Question Title";
 		body = "Question body?";
 		image = null;
-		manager = DataManager.getInstance();
+		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		local =  new LocalDataStore();
 		remote = new RemoteDataStore();
 	}

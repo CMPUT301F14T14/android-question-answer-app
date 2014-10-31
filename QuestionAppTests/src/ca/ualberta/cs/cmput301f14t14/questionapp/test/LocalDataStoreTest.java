@@ -1,5 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import android.test.ActivityInstrumentationTestCase2;
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
@@ -7,21 +9,25 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import junit.framework.TestCase;
 
-public class LocalDataStoreTest extends TestCase {
+public class LocalDataStoreTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	private LocalDataStore mLocalStore;
 	private Question mQuestion;
 	private DataManager manager;
 	private Answer mAnswer;
 	private Comment mComment;
-	
+
+	public LocalDataStoreTest() {
+		super(MainActivity.class);
+	}
+
 	protected void setUp() throws Exception {
 		super.setUp();
 		mLocalStore = new LocalDataStore();
 		mQuestion = new Question("TITLE", "BODY", null);
 		mAnswer = new Answer("ANSWERBODY", null);
 		mComment = new Comment("COMMENTBODY", "Boris");
-		manager = DataManager.getInstance();
+		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		
 	}
 

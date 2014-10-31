@@ -14,7 +14,7 @@ public class ClientDataTest extends ActivityInstrumentationTestCase2<MainActivit
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		clientData = new ClientData(getActivity());
+		clientData = new ClientData(getInstrumentation().getTargetContext().getApplicationContext());
 		clientData.clear();
 		clientData.setUsername("Dummy Username");
 	}
