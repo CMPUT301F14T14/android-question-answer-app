@@ -17,7 +17,7 @@ public class Answer extends Model {
 	public Answer(String body, Image image) {
 		mBody = body;
 		mImage = image;
-		this.setmId(new UUID(0, 0));
+		this.setId(new UUID(0, 0));
 		setCommentList(new ArrayList<Comment>());
 	}
 	
@@ -61,11 +61,11 @@ public class Answer extends Model {
 		this.commentList = commentList;
 	}
 
-	public UUID getmId() {
+	public UUID getId() {
 		return mId;
 	}
 
-	public void setmId(UUID mId) {
+	public void setId(UUID mId) {
 		this.mId = mId;
 	}
 	

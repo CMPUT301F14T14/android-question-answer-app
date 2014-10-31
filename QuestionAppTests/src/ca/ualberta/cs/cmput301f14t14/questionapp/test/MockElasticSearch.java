@@ -2,13 +2,14 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class MockElasticSearch {
 
-	private List<Integer> allItems;
+	private List<UUID> allItems;
 
 	public MockElasticSearch() {
 		Question q = new Question("", "", null);
@@ -17,11 +18,11 @@ public class MockElasticSearch {
 		allItems.add(a.getId());
 	}
 
-	public List<Integer> query(String keywords) {
+	public List<UUID> query(String keywords) {
 		//comma separate keywords
 		String[] words = keywords.split(",");
-		List<Integer> results = new ArrayList<Integer>();
-		for(int item : allItems){
+		List<UUID> results = new ArrayList<UUID>();
+		for(UUID item : allItems){
 			for(String word : words){
 			//if elastic search finds match, add to results
 			}

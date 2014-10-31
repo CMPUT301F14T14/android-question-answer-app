@@ -21,7 +21,7 @@ public class LocalDataStoreTest extends TestCase {
 		mQuestion = new Question("TITLE", "BODY", null);
 		mAnswer = new Answer("ANSWERBODY", null);
 		mComment = new Comment("COMMENTBODY", "Boris");
-		manager = new DataManager();
+		manager = DataManager.getInstance();
 		
 	}
 
@@ -37,7 +37,7 @@ public class LocalDataStoreTest extends TestCase {
 	
 	public void testPutAnswer() {
 		mLocalStore.putAnswer(mAnswer);
-		Answer retrieved = manager.getAnswer(mAnswer.getId());
+		Answer retrieved = manager.getAnswer(null, mAnswer.getId());
 		assertEquals(mAnswer, retrieved);
 	}
 	

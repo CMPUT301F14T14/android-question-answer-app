@@ -31,7 +31,7 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<Activity>
 		mQuestion = new Question("TITLE", "BODY", null);
 		mAnswer = new Answer("ANSWERBODY", null);
 		mComment = new Comment("COMMENTBODY", "Boris");
-		manager = new DataManager();
+		manager = DataManager.getInstance();
 		
 	}
 

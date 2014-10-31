@@ -1,5 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import java.util.UUID;
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.RemoteDataStore;
@@ -22,7 +24,7 @@ public class CommentTest extends TestCase {
 		super.setUp();
 		mQuestion = new Question("Title", "Body", null);
 		mAnswer = new Answer("Answer body.", null);
-		manager = new DataManager();
+		manager = DataManager.getInstance();
 		local =  new LocalDataStore();
 		remote = new RemoteDataStore();
 	}
@@ -76,7 +78,7 @@ public class CommentTest extends TestCase {
 		manager.disableNetworkAccess();
 		local.putComment(mComment);
 		mQuestion.addComment(mComment);
-		Integer id = mComment.getId();
+		UUID id = mComment.getId();
 		assertNotNull(manager.getComment(id));
 		manager.enableNetworkAccess();
 		remote.putComment(mComment);
@@ -90,7 +92,7 @@ public class CommentTest extends TestCase {
 		manager.disableNetworkAccess();
 		local.putComment(secComment);
 		mAnswer.addComment(secComment);
-		Integer secId = mComment.getId();
+		UUID secId = mComment.getId();
 		assertNotNull(manager.getComment(secId));
 		manager.enableNetworkAccess();
 		remote.putComment(secComment);

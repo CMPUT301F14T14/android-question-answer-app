@@ -111,8 +111,8 @@ public class DataManager {
 		return questionList;
 	}
 
-	public void favoriteQuestion(UUID Qid) {
-		favouriteQuestions.add(Qid);
+	public void favoriteQuestion(UUID questionId) {
+		favouriteQuestions.add(questionId);
 		//localdatamanager.save(favouriteQuestions);
 	}
 
@@ -161,6 +161,11 @@ public class DataManager {
 	public String getAuthor() {
 		// TODO Auto-generated method stub
 		return localDataStore.getUsername();
+	}
+
+	public Comment getComment(UUID id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

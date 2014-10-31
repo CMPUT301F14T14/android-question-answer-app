@@ -1,5 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import java.util.UUID;
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.RemoteDataStore;
@@ -21,7 +23,7 @@ public class QuestionTest extends TestCase {
 		title = "Question Title";
 		body = "Question body?";
 		image = null;
-		manager = new DataManager();
+		manager = DataManager.getInstance();
 		local =  new LocalDataStore();
 		remote = new RemoteDataStore();
 	}
@@ -91,7 +93,7 @@ public class QuestionTest extends TestCase {
 		manager.disableNetworkAccess();
 		Question q = new Question(title, body, image);
 		local.putQuestion(q);
-		Integer id = q.getId();
+		UUID id = q.getId();
 		assertNotNull(manager.getQuestion(id));
 		manager.enableNetworkAccess();
 		remote.putQuestion(q);
@@ -133,7 +135,7 @@ public class QuestionTest extends TestCase {
 	public void testReadQuestionLater() {
 		Question q = new Question(title, body, null);
 		manager.readLater(q);
-		int id = q.getId();
+		UUID id = q.getId();
 		assertTrue(local.isQuestion(id));
 	}
 
