@@ -19,8 +19,6 @@ public interface IDataStore {
 
 	public boolean isAnswer(UUID id);
 
-	public String getUsername();
-
 	public List<Question> getQuestionList();
 
 	public void save(List<Question> questionList);

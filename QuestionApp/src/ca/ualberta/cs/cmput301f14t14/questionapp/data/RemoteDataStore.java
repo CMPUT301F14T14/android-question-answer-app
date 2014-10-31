@@ -45,12 +45,6 @@ public class RemoteDataStore implements IDataStore {
 	}
 
 	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<Question> getQuestionList() {
 		// TODO Auto-generated method stub
 		return null;
