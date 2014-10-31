@@ -1,4 +1,4 @@
-package ca.ualberta.cs.cmput301f14t14.questionapp;
+package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
 import java.util.Iterator;
 import java.util.List;
