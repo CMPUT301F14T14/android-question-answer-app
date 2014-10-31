@@ -1,28 +1,33 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
-import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
-import ca.ualberta.cs.cmput301f14t14.questionapp.RemoteDataStore;
+import android.test.ActivityInstrumentationTestCase2;
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import junit.framework.TestCase;
 
-public class RemoteDataStoreTest extends TestCase{
+public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	private RemoteDataStore mRemoteStore;
 	private Question mQuestion;
 	private DataManager manager;
 	private Answer mAnswer;
 	private Comment mComment;
-	
+
+	public RemoteDataStoreTest() {
+		super(MainActivity.class);
+	}
+
 	protected void setUp() throws Exception {
 		super.setUp();
 		mRemoteStore = new RemoteDataStore();
 		mQuestion = new Question("TITLE", "BODY", null);
 		mAnswer = new Answer("ANSWERBODY", null);
 		mComment = new Comment("COMMENTBODY", "Boris");
-		manager = new DataManager();
-		
+		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 	}
 
 	protected void tearDown() throws Exception {
@@ -41,7 +46,7 @@ public class RemoteDataStoreTest extends TestCase{
 	
 	public void testPutAnswer() {
 		mRemoteStore.putAnswer(mAnswer);
-		Answer retrieved = manager.getAnswer(mAnswer.getId());
+		Answer retrieved = manager.getAnswer(mAnswer.getId(), null);
 		assertEquals(mAnswer, retrieved);
 	}
 	

@@ -1,6 +1,7 @@
-package ca.ualberta.cs.cmput301f14t14.questionapp;
+package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
 import java.util.List;
+import java.util.UUID;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -28,25 +29,19 @@ public class RemoteDataStore implements IDataStore {
 		
 	}
 
-	public boolean isQuestion(Integer id) {
+	public boolean isQuestion(UUID id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean isAnswer(Integer id) {
+	public boolean isAnswer(UUID id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean isComment(Integer id) {
+	public boolean isComment(UUID id) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public class Comment {
 		return mUsername;
 	}
 
-	public Integer getId() {
+	public UUID getId() {
 		// TODO Auto-generated method stub
 		return null;
 	}

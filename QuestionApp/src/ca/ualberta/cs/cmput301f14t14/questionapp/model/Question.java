@@ -96,7 +96,7 @@ public class Question extends Model {
 		Iterator<Answer> list = answerList.iterator();
 		while(list.hasNext()){
 			Answer answer = list.next();
-			UUID aid = answer.getmId();
+			UUID aid = answer.getId();
 			if(aid.equals(Aid)){
 				return answer;
 			}

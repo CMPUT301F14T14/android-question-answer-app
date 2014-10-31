@@ -1,23 +1,15 @@
-package ca.ualberta.cs.cmput301f14t14.questionapp;
+package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
 import java.util.List;
+import java.util.UUID;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class LocalDataStore implements IDataStore {
-	private String username;
 	private String textSave = "localSave";
 	private List<Question> questionList;
-	
-	public void setUsername(String accountName){
-		this.username = accountName;
-	}
-	
-	public String getUsername(){
-		return this.username;
-	}
 	
 	public List<Question> getQuestionList(){
 		return questionList;
@@ -42,28 +34,23 @@ public class LocalDataStore implements IDataStore {
 		
 	}
 
-	public boolean isFavorite(Integer id) {
+	public boolean isFavorite(UUID uuid) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean isQuestion(Integer id) {
+	public boolean isQuestion(UUID id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean isAnswer(Integer id) {
+	public boolean isAnswer(UUID id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public void clear() {
 		// Empty the data store
-	}
-
-	public String getAccountUsername() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 }

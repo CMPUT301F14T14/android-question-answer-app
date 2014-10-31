@@ -1,27 +1,36 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
-import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
-import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
-import ca.ualberta.cs.cmput301f14t14.questionapp.RemoteDataStore;
+import java.util.UUID;
+
+import android.test.ActivityInstrumentationTestCase2;
+
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.LocalDataStore;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import junit.framework.TestCase;
 
-public class QuestionTest extends TestCase {
+public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
-	
 	private String title;
 	private String body;
 	private Image image;
 	private DataManager manager;
 	private LocalDataStore local;
 	private RemoteDataStore remote;
+
+	public QuestionTest() {
+		super(MainActivity.class);
+	}
+
 	protected void setUp() throws Exception {
 		super.setUp();
 		title = "Question Title";
 		body = "Question body?";
 		image = null;
-		manager = new DataManager();
+		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		local =  new LocalDataStore();
 		remote = new RemoteDataStore();
 	}
@@ -91,7 +100,7 @@ public class QuestionTest extends TestCase {
 		manager.disableNetworkAccess();
 		Question q = new Question(title, body, image);
 		local.putQuestion(q);
-		Integer id = q.getId();
+		UUID id = q.getId();
 		assertNotNull(manager.getQuestion(id));
 		manager.enableNetworkAccess();
 		remote.putQuestion(q);
@@ -133,7 +142,7 @@ public class QuestionTest extends TestCase {
 	public void testReadQuestionLater() {
 		Question q = new Question(title, body, null);
 		manager.readLater(q);
-		int id = q.getId();
+		UUID id = q.getId();
 		assertTrue(local.isQuestion(id));
 	}
 

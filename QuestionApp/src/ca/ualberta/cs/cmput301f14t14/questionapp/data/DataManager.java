@@ -1,8 +1,10 @@
-package ca.ualberta.cs.cmput301f14t14.questionapp;
+package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+
+import android.content.Context;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -12,6 +14,8 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 public class DataManager {
 
 	private static DataManager instance;
+
+	private ClientData clientData;
 	private IDataStore localDataStore;
 	private IDataStore remoteDataStore;
 	private List<Question> questionList;
@@ -22,14 +26,13 @@ public class DataManager {
 	String Username;
 
 	
-	private DataManager(){
-		
-		//localDataStore = new localDataStore();
+	private DataManager(Context context){
+		this.clientData = new ClientData(context);
 	}
 	
-	public static DataManager getInstance(){
+	public static DataManager getInstance(Context context){
 		if (instance == null){
-			instance = new DataManager();
+			instance = new DataManager(context.getApplicationContext());
 		}
 		return instance;
 	}
@@ -111,8 +114,8 @@ public class DataManager {
 		return questionList;
 	}
 
-	public void favoriteQuestion(UUID Qid) {
-		favouriteQuestions.add(Qid);
+	public void favoriteQuestion(UUID questionId) {
+		favouriteQuestions.add(questionId);
 		//localdatamanager.save(favouriteQuestions);
 	}
 
@@ -127,7 +130,11 @@ public class DataManager {
 	}
 
 	public String getUsername() {
-		return localDataStore.getUsername();
+		return clientData.getUsername();
+	}
+	
+	public void setUsername(String username) {
+		clientData.setUsername(username);
 	}
 
 	//End View Interface
@@ -158,10 +165,13 @@ public class DataManager {
 		// TODO Auto-generated method stub
 	}
 
-	public String getAuthor() {
+	public Comment getComment(UUID id) {
 		// TODO Auto-generated method stub
-		return localDataStore.getUsername();
+		return null;
 	}
 	
+	public void clearClientData() {
+		clientData.clear();
+	}
 
 }
