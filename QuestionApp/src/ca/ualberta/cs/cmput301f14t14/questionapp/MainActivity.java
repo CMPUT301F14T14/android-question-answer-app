@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
+
+	private DataManager dataManager;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +34,14 @@ public class MainActivity extends Activity {
         
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getActionBar().setListNavigationCallbacks(sortAdapter, changeSort());
+                
+        dataManager = DataManager.getInstance(this);
         
-        //This is test that the welcome screen works!!!
-        Intent intent = new Intent(this.getBaseContext(), WelcomeScreenActivity.class);
-        startActivityForResult(intent, Activity.RESULT_FIRST_USER);
+        if(dataManager.getUsername() == null){
+
+        	Intent intent = new Intent(this.getBaseContext(), WelcomeScreenActivity.class);
+        	startActivityForResult(intent, Activity.RESULT_FIRST_USER);
+        }
     }
     
     public OnNavigationListener changeSort() {
@@ -71,9 +78,10 @@ public class MainActivity extends Activity {
     
     public void onActivityResult(int requestCode, int resultCode,Intent intent){
     	
-    	if (requestCode == Activity.RESULT_FIRST_USER || resultCode == Activity.RESULT_OK){
+    	if (requestCode == Activity.RESULT_FIRST_USER && resultCode == Activity.RESULT_OK){
     		String username = intent.getStringExtra("username");
     		Toast.makeText(this, "Welcome " + username + " to Qasper", Toast.LENGTH_SHORT).show();
+    		dataManager.setUsername(username);
     		
     	}
     	
