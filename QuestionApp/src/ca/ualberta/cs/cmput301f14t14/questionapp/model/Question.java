@@ -7,25 +7,26 @@ import java.util.UUID;
 
 
 public class Question extends Model {
-	
-	private String mTitle;
-	private String mBody;
-	private Image mImage;
-	private UUID mId;
+
+	private UUID id;
+	private String title;
+	private String body;
+	private Image image;
 	private String author;
 	private List<Answer> answerList; 
-	private List<Comment> commentList;
+	private List<Comment<Question>> commentList;
 
-	public Question(String title, String body, Image image) {
+	public Question(String title, String body, String author, Image image) {
 		super();
-		this.mTitle = title;
-		this.mBody = body;
-		this.mImage = image;
-		this.mId = new UUID(0, 0);
+		setId(UUID.randomUUID());
+		this.title = title;
+		this.body = body;
+		this.author = author;
+		this.image = image;
 		this.setAnswerList(new ArrayList<Answer>());
-		this.setCommentList(new ArrayList<Comment>());
+		this.setCommentList(new ArrayList<Comment<Question>>());
 	}
-	
+
 	public void addAnswer(Answer a) {
 		
 	}
@@ -35,28 +36,32 @@ public class Question extends Model {
 	}
 
 	public String getTitle() {
-		return mTitle;
+		return title;
 	}
 	
 	public String getBody() {
-		return mBody;
+		return body;
 	}
 	
 	public Image getImage() {
-		return mImage;
+		return image;
 	}
 	
 	public UUID getId() {
-		return mId;
+		return id;
 	}
 	
-	public boolean hasComment(Comment mComment) {
+	public void setId(UUID id) {
+		this.id = id;
+	}
+	
+	public boolean hasComment(Comment<Question> mComment) {
 		return false;
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void addComment(Comment mComment) {
+	public void addComment(Comment<Question> mComment) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -76,11 +81,11 @@ public class Question extends Model {
 		return this.author;
 	}
 
-	public List<Comment> getCommentList() {
+	public List<Comment<Question>> getCommentList() {
 		return commentList;
 	}
 
-	public void setCommentList(List<Comment> commentList) {
+	public void setCommentList(List<Comment<Question>> commentList) {
 		this.commentList = commentList;
 	}
 
@@ -104,11 +109,11 @@ public class Question extends Model {
 		return null;
 	}
 	
-	public Comment getComment(UUID Cid){
-		Iterator<Comment> list = commentList.iterator();
+	public Comment<Question> getComment(UUID Cid){
+		Iterator<Comment<Question>> list = commentList.iterator();
 		while(list.hasNext()){
-			Comment comment = list.next();
-			UUID cid = comment.getmId();
+			Comment<Question> comment = list.next();
+			UUID cid = comment.getId();
 			if(cid.equals(Cid)){
 				return comment;
 			}
