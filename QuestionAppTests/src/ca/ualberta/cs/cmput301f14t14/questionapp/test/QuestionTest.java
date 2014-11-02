@@ -16,6 +16,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 
 	private String title;
 	private String body;
+	private String author;
 	private Image image;
 	private DataManager manager;
 	private LocalDataStore local;
@@ -30,6 +31,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 		title = "Question Title";
 		body = "Question body?";
 		image = null;
+		author = "boris";
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		local =  new LocalDataStore();
 		remote = new RemoteDataStore();
@@ -46,7 +48,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 		
 		
 		// Test successful creation of a question
-		Question q = new Question(title, body, image);
+		Question q = new Question(title, body, author, image);
 		assertEquals(title, q.getTitle());
 		assertEquals(body, q.getBody());
 		assertEquals(image, q.getImage());
@@ -58,13 +60,13 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 	public void testInvalidBody() {
 		// Test invalid body
 		try {
-			new Question(title, "", image);
+			new Question(title, "", author, image);
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
 		}
 		try {
-			new Question(title, null, image);
+			new Question(title, null, author, image);
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
@@ -78,13 +80,13 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 	public void testInvalidTitle() {
 		// Test invalid title
 		try {
-			new Question("", body, image);
+			new Question("", body, author, image);
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
 		}
 		try {
-			new Question(null, body, image);
+			new Question(null, body, author, image);
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
@@ -98,7 +100,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 	
 	public void testLocalQuestionCreate() {
 		manager.disableNetworkAccess();
-		Question q = new Question(title, body, image);
+		Question q = new Question(title, body, author, image);
 		local.putQuestion(q);
 		UUID id = q.getId();
 		assertNotNull(manager.getQuestion(id));
@@ -113,7 +115,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 	 */
 
 	public void testUpvoteQuestion() {
-		Question q = new Question(title, body, null);
+		Question q = new Question(title, body, author, null);
 		int oldVotes = q.getUpvotes();
 		q.addUpvote();
 		int newVotes = q.getUpvotes();
@@ -125,7 +127,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 	 */
 	
 	public void testMultipleUpvoteQuestion() {
-		Question q = new Question(title, body, null);
+		Question q = new Question(title, body, author, null);
 		int oldVotes = q.getUpvotes();
 		// notice multiple upvotes added here
 		q.addUpvote();
@@ -140,7 +142,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 	 */
 	
 	public void testReadQuestionLater() {
-		Question q = new Question(title, body, null);
+		Question q = new Question(title, body, author, null);
 		manager.readLater(q);
 		UUID id = q.getId();
 		assertTrue(local.isQuestion(id));

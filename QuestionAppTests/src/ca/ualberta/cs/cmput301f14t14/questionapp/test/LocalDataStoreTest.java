@@ -24,9 +24,9 @@ public class LocalDataStoreTest extends ActivityInstrumentationTestCase2<MainAct
 	protected void setUp() throws Exception {
 		super.setUp();
 		mLocalStore = new LocalDataStore();
-		mQuestion = new Question("TITLE", "BODY", null);
-		mAnswer = new Answer("ANSWERBODY", null);
-		mComment = new Comment("COMMENTBODY", "Boris");
+		mQuestion = new Question("TITLE", "BODY", "AUTHOR", null);
+		mAnswer = new Answer(mQuestion, "ANSWERBODY", "Author", null);
+		mComment = new Comment<Answer>(mAnswer, "COMMENTBODY", "Boris");
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		
 	}

@@ -12,8 +12,8 @@ public class MockElasticSearch {
 	private List<UUID> allItems;
 
 	public MockElasticSearch() {
-		Question q = new Question("", "", null);
-		Answer a = new Answer("",null);
+		Question q = new Question("", "", "", null);
+		Answer a = new Answer(q, "", "", null);
 		allItems.add(q.getId());
 		allItems.add(a.getId());
 	}

@@ -26,8 +26,8 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		mQuestion = new Question("Title", "Body", null);
-		mAnswer = new Answer("Answer body.", null);
+		mQuestion = new Question("Title", "Body", "Author", null);
+		mAnswer = new Answer(mQuestion, "Answer body.", "Author", null);
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		local =  new LocalDataStore();
 		remote = new RemoteDataStore();
@@ -54,14 +54,14 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		// Test invalid body
 		Image image = new Image(null,null);
 		try {
-			new Answer(null, image);
+			new Answer(mQuestion, null, "Author", image);
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
 		}
 		
 		try {
-			new Answer("", image);
+			new Answer(mQuestion, "", "Author", image);
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed

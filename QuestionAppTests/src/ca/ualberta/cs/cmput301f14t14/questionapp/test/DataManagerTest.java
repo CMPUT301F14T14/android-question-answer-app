@@ -23,8 +23,8 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		manager.clearClientData();
 		manager.setUsername("User");
-		validQ = new Question("TITLE", "BODY", null);
-		validA = new Answer("aBody", null);
+		validQ = new Question("TITLE", "BODY", "AUTHOR", null);
+		validA = new Answer(validQ, "aBody", "aAuthor", null);
 	}
 
 	public void testSetUsername() {
