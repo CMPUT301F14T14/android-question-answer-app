@@ -16,35 +16,64 @@ public class Question extends Model {
 	private List<Answer> answerList; 
 	private List<Comment<Question>> commentList;
 
+	public Question() {
+		id = null;
+		title = null;
+		body = null;
+		image = null;
+		author = null;
+		answerList = new ArrayList<Answer>();
+		commentList = new ArrayList<Comment<Question>>();
+	}
+
 	public Question(String title, String body, String author, Image image) {
 		super();
 		setId(UUID.randomUUID());
-		this.title = title;
-		this.body = body;
-		this.author = author;
-		this.image = image;
+		setTitle(title);
+		setBody(body);
+		setAuthor(author);
+		setImage(image);
 		this.setAnswerList(new ArrayList<Answer>());
 		this.setCommentList(new ArrayList<Comment<Question>>());
 	}
 
 	public void addAnswer(Answer a) {
-		
+		if (!answerList.contains(a)) {
+			answerList.add(a);
+			a.setParent(this);
+		}
 	}
 	
 	public boolean hasAnswer(Answer a) {
-		return false;
+		return answerList.contains(a);
 	}
 
 	public String getTitle() {
 		return title;
 	}
+
+	private void setTitle(String title) {
+		if (title == null || title.trim().length() == 0)
+			throw new IllegalArgumentException("Question title may not be blank.");
+		this.title = title.trim();
+	}
 	
 	public String getBody() {
 		return body;
 	}
+
+	private void setBody(String body) {
+		if (body == null || body.trim().length() == 0)
+			throw new IllegalArgumentException("Question body may not be blank.");
+		this.body = body.trim();
+	}
 	
 	public Image getImage() {
 		return image;
+	}
+
+	private void setImage(Image image) {
+		this.image = image;
 	}
 	
 	public UUID getId() {
@@ -55,15 +84,15 @@ public class Question extends Model {
 		this.id = id;
 	}
 	
-	public boolean hasComment(Comment<Question> mComment) {
-		return false;
-		// TODO Auto-generated method stub
-		
+	public boolean hasComment(Comment<Question> comment) {
+		return commentList.contains(comment);
 	}
 
-	public void addComment(Comment<Question> mComment) {
-		// TODO Auto-generated method stub
-		
+	public void addComment(Comment<Question> comment) {
+		if (!commentList.contains(comment)) {
+			commentList.add(comment);
+			comment.setParent(this);
+		}
 	}
 
 	public void addUpvote() {
@@ -77,8 +106,11 @@ public class Question extends Model {
 	}
 
 	public String getAuthor() {
-		// TODO Auto-generated method stub
 		return this.author;
+	}
+
+	private void setAuthor(String author) {
+		this.author = author;
 	}
 
 	public List<Comment<Question>> getCommentList() {
