@@ -15,35 +15,59 @@ public class Answer extends Model {
 	private Question parent;
 
 	
+	public Answer() {
+		this.id = null;
+		this.body = null;
+		this.author = null;
+		this.image = null;
+		this.parent = null;
+		this.commentList = new ArrayList<Comment<Answer>>();
+	}
+
 	public Answer(Question parent, String body, String author, Image image) {
 		setId(UUID.randomUUID());
-		this.body = body;
-		this.author = author;
-		this.image = image;
-		this.parent = parent;
+		setBody(body);
+		setAuthor(author);
+		setImage(image);
+		setParent(parent);
 		setCommentList(new ArrayList<Comment<Answer>>());
 	}
 	
 	public Image getImage() {
 		return image;
 	}
-	
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
 	public String getBody() {
 		return body;
+	}
+	
+	public void setBody(String body) {
+		if (body == null || body.trim().length() == 0)
+			throw new IllegalArgumentException("Answer body may not be blank.");
+		this.body = body;
 	}
 	
 	public String getAuthor() {
 		return author;
 	}
-
-	public boolean hasComment(Comment<Answer> mComment) {
-		// TODO Auto-generated method stub
-		return false;
+	
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
-	public void addComment(Comment<Answer> mComment) {
-		// TODO Auto-generated method stub
-		
+	public boolean hasComment(Comment<Answer> comment) {
+		return commentList.contains(comment);
+	}
+
+	public void addComment(Comment<Answer> comment) {
+		if (!commentList.contains(comment)) {
+			commentList.add(comment);
+			comment.setParent(this);
+		}
 	}
 
 	public int getUpvotes() {
@@ -68,8 +92,8 @@ public class Answer extends Model {
 		return id;
 	}
 
-	public void setId(UUID mId) {
-		this.id = mId;
+	public void setId(UUID id) {
+		this.id = id;
 	}
 	
 	public Question getParent() {
