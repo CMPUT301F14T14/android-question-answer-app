@@ -99,7 +99,6 @@ public class WelcomeScreenActivity extends Activity implements IView {
 	        }
 	    }
 	    else if (accounts.length == 1 && !accounts[0].equals(null) && !accounts[0].equals("")){
-	    	System.out.println("Stage2");
 	    	String user = accounts[0].name;
 			Intent intent = new Intent();
 			intent.putExtra("username", user);
