@@ -2,38 +2,41 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
 import java.util.UUID;
 
-public class Comment {
+public class Comment<T extends Model> {
 	
-	private String mBody;
-	private String mUsername;
-	private UUID mId;
+	private String body;
+	private String username;
+	private UUID id;
+	private T parent;
 	
-	public Comment(String text, String createdBy) {
-		mBody = text;
-		mUsername = createdBy;
-		this.setmId(new UUID(0, 0));
+	public Comment(T parent, String body, String username) {
+		setId(UUID.randomUUID());
+		this.body = body;
+		this.username = username;
+		this.parent = parent;
 	}
 
 	public String getBody() {
-		return mBody;
+		return body;
 	}
 
-	public String getUserName() {
-		return mUsername;
+	public String getUsername() {
+		return username;
 	}
 
 	public UUID getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
-	public UUID getmId() {
-		return mId;
-	}
-
-	public void setmId(UUID mId) {
-		this.mId = mId;
+	public void setId(UUID id) {
+		this.id = id;
 	}
 	
+	public T getParent() {
+		return parent;
+	}
 	
+	public void setParent(T parent) {
+		this.parent = parent;
+	}
 }

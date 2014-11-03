@@ -29,8 +29,8 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		mQuestion = new Question("Title", "Body", null);
-		mAnswer = new Answer("Answer body.", null);
+		mQuestion = new Question("Title", "Body", "Author", null);
+		mAnswer = new Answer(mQuestion, "Answer body.", "Author", null);
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		local =  new LocalDataStore();
 		remote = new RemoteDataStore();
@@ -61,14 +61,14 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 	public void testInvalidBody() {
 		// Test invalid body
 		try {
-			new Comment(null, null);
+			new Comment<Question>(mQuestion, null, "Author");
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
 		}
 		
 		try {
-			new Comment("", null);
+			new Comment<Question>(mQuestion, "", "Author");
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
@@ -95,7 +95,7 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		assertTrue(mQuestion.hasComment(mComment));
 		
 		// adding to answer
-		Comment secComment = new Comment("Comment has a body", "Userrrrname");
+		Comment secComment = new Comment<Question>(mQuestion, "Comment has a body", "Userrrrname");
 		manager.disableNetworkAccess();
 		local.putComment(secComment);
 		mAnswer.addComment(secComment);

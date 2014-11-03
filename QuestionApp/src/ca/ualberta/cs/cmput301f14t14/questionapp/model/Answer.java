@@ -7,38 +7,41 @@ import java.util.UUID;
 
 public class Answer extends Model {
 
-	private Image mImage;
-	private String mBody;
-	private List<Comment> commentList;
-	private UUID mId;
-	private String mAuthor;
+	private UUID id;
+	private Image image;
+	private String body;
+	private List<Comment<Answer>> commentList;
+	private String author;
+	private Question parent;
 
 	
-	public Answer(String body, Image image) {
-		mBody = body;
-		mImage = image;
-		this.setId(new UUID(0, 0));
-		setCommentList(new ArrayList<Comment>());
+	public Answer(Question parent, String body, String author, Image image) {
+		setId(UUID.randomUUID());
+		this.body = body;
+		this.author = author;
+		this.image = image;
+		this.parent = parent;
+		setCommentList(new ArrayList<Comment<Answer>>());
 	}
 	
 	public Image getImage() {
-		return mImage;
+		return image;
 	}
 	
 	public String getBody() {
-		return mBody;
+		return body;
 	}
 	
 	public String getAuthor() {
-		return mAuthor;
+		return author;
 	}
 
-	public boolean hasComment(Comment mComment) {
+	public boolean hasComment(Comment<Answer> mComment) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public void addComment(Comment mComment) {
+	public void addComment(Comment<Answer> mComment) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -53,27 +56,35 @@ public class Answer extends Model {
 		
 	}
 
-	public List<Comment> getCommentList() {
+	public List<Comment<Answer>> getCommentList() {
 		return commentList;
 	}
 
-	public void setCommentList(List<Comment> commentList) {
+	public void setCommentList(List<Comment<Answer>> commentList) {
 		this.commentList = commentList;
 	}
 
 	public UUID getId() {
-		return mId;
+		return id;
 	}
 
 	public void setId(UUID mId) {
-		this.mId = mId;
+		this.id = mId;
 	}
 	
-	public Comment getComment(UUID Cid){
-		Iterator<Comment> list = commentList.iterator();
+	public Question getParent() {
+		return parent;
+	}
+	
+	public void setParent(Question parent) {
+		this.parent = parent;
+	}
+	
+	public Comment<Answer> getComment(UUID Cid){
+		Iterator<Comment<Answer>> list = commentList.iterator();
 		while(list.hasNext()){
-			Comment comment = list.next();
-			UUID cid = comment.getmId();
+			Comment<Answer> comment = list.next();
+			UUID cid = comment.getId();
 			if(cid.equals(Cid)){
 				return comment;
 			}

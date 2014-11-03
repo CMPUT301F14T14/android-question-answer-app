@@ -15,7 +15,8 @@ public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainAc
 	private Question mQuestion;
 	private DataManager manager;
 	private Answer mAnswer;
-	private Comment mComment;
+	private Comment<Question> qComment;
+	private Comment<Answer> aComment;
 
 	public RemoteDataStoreTest() {
 		super(MainActivity.class);
@@ -24,9 +25,10 @@ public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainAc
 	protected void setUp() throws Exception {
 		super.setUp();
 		mRemoteStore = new RemoteDataStore();
-		mQuestion = new Question("TITLE", "BODY", null);
-		mAnswer = new Answer("ANSWERBODY", null);
-		mComment = new Comment("COMMENTBODY", "Boris");
+		mQuestion = new Question("TITLE", "BODY", "Author", null);
+		mAnswer = new Answer(mQuestion, "ANSWERBODY", "Author", null);
+		qComment = new Comment<Question>(mQuestion, "COMMENTBODY", "Boris");
+		aComment = new Comment<Answer>(mAnswer, "CBody", "Natasha");
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 	}
 
@@ -51,9 +53,9 @@ public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainAc
 	}
 	
 	public void testPutComment() {
-		mRemoteStore.putComment(mComment);
-		Comment retrieved = manager.getComment(mComment.getId());
-		assertEquals(mComment, retrieved);
+		mRemoteStore.putComment(qComment);
+		Comment<Question> retrieved = (Comment<Question>) manager.getComment(qComment.getId());
+		assertEquals(qComment, retrieved);
 	}
 	
 	/* UC1 TC 1.2 */
@@ -61,7 +63,7 @@ public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainAc
 		
 		mRemoteStore.putQuestion(mQuestion);
 		Question retrieved = manager.getQuestion(mQuestion.getId());
-		assertEquals(false, true);
+		assertEquals(mQuestion, retrieved);
 	}
 	
 }
