@@ -82,8 +82,7 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		manager.enableNetworkAccess();
 		remote.putAnswer(mAnswer);
 		remote.putQuestion(mQuestion);
-		boolean inRemote = remote.isAnswer(id);
-		assertTrue(inRemote);
+		assertNotNull(remote.getAnswer(id));
 		assertTrue(mQuestion.hasAnswer(mAnswer));
 	}
 	
@@ -120,6 +119,6 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	public void testReadQuestionLater() {
 		manager.readLater(mAnswer);
 		UUID id = mAnswer.getId();
-		assertTrue(local.isAnswer(id));
+		assertNotNull(local.getAnswer(id));
 	}
 }

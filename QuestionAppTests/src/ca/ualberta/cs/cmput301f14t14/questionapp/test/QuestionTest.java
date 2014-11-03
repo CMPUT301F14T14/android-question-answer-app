@@ -114,8 +114,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 		assertNotNull(manager.getQuestion(id));
 		manager.enableNetworkAccess();
 		remote.putQuestion(q);
-		boolean inRemote = remote.isQuestion(id);
-		assertTrue(inRemote);
+		assertNotNull(remote.getQuestion(id));
 	}
 	
 	/**
@@ -153,7 +152,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 		Question q = new Question(title, body, author, null);
 		manager.readLater(q);
 		UUID id = q.getId();
-		assertTrue(local.isQuestion(id));
+		assertNotNull(local.getQuestion(id));
 	}
 
 }
