@@ -1,7 +1,5 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
@@ -27,8 +25,8 @@ public class ImageTest extends TestCase {
 	
 	public void testAddImage() {
 		Image image = new Image(Uri.parse("android.resource://QuestionAppTests/drawable/under64"), null);
-		mAnswer = new Answer("ABody", image);
-		mQuestion = new Question("Title", "QBody", image);
+		mQuestion = new Question("Title", "QBody", "Author", image);
+		mAnswer = new Answer(mQuestion, "ABody", "Author", image);
 		assertNotNull(mAnswer.getImage());
 		assertNotNull(mQuestion.getImage());
 	}

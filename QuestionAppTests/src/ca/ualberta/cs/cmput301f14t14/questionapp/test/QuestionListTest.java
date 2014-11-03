@@ -29,9 +29,9 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActiv
 		super.setUp();
 		mLocalStore = new LocalDataStore();
 
-		mQuestion = new Question("TITLE", "BODY", null);
-		mAnswer = new Answer("ANSWERBODY", null);
-		mComment = new Comment("COMMENTBODY", "Boris");
+		mQuestion = new Question("TITLE", "BODY", "AUTHOR", null);
+		mAnswer = new Answer(mQuestion, "ANSWERBODY", "AUTHOR", null);
+		mComment = new Comment<Question>(mQuestion, "COMMENTBODY", "Boris");
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		
 	}

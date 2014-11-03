@@ -74,7 +74,7 @@ public class DataManager {
 		return answer;
 	}
 	
-	public void addQuestionComment(UUID Qid, Comment C){
+	public void addQuestionComment(UUID Qid, Comment<Question> C){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Integer position = questionList.indexOf(question);
@@ -83,14 +83,14 @@ public class DataManager {
 		localDataStore.save(questionList);
 	}
 
-	public Comment getQuestionComment(UUID Qid, UUID cid) {
+	public Comment<Question> getQuestionComment(UUID Qid, UUID cid) {
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
-		Comment comment = question.getComment(cid);
+		Comment<Question> comment = question.getComment(cid);
 		return comment;
 	}
 	
-	public void addAnswerComment(UUID Qid, UUID Aid, Comment C){
+	public void addAnswerComment(UUID Qid, UUID Aid, Comment<Answer> C){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Integer position = questionList.indexOf(question);
@@ -101,11 +101,11 @@ public class DataManager {
 		localDataStore.save(questionList);
 	}
 	
-	public Comment getAnswerComment(UUID Qid, UUID Aid, UUID Cid){
+	public Comment<Answer> getAnswerComment(UUID Qid, UUID Aid, UUID Cid){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Answer answer = question.getAnswer(Aid);
-		Comment comment = answer.getComment(Cid);
+		Comment<Answer> comment = answer.getComment(Cid);
 		return comment;
 	}
 	
@@ -165,7 +165,7 @@ public class DataManager {
 		// TODO Auto-generated method stub
 	}
 
-	public Comment getComment(UUID id) {
+	public Comment<? extends Model> getComment(UUID id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
