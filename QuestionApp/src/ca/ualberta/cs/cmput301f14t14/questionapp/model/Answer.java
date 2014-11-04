@@ -119,6 +119,16 @@ public class Answer extends Model implements Serializable {
 		return null;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Answer)) return false;
+		Answer a = (Answer) o;
+		
+		return a.id.equals(this.id) && a.body.equals(this.body) &&
+				a.author.equals(this.author) && a.commentList.equals(this.commentList);
+	}
+	
+	@Override
 	public String toString() {
 		return String.format("Answer [%s - %s]", body, author);
 	}

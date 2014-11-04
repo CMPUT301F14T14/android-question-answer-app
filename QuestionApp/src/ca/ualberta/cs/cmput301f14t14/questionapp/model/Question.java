@@ -161,6 +161,16 @@ public class Question extends Model implements Serializable {
 		Integer position = answerList.indexOf(ans);
 		answerList.set(position, answer);
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Question)) return false;
+		Question q = (Question) o;
+		
+		return q.id.equals(this.id) && q.title.equals(this.title) && q.body.equals(this.body) &&
+				q.author.equals(this.author) && q.answerList.equals(this.answerList) &&
+				q.commentList.equals(this.commentList);
+	}
 
 	@Override
 	public String toString() {

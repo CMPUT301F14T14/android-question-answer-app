@@ -43,6 +43,15 @@ public class Comment<T extends Model> implements Serializable {
 		this.parent = parent;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Comment<?>)) return false;
+		@SuppressWarnings("unchecked")
+		Comment<T> c = (Comment<T>) o;
+		return c.id.equals(this.id) && c.body.equals(this.body) && c.username.equals(this.username); 
+	}
+	
+	@Override
 	public String toString() {
 		return String.format("Comment [%s - %s]", body, username);
 	}
