@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.Model;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public interface IDataStore {
@@ -23,6 +22,6 @@ public interface IDataStore {
 
 	public List<Question> getQuestionList();
 
-	public void save(List<Question> questionList);
+	public void save();
 
 }

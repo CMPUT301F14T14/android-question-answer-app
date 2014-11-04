@@ -1,4 +1,4 @@
-package ca.ualberta.cs.cmput301f14t14.questionapp.test;
+package ca.ualberta.cs.cmput301f14t14.questionapp.test.data;
 
 import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
@@ -7,7 +7,6 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
-import junit.framework.TestCase;
 
 public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainActivity> {
 

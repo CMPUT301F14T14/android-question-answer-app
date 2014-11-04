@@ -36,12 +36,6 @@ public class RemoteDataStore implements IDataStore {
 	}
 
 	@Override
-	public void save(List<Question> questionList) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void putQComment(Comment<Question> comment) {
 		// TODO Auto-generated method stub
 		
@@ -75,5 +69,11 @@ public class RemoteDataStore implements IDataStore {
 	public Comment<Answer> getAComment(UUID id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
 	}
 }

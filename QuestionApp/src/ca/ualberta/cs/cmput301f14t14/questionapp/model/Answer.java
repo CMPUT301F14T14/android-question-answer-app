@@ -1,11 +1,14 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-public class Answer extends Model {
+public class Answer extends Model implements Serializable {
+
+	private static final long serialVersionUID = -237004584128041997L;
 
 	private UUID id;
 	private Image image;
@@ -116,4 +119,17 @@ public class Answer extends Model {
 		return null;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Answer)) return false;
+		Answer a = (Answer) o;
+		
+		return a.id.equals(this.id) && a.body.equals(this.body) &&
+				a.author.equals(this.author) && a.commentList.equals(this.commentList);
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("Answer [%s - %s]", body, author);
+	}
 }

@@ -40,7 +40,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 	public void testFavoriteQuestion() {
 		// user indicates that they wish to favorite a question
 		manager.favoriteQuestion(validQ.getId());
-		LocalDataStore local = new LocalDataStore();
+		LocalDataStore local = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		//boolean favorited = local.isFavorite(validQ.getId());
 		//assertTrue(favorited);
 	}
@@ -51,7 +51,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 	
 	public void testFavoriteAnswer() {
 		manager.favoriteAnswer(validA.getId());
-		LocalDataStore local = new LocalDataStore();
+		LocalDataStore local = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		//boolean favorited = local.isFavorite(validA.getId());
 		//assertTrue(favorited);
 	}

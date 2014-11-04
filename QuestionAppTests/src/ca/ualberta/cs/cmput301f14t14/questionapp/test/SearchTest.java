@@ -12,7 +12,6 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
-import junit.framework.TestCase;
 
 public class SearchTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
@@ -28,7 +27,7 @@ public class SearchTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	protected void setUp() throws Exception {
 		super.setUp();
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
-		local = new LocalDataStore();
+		local = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		remote = new RemoteDataStore();
 		remoteSearch = new MockElasticSearch();
 	}
