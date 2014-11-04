@@ -27,7 +27,7 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActiv
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		mLocalStore = new LocalDataStore();
+		mLocalStore = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 
 		mQuestion = new Question("TITLE", "BODY", "AUTHOR", null);
 		mAnswer = new Answer(mQuestion, "ANSWERBODY", "AUTHOR", null);

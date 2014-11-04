@@ -32,7 +32,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 		image = null;
 		author = "boris";
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
-		local =  new LocalDataStore();
+		local =  new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		remote = new RemoteDataStore();
 	}
 

@@ -33,7 +33,7 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		mQuestion = new Question("Title", "Body", "Author", null);
 		mAnswer = new Answer(mQuestion, "Answer body.", "Author", null);
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
-		local =  new LocalDataStore();
+		local =  new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		remote = new RemoteDataStore();
 	}
 
