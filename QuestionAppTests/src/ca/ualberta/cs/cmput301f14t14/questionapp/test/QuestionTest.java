@@ -10,7 +10,6 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
-import junit.framework.TestCase;
 
 public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
@@ -45,13 +44,22 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 	 * UC4 TC4.1- Add a Question while online
 	 */
 	public void testAddQuestion() {
-		
-		
 		// Test successful creation of a question
 		Question q = new Question(title, body, author, image);
+		assertNotNull(q.getId());
 		assertEquals(title, q.getTitle());
 		assertEquals(body, q.getBody());
+		assertEquals(author, q.getAuthor());
 		assertEquals(image, q.getImage());
+		
+		Question q2 = new Question();
+		assertNull(q2.getId());
+		assertNull(q2.getTitle());
+		assertNull(q2.getBody());
+		assertNull(q2.getAuthor());
+		assertNull(q2.getImage());
+		
+		assertFalse(q.equals(q2));
 	}
 	
 	/**
@@ -106,8 +114,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 		assertNotNull(manager.getQuestion(id));
 		manager.enableNetworkAccess();
 		remote.putQuestion(q);
-		boolean inRemote = remote.isQuestion(id);
-		assertTrue(inRemote);
+		assertNotNull(remote.getQuestion(id));
 	}
 	
 	/**
@@ -145,7 +152,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 		Question q = new Question(title, body, author, null);
 		manager.readLater(q);
 		UUID id = q.getId();
-		assertTrue(local.isQuestion(id));
+		assertNotNull(local.getQuestion(id));
 	}
 
 }

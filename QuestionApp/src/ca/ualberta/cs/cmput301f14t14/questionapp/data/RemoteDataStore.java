@@ -24,21 +24,6 @@ public class RemoteDataStore implements IDataStore {
 		
 	}
 
-	public void putComment(Comment mComment) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public boolean isQuestion(UUID id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isAnswer(UUID id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public boolean isComment(UUID id) {
 		// TODO Auto-generated method stub
 		return false;
@@ -54,5 +39,41 @@ public class RemoteDataStore implements IDataStore {
 	public void save(List<Question> questionList) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void putQComment(Comment<Question> comment) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void putAComment(Comment<Answer> comment) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Question getQuestion(UUID id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Answer getAnswer(UUID id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Comment<Question> getQComment(UUID id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Comment<Answer> getAComment(UUID id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
