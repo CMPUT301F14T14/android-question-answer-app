@@ -28,6 +28,7 @@ public class DataManager {
 	
 	private DataManager(Context context){
 		this.clientData = new ClientData(context);
+		this.localDataStore = new LocalDataStore(context);
 	}
 	
 	public static DataManager getInstance(Context context){
@@ -41,7 +42,7 @@ public class DataManager {
 	public void addQuestion(Question validQ) {
 		questionList = localDataStore.getQuestionList();
 		questionList.add(validQ);
-		localDataStore.save(questionList);
+		localDataStore.save();
 		
 	}
 
@@ -64,7 +65,7 @@ public class DataManager {
 		Integer position = questionList.indexOf(question);
 		question.addAnswer(A);
 		questionList.set(position, question);
-		localDataStore.save(questionList);
+		localDataStore.save();
 	}
 	
 	public Answer getAnswer(UUID Qid, UUID Aid) {
@@ -80,7 +81,7 @@ public class DataManager {
 		Integer position = questionList.indexOf(question);
 		question.addComment(C);
 		questionList.set(position, question);
-		localDataStore.save(questionList);
+		localDataStore.save();
 	}
 
 	public Comment<Question> getQuestionComment(UUID Qid, UUID cid) {
@@ -98,7 +99,7 @@ public class DataManager {
 		answer.addComment(C);
 		question.setAnswer(Aid,answer);
 		questionList.set(position, question);
-		localDataStore.save(questionList);
+		localDataStore.save();
 	}
 	
 	public Comment<Answer> getAnswerComment(UUID Qid, UUID Aid, UUID Cid){
