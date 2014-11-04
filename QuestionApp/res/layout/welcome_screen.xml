@@ -3,46 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <Button
+        android:id="@+id/specifyUsernameButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pleaseChooseTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/choose_your_own_" />
+
     <TextView
         android:id="@+id/enterUsernameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="77dp"
         android:text="@string/welcome_to_qasper"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="32sp"
         android:typeface="sans" />
 
-    <Button
-        android:id="@+id/googleAccountButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/enterUsernameTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
-        android:text="@string/use_google_account_email" />
-
     <TextView
         android:id="@+id/pleaseChooseTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/enterUsernameTextView"
         android:layout_below="@+id/enterUsernameTextView"
-        android:layout_marginTop="21dp"
-        android:text="@string/please_choose_how_to_specify_your_username"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:text="Please enter a username"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <Button
-        android:id="@+id/specifyUsernameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/googleAccountButton"
-        android:layout_alignEnd="@+id/googleAccountButton"
-        android:layout_centerVertical="true"
-        android:text="@string/choose_your_own_"
-         
-        />
 
 </RelativeLayout>
