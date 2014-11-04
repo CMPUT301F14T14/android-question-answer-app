@@ -161,7 +161,10 @@ public class Question extends Model implements Serializable {
 		Integer position = answerList.indexOf(ans);
 		answerList.set(position, answer);
 	}
-	
 
+	@Override
+	public String toString() {
+		return String.format("Question [%s: %s - %s]", title, body, author);
+	}
 
 }

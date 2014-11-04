@@ -42,4 +42,8 @@ public class Comment<T extends Model> implements Serializable {
 	public void setParent(T parent) {
 		this.parent = parent;
 	}
+	
+	public String toString() {
+		return String.format("Comment [%s - %s]", body, username);
+	}
 }

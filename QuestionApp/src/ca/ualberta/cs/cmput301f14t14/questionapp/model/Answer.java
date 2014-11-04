@@ -119,4 +119,7 @@ public class Answer extends Model implements Serializable {
 		return null;
 	}
 
+	public String toString() {
+		return String.format("Answer [%s - %s]", body, author);
+	}
 }
