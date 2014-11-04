@@ -22,14 +22,23 @@
     <string name="choose_your_own_">Choose your own!</string>
     <string name="please_enter_a_username_below_">Please enter a Username below:</string>
     <string name="enter">Enter</string>
-    <string name="title_activity_welcomes_screen">WelcomesScreen</string>
-
+    <string name="title_activity_welcomes_screen">Welcome Screen</string>
+	<string name="title_activity_answer_view">View Answer</string>
 
     <!-- Question View -->
     <string name="title_activity_question">Question</string>
     <string name="tab_answers">Answers</string>
     <string name="tab_comments">Comments</string>
-
+    <string name="item_view_add_comment">Add Comment</string> <!-- common to answer and question view -->
+    
+    <!--  Add Answer Dialog Fragment -->
+	<string name="add_answer_body_hint">Add a body to your answer</string>
+	<string name="add_answer_image">Add an image to your answer</string>
+	
+	<!-- Answer View -->
+	<string name="answer_view_upvote_answer">Upvote Answer</string>
+	
+	
     <!-- Comment List -->
     <string name="commentlist_comment_placeholder">The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.</string>
     <string name="commentlist_author_placeholder">Boris</string>
