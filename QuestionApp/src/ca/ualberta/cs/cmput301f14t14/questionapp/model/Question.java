@@ -1,12 +1,15 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 
-public class Question extends Model {
+public class Question extends Model implements Serializable {
+
+	private static final long serialVersionUID = -8123919371607337418L;
 
 	private UUID id;
 	private String title;

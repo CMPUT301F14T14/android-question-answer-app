@@ -1,9 +1,12 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Comment<T extends Model> {
+public class Comment<T extends Model> implements Serializable {
 	
+	private static final long serialVersionUID = 2455600018596168474L;
+
 	private String body;
 	private String username;
 	private UUID id;

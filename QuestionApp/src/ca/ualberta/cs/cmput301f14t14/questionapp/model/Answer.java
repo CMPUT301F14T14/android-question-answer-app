@@ -1,11 +1,14 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-public class Answer extends Model {
+public class Answer extends Model implements Serializable {
+
+	private static final long serialVersionUID = -237004584128041997L;
 
 	private UUID id;
 	private Image image;
