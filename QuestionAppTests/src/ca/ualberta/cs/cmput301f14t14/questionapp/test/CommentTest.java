@@ -18,7 +18,8 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 
 	Question mQuestion;
 	private Answer mAnswer;
-	private Comment mComment;
+	private Comment<Question> mComment;
+	private Comment<Answer> aComment;
 	private DataManager manager;
 	private LocalDataStore local;
 	private RemoteDataStore remote;
@@ -50,9 +51,9 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		assertTrue(mQuestion.hasComment(mComment));
 		
 		// Add to Answer
-		assertFalse(mAnswer.hasComment(mComment));
-		mAnswer.addComment(mComment);
-		assertTrue(mAnswer.hasComment(mComment));
+		assertFalse(mAnswer.hasComment(aComment));
+		mAnswer.addComment(aComment);
+		assertTrue(mAnswer.hasComment(aComment));
 	}
 	
 	/**
@@ -83,26 +84,26 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 	public void testLocalAnswerCreate() {
 		// adding to question
 		manager.disableNetworkAccess();
-		local.putComment(mComment);
+		local.putQComment(mComment);
 		mQuestion.addComment(mComment);
 		UUID id = mComment.getId();
 		assertNotNull(manager.getComment(id));
 		manager.enableNetworkAccess();
-		remote.putComment(mComment);
+		remote.putQComment(mComment);
 		remote.putQuestion(mQuestion);
 		boolean inRemote = remote.isComment(id);
 		assertTrue(inRemote);
 		assertTrue(mQuestion.hasComment(mComment));
 		
 		// adding to answer
-		Comment secComment = new Comment<Question>(mQuestion, "Comment has a body", "Userrrrname");
+		Comment<Answer> secComment = new Comment<Answer>(mAnswer, "Comment has a body", "Userrrrname");
 		manager.disableNetworkAccess();
-		local.putComment(secComment);
+		local.putAComment(secComment);
 		mAnswer.addComment(secComment);
 		UUID secId = mComment.getId();
 		assertNotNull(manager.getComment(secId));
 		manager.enableNetworkAccess();
-		remote.putComment(secComment);
+		remote.putAComment(secComment);
 		remote.putAnswer(mAnswer);
 		boolean secInRemote = remote.isComment(secId);
 		assertTrue(secInRemote);
