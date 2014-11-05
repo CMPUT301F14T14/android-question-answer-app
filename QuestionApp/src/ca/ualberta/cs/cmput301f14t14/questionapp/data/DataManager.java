@@ -42,6 +42,7 @@ public class DataManager {
 	public void addQuestion(Question validQ) {
 		questionList = localDataStore.getQuestionList();
 		questionList.add(validQ);
+		localDataStore.putQuestion(validQ);
 		localDataStore.save();
 		
 	}
@@ -64,6 +65,7 @@ public class DataManager {
 		Question question = getQuestion(Qid);
 		Integer position = questionList.indexOf(question);
 		question.addAnswer(A);
+		localDataStore.putAnswer(A);
 		questionList.set(position, question);
 		localDataStore.save();
 	}
@@ -81,6 +83,7 @@ public class DataManager {
 		Integer position = questionList.indexOf(question);
 		question.addComment(C);
 		questionList.set(position, question);
+		localDataStore.putQComment(C);
 		localDataStore.save();
 	}
 
@@ -99,6 +102,7 @@ public class DataManager {
 		answer.addComment(C);
 		question.setAnswer(Aid,answer);
 		questionList.set(position, question);
+		localDataStore.putAComment(C);
 		localDataStore.save();
 	}
 	
