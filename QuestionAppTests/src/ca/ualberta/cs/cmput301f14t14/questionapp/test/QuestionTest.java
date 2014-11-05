@@ -1,28 +1,38 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
-import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
-import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
-import ca.ualberta.cs.cmput301f14t14.questionapp.RemoteDataStore;
+import java.util.UUID;
+
+import android.test.ActivityInstrumentationTestCase2;
+
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.LocalDataStore;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
-import junit.framework.TestCase;
 
-public class QuestionTest extends TestCase {
+public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
-	
 	private String title;
 	private String body;
+	private String author;
 	private Image image;
 	private DataManager manager;
 	private LocalDataStore local;
 	private RemoteDataStore remote;
+
+	public QuestionTest() {
+		super(MainActivity.class);
+	}
+
 	protected void setUp() throws Exception {
 		super.setUp();
 		title = "Question Title";
 		body = "Question body?";
 		image = null;
-		manager = new DataManager();
-		local =  new LocalDataStore();
+		author = "boris";
+		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
+		local =  new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		remote = new RemoteDataStore();
 	}
 
@@ -34,13 +44,22 @@ public class QuestionTest extends TestCase {
 	 * UC4 TC4.1- Add a Question while online
 	 */
 	public void testAddQuestion() {
-		
-		
 		// Test successful creation of a question
-		Question q = new Question(title, body, image);
+		Question q = new Question(title, body, author, image);
+		assertNotNull(q.getId());
 		assertEquals(title, q.getTitle());
 		assertEquals(body, q.getBody());
+		assertEquals(author, q.getAuthor());
 		assertEquals(image, q.getImage());
+		
+		Question q2 = new Question();
+		assertNull(q2.getId());
+		assertNull(q2.getTitle());
+		assertNull(q2.getBody());
+		assertNull(q2.getAuthor());
+		assertNull(q2.getImage());
+		
+		assertFalse(q.equals(q2));
 	}
 	
 	/**
@@ -49,13 +68,13 @@ public class QuestionTest extends TestCase {
 	public void testInvalidBody() {
 		// Test invalid body
 		try {
-			new Question(title, "", image);
+			new Question(title, "", author, image);
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
 		}
 		try {
-			new Question(title, null, image);
+			new Question(title, null, author, image);
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
@@ -69,13 +88,13 @@ public class QuestionTest extends TestCase {
 	public void testInvalidTitle() {
 		// Test invalid title
 		try {
-			new Question("", body, image);
+			new Question("", body, author, image);
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
 		}
 		try {
-			new Question(null, body, image);
+			new Question(null, body, author, image);
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
@@ -89,14 +108,13 @@ public class QuestionTest extends TestCase {
 	
 	public void testLocalQuestionCreate() {
 		manager.disableNetworkAccess();
-		Question q = new Question(title, body, image);
+		Question q = new Question(title, body, author, image);
 		local.putQuestion(q);
-		Integer id = q.getId();
+		UUID id = q.getId();
 		assertNotNull(manager.getQuestion(id));
 		manager.enableNetworkAccess();
 		remote.putQuestion(q);
-		boolean inRemote = remote.isQuestion(id);
-		assertTrue(inRemote);
+		assertNotNull(remote.getQuestion(id));
 	}
 	
 	/**
@@ -104,7 +122,7 @@ public class QuestionTest extends TestCase {
 	 */
 
 	public void testUpvoteQuestion() {
-		Question q = new Question(title, body, null);
+		Question q = new Question(title, body, author, null);
 		int oldVotes = q.getUpvotes();
 		q.addUpvote();
 		int newVotes = q.getUpvotes();
@@ -116,7 +134,7 @@ public class QuestionTest extends TestCase {
 	 */
 	
 	public void testMultipleUpvoteQuestion() {
-		Question q = new Question(title, body, null);
+		Question q = new Question(title, body, author, null);
 		int oldVotes = q.getUpvotes();
 		// notice multiple upvotes added here
 		q.addUpvote();
@@ -131,10 +149,10 @@ public class QuestionTest extends TestCase {
 	 */
 	
 	public void testReadQuestionLater() {
-		Question q = new Question(title, body, null);
+		Question q = new Question(title, body, author, null);
 		manager.readLater(q);
-		int id = q.getId();
-		assertTrue(local.isQuestion(id));
+		UUID id = q.getId();
+		assertNotNull(local.getQuestion(id));
 	}
 
 }

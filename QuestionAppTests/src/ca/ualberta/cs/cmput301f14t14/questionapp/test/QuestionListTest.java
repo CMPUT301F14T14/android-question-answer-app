@@ -2,20 +2,17 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
-import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
-import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
-import ca.ualberta.cs.cmput301f14t14.questionapp.RemoteDataStore;
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.LocalDataStore;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import junit.framework.TestCase;
 
-public class QuestionListTest extends ActivityInstrumentationTestCase2<Activity> {
+public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
-	public QuestionListTest(Class<Activity> activityClass) {
-		super(activityClass);
-		// TODO Auto-generated constructor stub
-	}
 	private LocalDataStore mLocalStore;
 	public RemoteDataStore mRemoteStore = new RemoteDataStore();
 
@@ -23,15 +20,19 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<Activity>
 	private DataManager manager;
 	private Answer mAnswer;
 	private Comment mComment;
-	
+
+	public QuestionListTest() {
+		super(MainActivity.class);
+	}
+
 	protected void setUp() throws Exception {
 		super.setUp();
-		mLocalStore = new LocalDataStore();
+		mLocalStore = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 
-		mQuestion = new Question("TITLE", "BODY", null);
-		mAnswer = new Answer("ANSWERBODY", null);
-		mComment = new Comment("COMMENTBODY", "Boris");
-		manager = new DataManager();
+		mQuestion = new Question("TITLE", "BODY", "AUTHOR", null);
+		mAnswer = new Answer(mQuestion, "ANSWERBODY", "AUTHOR", null);
+		mComment = new Comment<Question>(mQuestion, "COMMENTBODY", "Boris");
+		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		
 	}
 

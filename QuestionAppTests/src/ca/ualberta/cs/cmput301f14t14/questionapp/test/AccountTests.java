@@ -1,47 +1,30 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
 
-import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
+import android.test.ActivityInstrumentationTestCase2;
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
-import junit.framework.TestCase;
 
-public class AccountTests extends TestCase{
+public class AccountTests extends ActivityInstrumentationTestCase2<MainActivity> {
+
+	private DataManager manager;
 	
-	private LocalDataStore mLocalStore;
+	public AccountTests() {
+		super(MainActivity.class);
+	}
 	
 	protected void setUp() throws Exception {
-		mLocalStore = new LocalDataStore();
-		
-		;
-		
+		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
 	
-	public void testGetAccountUsernames() {
-		String username = mLocalStore.getAccountUsername();
-		assertTrue("There are no accounts",(username != null));
-	}
-	
-	public void testSetUsername(){
-		String username = mLocalStore.getAccountUsername();
-		assertNotNull("There are no usernames in the list", username);
-		mLocalStore.setUsername("Boris");
-		assertTrue("Boris is not the username!", mLocalStore.getUsername().equals("Boris"));
-		
-		try{
-			mLocalStore.setUsername(null);
-			fail();
-		}catch(IllegalArgumentException e){
-			//test passed
-		}
-	}
-	
 	public void testAuthorship(){
-		mLocalStore.setUsername("Boris");
-		Question testQuestion = new Question("stuff title", "stuff", null);
+		manager.setUsername("Boris");
+		Question testQuestion = new Question("stuff title", "stuff", manager.getUsername(), null);
 		assertTrue("Question author is not Boris!", testQuestion.getAuthor().equals("Boris"));
 	}
 		

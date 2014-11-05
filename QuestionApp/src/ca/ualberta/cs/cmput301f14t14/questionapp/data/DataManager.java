@@ -1,8 +1,10 @@
-package ca.ualberta.cs.cmput301f14t14.questionapp;
+package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+
+import android.content.Context;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -12,7 +14,10 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 public class DataManager {
 
 	private static DataManager instance;
-	private LocalDataStore localDataStore;
+
+	private ClientData clientData;
+	private IDataStore localDataStore;
+	private IDataStore remoteDataStore;
 	private List<Question> questionList;
 	private List<UUID> favouriteQuestions;
 	private List<UUID> favouriteAnswers;
@@ -21,14 +26,14 @@ public class DataManager {
 	String Username;
 
 	
-	private DataManager(){
-		
-		//localDataStore = new localDataStore();
+	private DataManager(Context context){
+		this.clientData = new ClientData(context);
+		this.localDataStore = new LocalDataStore(context);
 	}
 	
-	public static DataManager getInstance(){
+	public static DataManager getInstance(Context context){
 		if (instance == null){
-			instance = new DataManager();
+			instance = new DataManager(context.getApplicationContext());
 		}
 		return instance;
 	}
@@ -37,7 +42,7 @@ public class DataManager {
 	public void addQuestion(Question validQ) {
 		questionList = localDataStore.getQuestionList();
 		questionList.add(validQ);
-		localDataStore.save(questionList);
+		localDataStore.save();
 		
 	}
 
@@ -60,7 +65,7 @@ public class DataManager {
 		Integer position = questionList.indexOf(question);
 		question.addAnswer(A);
 		questionList.set(position, question);
-		localDataStore.save(questionList);
+		localDataStore.save();
 	}
 	
 	public Answer getAnswer(UUID Qid, UUID Aid) {
@@ -70,23 +75,23 @@ public class DataManager {
 		return answer;
 	}
 	
-	public void addQuestionComment(UUID Qid, Comment C){
+	public void addQuestionComment(UUID Qid, Comment<Question> C){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Integer position = questionList.indexOf(question);
 		question.addComment(C);
 		questionList.set(position, question);
-		localDataStore.save(questionList);
+		localDataStore.save();
 	}
 
-	public Comment getQuestionComment(UUID Qid, UUID cid) {
+	public Comment<Question> getQuestionComment(UUID Qid, UUID cid) {
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
-		Comment comment = question.getComment(cid);
+		Comment<Question> comment = question.getComment(cid);
 		return comment;
 	}
 	
-	public void addAnswerComment(UUID Qid, UUID Aid, Comment C){
+	public void addAnswerComment(UUID Qid, UUID Aid, Comment<Answer> C){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Integer position = questionList.indexOf(question);
@@ -94,14 +99,14 @@ public class DataManager {
 		answer.addComment(C);
 		question.setAnswer(Aid,answer);
 		questionList.set(position, question);
-		localDataStore.save(questionList);
+		localDataStore.save();
 	}
 	
-	public Comment getAnswerComment(UUID Qid, UUID Aid, UUID Cid){
+	public Comment<Answer> getAnswerComment(UUID Qid, UUID Aid, UUID Cid){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Answer answer = question.getAnswer(Aid);
-		Comment comment = answer.getComment(Cid);
+		Comment<Answer> comment = answer.getComment(Cid);
 		return comment;
 	}
 	
@@ -110,8 +115,8 @@ public class DataManager {
 		return questionList;
 	}
 
-	public void favoriteQuestion(UUID Qid) {
-		favouriteQuestions.add(Qid);
+	public void favoriteQuestion(UUID questionId) {
+		favouriteQuestions.add(questionId);
 		//localdatamanager.save(favouriteQuestions);
 	}
 
@@ -126,7 +131,11 @@ public class DataManager {
 	}
 
 	public String getUsername() {
-		return localDataStore.getUsername();
+		return clientData.getUsername();
+	}
+	
+	public void setUsername(String username) {
+		clientData.setUsername(username);
 	}
 
 	//End View Interface
@@ -137,8 +146,7 @@ public class DataManager {
 	}
 
 	public void enableNetworkAccess() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 	
 	public int getItemCount() {
@@ -146,25 +154,21 @@ public class DataManager {
 	
 	public List<Model> getItems() { return null;}
 
-
-
 	public void readLater(Question q) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 
 	public void readLater(Answer mAnswer) {
 		// TODO Auto-generated method stub
 	}
 
-	public String getAuthor() {
+	public Comment<? extends Model> getComment(UUID id) {
 		// TODO Auto-generated method stub
-		return this.localDataStore.getUsername();
+		return null;
 	}
 	
-	public LocalDataStore getLocalDataStore(){
-		return localDataStore;
+	public void clearClientData() {
+		clientData.clear();
 	}
-
 
 }

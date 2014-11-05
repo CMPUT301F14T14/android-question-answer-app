@@ -1,64 +1,101 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 
-public class Question extends Model {
-	
-	private String mTitle;
-	private String mBody;
-	private Image mImage;
-	private UUID mId;
+public class Question extends Model implements Serializable {
+
+	private static final long serialVersionUID = -8123919371607337418L;
+
+	private UUID id;
+	private String title;
+	private String body;
+	private Image image;
 	private String author;
 	private List<Answer> answerList; 
-	private List<Comment> commentList;
+	private List<Comment<Question>> commentList;
 
-	public Question(String title, String body, Image image) {
-		super();
-		this.mTitle = title;
-		this.mBody = body;
-		this.mImage = image;
-		this.mId = new UUID(0, 0);
-		this.setAnswerList(new ArrayList<Answer>());
-		this.setCommentList(new ArrayList<Comment>());
+	public Question() {
+		id = null;
+		title = null;
+		body = null;
+		image = null;
+		author = null;
+		answerList = new ArrayList<Answer>();
+		commentList = new ArrayList<Comment<Question>>();
 	}
-	
+
+	public Question(String title, String body, String author, Image image) {
+		super();
+		setId(UUID.randomUUID());
+		setTitle(title);
+		setBody(body);
+		setAuthor(author);
+		setImage(image);
+		this.setAnswerList(new ArrayList<Answer>());
+		this.setCommentList(new ArrayList<Comment<Question>>());
+	}
+
 	public void addAnswer(Answer a) {
-		
+		if (!answerList.contains(a)) {
+			answerList.add(a);
+			a.setParent(this);
+		}
 	}
 	
 	public boolean hasAnswer(Answer a) {
-		return false;
+		return answerList.contains(a);
 	}
 
 	public String getTitle() {
-		return mTitle;
+		return title;
+	}
+
+	private void setTitle(String title) {
+		if (title == null || title.trim().length() == 0)
+			throw new IllegalArgumentException("Question title may not be blank.");
+		this.title = title.trim();
 	}
 	
 	public String getBody() {
-		return mBody;
+		return body;
+	}
+
+	private void setBody(String body) {
+		if (body == null || body.trim().length() == 0)
+			throw new IllegalArgumentException("Question body may not be blank.");
+		this.body = body.trim();
 	}
 	
 	public Image getImage() {
-		return mImage;
+		return image;
+	}
+
+	private void setImage(Image image) {
+		this.image = image;
 	}
 	
 	public UUID getId() {
-		return mId;
+		return id;
 	}
 	
-	public boolean hasComment(Comment mComment) {
-		return false;
-		// TODO Auto-generated method stub
-		
+	public void setId(UUID id) {
+		this.id = id;
+	}
+	
+	public boolean hasComment(Comment<Question> comment) {
+		return commentList.contains(comment);
 	}
 
-	public void addComment(Comment mComment) {
-		// TODO Auto-generated method stub
-		
+	public void addComment(Comment<Question> comment) {
+		if (!commentList.contains(comment)) {
+			commentList.add(comment);
+			comment.setParent(this);
+		}
 	}
 
 	public void addUpvote() {
@@ -72,15 +109,18 @@ public class Question extends Model {
 	}
 
 	public String getAuthor() {
-		// TODO Auto-generated method stub
 		return this.author;
 	}
 
-	public List<Comment> getCommentList() {
+	private void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public List<Comment<Question>> getCommentList() {
 		return commentList;
 	}
 
-	public void setCommentList(List<Comment> commentList) {
+	public void setCommentList(List<Comment<Question>> commentList) {
 		this.commentList = commentList;
 	}
 
@@ -96,7 +136,7 @@ public class Question extends Model {
 		Iterator<Answer> list = answerList.iterator();
 		while(list.hasNext()){
 			Answer answer = list.next();
-			UUID aid = answer.getmId();
+			UUID aid = answer.getId();
 			if(aid.equals(Aid)){
 				return answer;
 			}
@@ -104,11 +144,11 @@ public class Question extends Model {
 		return null;
 	}
 	
-	public Comment getComment(UUID Cid){
-		Iterator<Comment> list = commentList.iterator();
+	public Comment<Question> getComment(UUID Cid){
+		Iterator<Comment<Question>> list = commentList.iterator();
 		while(list.hasNext()){
-			Comment comment = list.next();
-			UUID cid = comment.getmId();
+			Comment<Question> comment = list.next();
+			UUID cid = comment.getId();
 			if(cid.equals(Cid)){
 				return comment;
 			}
@@ -122,6 +162,19 @@ public class Question extends Model {
 		answerList.set(position, answer);
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Question)) return false;
+		Question q = (Question) o;
+		
+		return q.id.equals(this.id) && q.title.equals(this.title) && q.body.equals(this.body) &&
+				q.author.equals(this.author) && q.answerList.equals(this.answerList) &&
+				q.commentList.equals(this.commentList);
+	}
 
+	@Override
+	public String toString() {
+		return String.format("Question [%s: %s - %s]", title, body, author);
+	}
 
 }

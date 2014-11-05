@@ -1,46 +1,76 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-public class Answer extends Model {
+public class Answer extends Model implements Serializable {
 
-	private Image mImage;
-	private String mBody;
-	private List<Comment> commentList;
-	private UUID mId;
-	private String mAuthor;
+	private static final long serialVersionUID = -237004584128041997L;
+
+	private UUID id;
+	private Image image;
+	private String body;
+	private List<Comment<Answer>> commentList;
+	private String author;
+	private Question parent;
 
 	
-	public Answer(String body, Image image) {
-		mBody = body;
-		mImage = image;
-		this.setmId(new UUID(0, 0));
-		setCommentList(new ArrayList<Comment>());
+	public Answer() {
+		this.id = null;
+		this.body = null;
+		this.author = null;
+		this.image = null;
+		this.parent = null;
+		this.commentList = new ArrayList<Comment<Answer>>();
+	}
+
+	public Answer(Question parent, String body, String author, Image image) {
+		setId(UUID.randomUUID());
+		setBody(body);
+		setAuthor(author);
+		setImage(image);
+		setParent(parent);
+		setCommentList(new ArrayList<Comment<Answer>>());
 	}
 	
 	public Image getImage() {
-		return mImage;
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public String getBody() {
+		return body;
 	}
 	
-	public String getBody() {
-		return mBody;
+	public void setBody(String body) {
+		if (body == null || body.trim().length() == 0)
+			throw new IllegalArgumentException("Answer body may not be blank.");
+		this.body = body;
 	}
 	
 	public String getAuthor() {
-		return mAuthor;
+		return author;
+	}
+	
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
-	public boolean hasComment(Comment mComment) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean hasComment(Comment<Answer> comment) {
+		return commentList.contains(comment);
 	}
 
-	public void addComment(Comment mComment) {
-		// TODO Auto-generated method stub
-		
+	public void addComment(Comment<Answer> comment) {
+		if (!commentList.contains(comment)) {
+			commentList.add(comment);
+			comment.setParent(this);
+		}
 	}
 
 	public int getUpvotes() {
@@ -53,27 +83,35 @@ public class Answer extends Model {
 		
 	}
 
-	public List<Comment> getCommentList() {
+	public List<Comment<Answer>> getCommentList() {
 		return commentList;
 	}
 
-	public void setCommentList(List<Comment> commentList) {
+	public void setCommentList(List<Comment<Answer>> commentList) {
 		this.commentList = commentList;
 	}
 
-	public UUID getmId() {
-		return mId;
+	public UUID getId() {
+		return id;
 	}
 
-	public void setmId(UUID mId) {
-		this.mId = mId;
+	public void setId(UUID id) {
+		this.id = id;
 	}
 	
-	public Comment getComment(UUID Cid){
-		Iterator<Comment> list = commentList.iterator();
+	public Question getParent() {
+		return parent;
+	}
+	
+	public void setParent(Question parent) {
+		this.parent = parent;
+	}
+	
+	public Comment<Answer> getComment(UUID Cid){
+		Iterator<Comment<Answer>> list = commentList.iterator();
 		while(list.hasNext()){
-			Comment comment = list.next();
-			UUID cid = comment.getmId();
+			Comment<Answer> comment = list.next();
+			UUID cid = comment.getId();
 			if(cid.equals(Cid)){
 				return comment;
 			}
@@ -81,4 +119,17 @@ public class Answer extends Model {
 		return null;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Answer)) return false;
+		Answer a = (Answer) o;
+		
+		return a.id.equals(this.id) && a.body.equals(this.body) &&
+				a.author.equals(this.author) && a.commentList.equals(this.commentList);
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("Answer [%s - %s]", body, author);
+	}
 }

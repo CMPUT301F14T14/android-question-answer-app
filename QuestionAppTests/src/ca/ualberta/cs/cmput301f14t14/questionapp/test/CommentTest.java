@@ -1,29 +1,39 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
-import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
-import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
-import ca.ualberta.cs.cmput301f14t14.questionapp.RemoteDataStore;
+import java.util.UUID;
+
+import android.test.ActivityInstrumentationTestCase2;
+
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.LocalDataStore;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import junit.framework.TestCase;
 
-public class CommentTest extends TestCase {
+public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	Question mQuestion;
 	private Answer mAnswer;
-	private Comment mComment;
+	private Comment<Question> mComment;
+	private Comment<Answer> aComment;
 	private DataManager manager;
 	private LocalDataStore local;
 	private RemoteDataStore remote;
 
+	public CommentTest() {
+		super(MainActivity.class);
+	}
+
 	protected void setUp() throws Exception {
 		super.setUp();
-		mQuestion = new Question("Title", "Body", null);
-		mAnswer = new Answer("Answer body.", null);
-		manager = new DataManager();
-		local =  new LocalDataStore();
+		mQuestion = new Question("Title", "Body", "Author", null);
+		mAnswer = new Answer(mQuestion, "Answer body.", "Author", null);
+		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
+		local =  new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		remote = new RemoteDataStore();
 	}
 
@@ -41,9 +51,9 @@ public class CommentTest extends TestCase {
 		assertTrue(mQuestion.hasComment(mComment));
 		
 		// Add to Answer
-		assertFalse(mAnswer.hasComment(mComment));
-		mAnswer.addComment(mComment);
-		assertTrue(mAnswer.hasComment(mComment));
+		assertFalse(mAnswer.hasComment(aComment));
+		mAnswer.addComment(aComment);
+		assertTrue(mAnswer.hasComment(aComment));
 	}
 	
 	/**
@@ -52,14 +62,14 @@ public class CommentTest extends TestCase {
 	public void testInvalidBody() {
 		// Test invalid body
 		try {
-			new Comment(null, null);
+			new Comment<Question>(mQuestion, null, "Author");
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
 		}
 		
 		try {
-			new Comment("", null);
+			new Comment<Question>(mQuestion, "", "Author");
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
@@ -74,26 +84,26 @@ public class CommentTest extends TestCase {
 	public void testLocalAnswerCreate() {
 		// adding to question
 		manager.disableNetworkAccess();
-		local.putComment(mComment);
+		local.putQComment(mComment);
 		mQuestion.addComment(mComment);
-		Integer id = mComment.getId();
+		UUID id = mComment.getId();
 		assertNotNull(manager.getComment(id));
 		manager.enableNetworkAccess();
-		remote.putComment(mComment);
+		remote.putQComment(mComment);
 		remote.putQuestion(mQuestion);
 		boolean inRemote = remote.isComment(id);
 		assertTrue(inRemote);
 		assertTrue(mQuestion.hasComment(mComment));
 		
 		// adding to answer
-		Comment secComment = new Comment("Comment has a body", "Userrrrname");
+		Comment<Answer> secComment = new Comment<Answer>(mAnswer, "Comment has a body", "Userrrrname");
 		manager.disableNetworkAccess();
-		local.putComment(secComment);
+		local.putAComment(secComment);
 		mAnswer.addComment(secComment);
-		Integer secId = mComment.getId();
+		UUID secId = mComment.getId();
 		assertNotNull(manager.getComment(secId));
 		manager.enableNetworkAccess();
-		remote.putComment(secComment);
+		remote.putAComment(secComment);
 		remote.putAnswer(mAnswer);
 		boolean secInRemote = remote.isComment(secId);
 		assertTrue(secInRemote);

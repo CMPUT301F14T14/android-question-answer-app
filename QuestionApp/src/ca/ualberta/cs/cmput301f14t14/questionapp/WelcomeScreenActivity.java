@@ -16,7 +16,6 @@ public class WelcomeScreenActivity extends Activity implements IView {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welcome_screen);
 		findViewById(R.id.specifyUsernameButton).setOnClickListener(ocl);
-		findViewById(R.id.googleAccountButton).setOnClickListener(ocl);
 	}
 
 	private View.OnClickListener ocl = new View.OnClickListener() {
@@ -29,10 +28,7 @@ public class WelcomeScreenActivity extends Activity implements IView {
 				onCreateUsername();
 				
 				 break;
-			case R.id.googleAccountButton:
-				
-				//Toast.makeText(this, "Clicked the google button", Toast.LENGTH_SHORT).show();
-				break;
+
 			}
 		}
 	};
@@ -61,12 +57,11 @@ public class WelcomeScreenActivity extends Activity implements IView {
 		
 	}
 	
+	
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
 	
 }

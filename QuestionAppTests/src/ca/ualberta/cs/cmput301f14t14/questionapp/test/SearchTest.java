@@ -2,25 +2,32 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
-import ca.ualberta.cs.cmput301f14t14.questionapp.LocalDataStore;
-import ca.ualberta.cs.cmput301f14t14.questionapp.RemoteDataStore;
+import android.test.ActivityInstrumentationTestCase2;
+
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.LocalDataStore;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
-import junit.framework.TestCase;
 
-public class SearchTest extends TestCase {
+public class SearchTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	private DataManager manager;
 	private LocalDataStore local;
 	private RemoteDataStore remote;
 	private MockElasticSearch remoteSearch;
 
+	public SearchTest() {
+		super(MainActivity.class);
+	}
+
 	protected void setUp() throws Exception {
 		super.setUp();
-		manager = new DataManager();
-		local = new LocalDataStore();
+		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
+		local = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		remote = new RemoteDataStore();
 		remoteSearch = new MockElasticSearch();
 	}
@@ -35,7 +42,7 @@ public class SearchTest extends TestCase {
 
 	public void testEmptySearch() {
 		// given query results, data manager can get answers and questions
-		List<Integer> results = remoteSearch.query("");
+		List<UUID> results = remoteSearch.query("");
 		assertEquals(0, results.size());
 	}
 
@@ -46,7 +53,7 @@ public class SearchTest extends TestCase {
 	public void testOfflineSearch() {
 		try {
 			manager.disableNetworkAccess();
-			List<Integer> results = remoteSearch.query("");
+			List<UUID> results = remoteSearch.query("");
 			fail();
 		} catch (Exception e) {
 			// Passed
@@ -58,12 +65,12 @@ public class SearchTest extends TestCase {
 	 */
 
 	public void testRealSearch() {
-		List<Integer> results = remoteSearch.query("jeans");
+		List<UUID> results = remoteSearch.query("jeans");
 		List<Answer> resultAnswers = new ArrayList<Answer>();
 		List<Question> resultQuestions = new ArrayList<Question>();
-		for (int i : results) {
-			if (manager.getAnswer(i) != null) {
-				resultAnswers.add(manager.getAnswer(i));
+		for (UUID i : results) {
+			if (manager.getAnswer(i, null) != null) {
+				resultAnswers.add(manager.getAnswer(i, null));
 			} else {
 				resultQuestions.add(manager.getQuestion(i));
 			}

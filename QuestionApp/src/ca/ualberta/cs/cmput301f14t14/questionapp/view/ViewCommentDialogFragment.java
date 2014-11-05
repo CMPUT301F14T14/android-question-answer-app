@@ -1,7 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.view;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
-import ca.ualberta.cs.cmput301f14t14.questionapp.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
