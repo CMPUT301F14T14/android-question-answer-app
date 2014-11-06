@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuestionActivity extends Activity {
@@ -56,6 +57,13 @@ public class QuestionActivity extends Activity {
 		cTab.setIndicator(getString(R.string.tab_comments));
 		tabs.addTab(cTab);
 
+		TextView qTitle = (TextView) findViewById(R.id.questionTitle);
+		qTitle.setText(question.getTitle());
+		TextView qBody = (TextView) findViewById(R.id.questionBody);
+		qBody.setText(question.getBody());
+		TextView qUser = (TextView) findViewById(R.id.questionUser);
+		qUser.setText(question.getAuthor());
+		
 		List<Answer> al = new ArrayList<Answer>();
 		for(Answer a: question.getAnswerList()) {
 			al.add(a);
