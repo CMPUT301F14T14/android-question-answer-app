@@ -63,7 +63,10 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				Toast.makeText(getApplicationContext(), "Sup", Toast.LENGTH_LONG).show();
 				final Question question = qla.getItem(position);
-				Question a;
+				UUID qId = question.getId();
+				Intent intent = new Intent();
+				intent.putExtra("QUESTION_UUID", qId.toString());
+				startActivity(intent);
 			}
 		});
     }
