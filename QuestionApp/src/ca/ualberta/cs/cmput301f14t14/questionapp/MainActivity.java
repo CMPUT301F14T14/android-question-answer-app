@@ -60,11 +60,12 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getApplicationContext(), "Sup", Toast.LENGTH_LONG).show();
 				final Question question = qla.getItem(position);
 				Question a;
-				
-			}  
-        });
+			}
+		});
     }
     
     public OnNavigationListener changeSort() {
