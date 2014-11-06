@@ -10,11 +10,13 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AnswerListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 public class QuestionActivity extends Activity {
 	static final String TAB_ANSWERS = "answer";
@@ -29,13 +31,17 @@ public class QuestionActivity extends Activity {
 
 		TabHost tabs = (TabHost) findViewById(android.R.id.tabhost);
 		tabs.setup();
+		
 		if (savedInstanceState.containsKey("QUESTION_UUID")) {
 			question = (Question) savedInstanceState.get("QUESTION_UUID");
 		}
 		else {
-			// no Question, will handle later
-			question = new Question("", "", "",null);
+			// no Question, toss er back to the main screen
+			Toast.makeText(getApplicationContext(), "Ya dun fucked up", Toast.LENGTH_LONG).show();
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
 		}
+		
 		TabHost.TabSpec aTab = tabs.newTabSpec(TAB_ANSWERS);
 		aTab.setContent(R.id.answerSummaryList);
 		aTab.setIndicator(getString(R.string.tab_answers));
