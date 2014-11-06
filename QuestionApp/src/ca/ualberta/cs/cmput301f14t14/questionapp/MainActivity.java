@@ -1,6 +1,9 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddAnswerDialogFragment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddCommentDialogFragment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
@@ -8,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -42,6 +46,15 @@ public class MainActivity extends Activity {
         	Intent intent = new Intent(this.getBaseContext(), WelcomeScreenActivity.class);
         	startActivityForResult(intent, Activity.RESULT_FIRST_USER);
         }
+        
+        /* Set a listener for the Add Question button so it loads the add question dialog fragment */
+        findViewById(R.id.action_add_question).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AddQuestionDialogFragment aqdf = new AddQuestionDialogFragment();
+				aqdf.show(getFragmentManager(), "AddQuestionDF");
+			}
+		});
     }
     
     public OnNavigationListener changeSort() {
@@ -70,8 +83,18 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        
+        switch (id) {
+	        case R.id.action_settings:
+	        	return true;
+	        case R.id.dummy_add_answer:
+	        	AddAnswerDialogFragment aadf = new AddAnswerDialogFragment();
+	        	aadf.show(getFragmentManager(), "AddAnswerDF");
+	        	break;
+	        case R.id.dummy_answerview:
+	        	Intent intent = new Intent(this.getBaseContext(), AnswerViewActivity.class);
+	        	startActivity(intent);
+	        	break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -86,4 +109,12 @@ public class MainActivity extends Activity {
     	}
     	
     }
+    
+    /* TODO: Add the Callback needed for AddQuestionDialogFragment to actually do something */
+    /* TODO: Add the callback needed for AddAnswerDialogFragment to do something. 
+     * this callback should take into account where the AddAnswerDialogFragment was called from 
+     * 
+     * Should be in the QuestionActivity. (and the .show() call too)
+     * */
+     
 }
