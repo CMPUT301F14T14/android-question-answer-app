@@ -1,6 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.view;
 
-
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -9,7 +9,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +44,9 @@ implements IView{
 							String tle = title.getText().toString();
 							Question newQues = new Question(tle, bd, datamanager.getUsername(), null);
 							datamanager.addQuestion(newQues);
-							
+							MainActivity a = (MainActivity) getActivity();
+							Question q = datamanager.getQuestion(newQues.getId());
+							a.updateList(q);
 						}
 					}
 			).setNegativeButton(R.string.cancel,
