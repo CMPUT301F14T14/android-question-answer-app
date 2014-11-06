@@ -1,13 +1,16 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -85,5 +88,11 @@ public class MainActivity extends Activity {
     		
     	}
     	
+    }
+    
+    public void addQuestion(View view){
+    	FragmentManager fm = getFragmentManager();
+    	AddQuestionDialogFragment aQ = new AddQuestionDialogFragment();
+    	aQ.show(fm, "addquestiondialogfragmentlayout");
     }
 }
