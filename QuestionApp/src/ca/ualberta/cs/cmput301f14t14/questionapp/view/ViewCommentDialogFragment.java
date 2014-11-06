@@ -1,7 +1,11 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.view;
 
+import java.util.UUID;
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -21,19 +25,30 @@ public class ViewCommentDialogFragment extends DialogFragment  {
 		
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		
-		/*Integer commentId = savedInstanceState.getInt("commentId");
+		UUID questionId = UUID.fromString(savedInstanceState.getString("questionId"));
+		UUID answerId = UUID.fromString(savedInstanceState.getString("answerId"));
+		UUID commentId = UUID.fromString(savedInstanceState.getString("commentId"));
 		
-		DataManager datamanager = getInstance();
-		Comment comment = datamanager.getComment(id);
-		  
-		TextView username = (TextView) findViewById(R.id.comment_username);
-		username.setText(comment.getUserName());
+		DataManager datamanager = DataManager.getInstance(getActivity());
 		
-		TextView body = (TextView) findViewById(R.id.comment_body);
-		body.setText(comment.getBody());*/
-
+		Comment<?> comment = null;
+		if(answerId != null){
+			 comment = datamanager.getAnswerComment(questionId, answerId, commentId);
+		}
+		else{
+			 comment = datamanager.getQuestionComment(questionId, commentId);
+		}
+		 
 		View viewComment = inflater.inflate(R.layout.viewcommentdialogfragmentlayout, null);
 		builder.setView(viewComment);
+		
+		TextView username = (TextView) viewComment.findViewById(R.id.comment_username);
+		username.setText(comment.getUsername());
+		
+		TextView body = (TextView) viewComment.findViewById(R.id.comment_body);
+		body.setText(comment.getBody());
+
+		
 		
 	return builder.create();				
 	}
