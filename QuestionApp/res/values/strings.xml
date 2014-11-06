@@ -38,7 +38,7 @@
 	
 	<!-- Answer View -->
 	<string name="answer_view_upvote_answer">Upvote Answer</string>
-	
+	<string name="answer_view_dummy_username">Username</string>
 	
     <!-- Comment List -->
     <string name="commentlist_comment_placeholder">The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.</string>
