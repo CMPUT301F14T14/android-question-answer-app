@@ -2,6 +2,7 @@ package ca.ualberta.cs.cmput301f14t14.questionapp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
@@ -32,14 +33,17 @@ public class QuestionActivity extends Activity {
 		TabHost tabs = (TabHost) findViewById(android.R.id.tabhost);
 		tabs.setup();
 		
-		if (savedInstanceState.containsKey("QUESTION_UUID")) {
-			question = (Question) savedInstanceState.get("QUESTION_UUID");
+		Intent intent = getIntent();
+		DataManager dataManager = DataManager.getInstance(getApplicationContext());
+		String qId = intent.getStringExtra("QUESTION_UUID");
+		if (qId != null) {
+			UUID id = UUID.fromString(qId);
+			question = dataManager.getQuestion(id);
 		}
 		else {
 			// no Question, toss er back to the main screen
-			Toast.makeText(getApplicationContext(), "Ya dun fucked up", Toast.LENGTH_LONG).show();
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
+			Toast.makeText(getApplicationContext(), "Could not open specified question.", Toast.LENGTH_LONG).show();
+			finish();
 		}
 		
 		TabHost.TabSpec aTab = tabs.newTabSpec(TAB_ANSWERS);
