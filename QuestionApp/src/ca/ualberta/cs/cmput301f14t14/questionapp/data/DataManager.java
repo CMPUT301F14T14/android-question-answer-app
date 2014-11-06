@@ -142,33 +142,13 @@ public class DataManager {
 		clientData.setUsername(username);
 	}
 
-	//End View Interface
 	
-	public void disableNetworkAccess() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void enableNetworkAccess() {
-		// TODO Auto-generated method stub		
-	}
-	
-	public int getItemCount() {
-		return 0;}
-	
-	public List<Model> getItems() { return null;}
-
 	public void readLater(Question q) {
 		// TODO Auto-generated method stub	
 	}
 
 	public void readLater(Answer mAnswer) {
 		// TODO Auto-generated method stub
-	}
-
-	public Comment<? extends Model> getComment(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	public void clearClientData() {

@@ -88,7 +88,6 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActiv
 	
 	/** UC2 TC2.2 */
 	public void testViewQuestionOffline() {
-		manager.disableNetworkAccess();
 		/*
 		 * Need to create a list adapter, list view, then use
 		 * AtivityInstrumentationTestCase2 to get Views by Id
@@ -103,7 +102,6 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActiv
 	
 	/** UC2 TC2.3 */
 	public void testViewFavoriteOffline() {
-		manager.disableNetworkAccess();
 		/*
 		 * Need to create a list adapter, list view, then use
 		 * AtivityInstrumentationTestCase2 to get Views by Id
@@ -116,7 +114,6 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActiv
 	
 	/** UC3 TC 3.1 */
 	public void testViewQuestionCommentsOffline() {
-		manager.disableNetworkAccess();
 		/*
 		 * Need to create a list adapter, list view, then use
 		 * AtivityInstrumentationTestCase2 to get Views by Id
@@ -132,7 +129,6 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActiv
 	
 	/** UC3 TC 3.2 */
 	public void testViewAnswerCommentsOffline() {
-		manager.disableNetworkAccess();
 		/*
 		 * Need to create a list adapter, list view, then use
 		 * AtivityInstrumentationTestCase2 to get Views by Id
@@ -148,7 +144,6 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActiv
 	
 	/** UC3 TC 3.3 */
 	public void testViewQuestionCommentsOnline() {
-		manager.enableNetworkAccess();
 		/*
 		 * Need to create a list adapter, list view, then use
 		 * AtivityInstrumentationTestCase2 to get Views by Id
@@ -164,7 +159,6 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActiv
 	
 	/** UC3 TC 3.4 */
 	public void testViewAnswerCommentsOnline() {
-		manager.enableNetworkAccess();
 		/*
 		 * Need to create a list adapter, list view, then use
 		 * AtivityInstrumentationTestCase2 to get Views by Id

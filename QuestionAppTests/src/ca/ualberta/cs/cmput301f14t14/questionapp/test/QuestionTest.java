@@ -107,12 +107,10 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 	 */
 	
 	public void testLocalQuestionCreate() {
-		manager.disableNetworkAccess();
 		Question q = new Question(title, body, author, image);
 		local.putQuestion(q);
 		UUID id = q.getId();
 		assertNotNull(manager.getQuestion(id));
-		manager.enableNetworkAccess();
 		remote.putQuestion(q);
 		assertNotNull(remote.getQuestion(id));
 	}

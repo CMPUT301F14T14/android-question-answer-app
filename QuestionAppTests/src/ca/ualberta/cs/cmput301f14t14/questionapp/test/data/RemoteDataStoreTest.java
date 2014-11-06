@@ -53,7 +53,7 @@ public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainAc
 	
 	public void testPutComment() {
 		mRemoteStore.putQComment(qComment);
-		Comment<Question> retrieved = (Comment<Question>) manager.getComment(qComment.getId());
+		Comment<Question> retrieved = (Comment<Question>) manager.getQuestionComment(qComment.getId(), qComment.getId());
 		assertEquals(qComment, retrieved);
 	}
 	
