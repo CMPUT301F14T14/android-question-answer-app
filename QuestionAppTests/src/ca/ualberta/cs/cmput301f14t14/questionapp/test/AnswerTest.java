@@ -74,12 +74,11 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	 */
 	
 	public void testLocalAnswerCreate() {
-		manager.disableNetworkAccess();
 		local.putAnswer(mAnswer);
 		mQuestion.addAnswer(mAnswer);
 		UUID id = mAnswer.getId();
 		assertNotNull(manager.getAnswer(id, mQuestion.getId()));
-		manager.enableNetworkAccess();
+		
 		remote.putAnswer(mAnswer);
 		remote.putQuestion(mQuestion);
 		assertNotNull(remote.getAnswer(id));

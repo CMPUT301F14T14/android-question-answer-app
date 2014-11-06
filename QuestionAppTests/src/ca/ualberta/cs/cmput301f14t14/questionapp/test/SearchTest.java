@@ -52,7 +52,6 @@ public class SearchTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	public void testOfflineSearch() {
 		try {
-			manager.disableNetworkAccess();
 			List<UUID> results = remoteSearch.query("");
 			fail();
 		} catch (Exception e) {

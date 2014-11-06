@@ -29,6 +29,11 @@ public class MockData {
 		q3.addAnswer(new Answer(q3, "This is for you to discover, young Padawaan.", "Master Yoda", null));
 		data.add(q3);
 
+		Question validQ = new Question("TITLE", "BODY", "AUTHOR", null);
+		Answer validA = new Answer(validQ, "aBody", "aAuthor", null);
+		validQ.addAnswer(validA);
+		data.add(validQ);
+		
 		return data;
 	}
 }

@@ -83,12 +83,10 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 	
 	public void testLocalAnswerCreate() {
 		// adding to question
-		manager.disableNetworkAccess();
 		local.putQComment(mComment);
 		mQuestion.addComment(mComment);
 		UUID id = mComment.getId();
-		assertNotNull(manager.getComment(id));
-		manager.enableNetworkAccess();
+		assertNotNull(mQuestion.getComment(mComment.getId()));
 		remote.putQComment(mComment);
 		remote.putQuestion(mQuestion);
 		boolean inRemote = remote.isComment(id);
@@ -97,12 +95,10 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		
 		// adding to answer
 		Comment<Answer> secComment = new Comment<Answer>(mAnswer, "Comment has a body", "Userrrrname");
-		manager.disableNetworkAccess();
 		local.putAComment(secComment);
 		mAnswer.addComment(secComment);
 		UUID secId = mComment.getId();
-		assertNotNull(manager.getComment(secId));
-		manager.enableNetworkAccess();
+		assertNotNull(manager.getAnswerComment(mQuestion.getId(), mAnswer.getId(), secId));
 		remote.putAComment(secComment);
 		remote.putAnswer(mAnswer);
 		boolean secInRemote = remote.isComment(secId);

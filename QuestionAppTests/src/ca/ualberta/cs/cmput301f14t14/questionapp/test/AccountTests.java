@@ -25,7 +25,8 @@ public class AccountTests extends ActivityInstrumentationTestCase2<MainActivity>
 	public void testAuthorship(){
 		manager.setUsername("Boris");
 		Question testQuestion = new Question("stuff title", "stuff", manager.getUsername(), null);
-		assertTrue("Question author is not Boris!", testQuestion.getAuthor().equals("Boris"));
+		assertTrue("Question author is not Boris!", testQuestion.getAuthor().equals("Boris"));	
+
 	}
 		
 }

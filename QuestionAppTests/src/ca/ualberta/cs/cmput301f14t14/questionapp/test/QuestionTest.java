@@ -53,10 +53,10 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 		assertEquals(image, q.getImage());
 		
 		Question q2 = new Question();
-		assertNull(q2.getId());
-		assertNull(q2.getTitle());
-		assertNull(q2.getBody());
-		assertNull(q2.getAuthor());
+		assertEquals(new UUID(0L, 0L), q2.getId());
+		assertEquals("", q2.getTitle());
+		assertEquals("", q2.getBody());
+		assertEquals("", q2.getAuthor());
 		assertNull(q2.getImage());
 		
 		assertFalse(q.equals(q2));
@@ -107,12 +107,10 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 	 */
 	
 	public void testLocalQuestionCreate() {
-		manager.disableNetworkAccess();
 		Question q = new Question(title, body, author, image);
 		local.putQuestion(q);
 		UUID id = q.getId();
 		assertNotNull(manager.getQuestion(id));
-		manager.enableNetworkAccess();
 		remote.putQuestion(q);
 		assertNotNull(remote.getQuestion(id));
 	}

@@ -1,6 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddCommentDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
@@ -45,6 +46,15 @@ public class MainActivity extends Activity {
         	Intent intent = new Intent(this.getBaseContext(), WelcomeScreenActivity.class);
         	startActivityForResult(intent, Activity.RESULT_FIRST_USER);
         }
+        
+        /* Set a listener for the Add Question button so it loads the add question dialog fragment */
+        findViewById(R.id.action_add_question).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AddQuestionDialogFragment aqdf = new AddQuestionDialogFragment();
+				aqdf.show(getFragmentManager(), "AddQuestionDF");
+			}
+		});
     }
     
     public OnNavigationListener changeSort() {
@@ -73,8 +83,10 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        
+        switch (id) {
+	        case R.id.action_settings:
+	        	return true;
         }
         return super.onOptionsItemSelected(item);
     }

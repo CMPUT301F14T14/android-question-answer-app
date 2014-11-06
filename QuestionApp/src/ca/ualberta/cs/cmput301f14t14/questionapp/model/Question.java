@@ -20,11 +20,11 @@ public class Question extends Model implements Serializable {
 	private List<Comment<Question>> commentList;
 
 	public Question() {
-		id = null;
-		title = null;
-		body = null;
+		id = new UUID(0L, 0L);
+		title = "";
+		body = "";
 		image = null;
-		author = null;
+		author = "";
 		answerList = new ArrayList<Answer>();
 		commentList = new ArrayList<Comment<Question>>();
 	}
