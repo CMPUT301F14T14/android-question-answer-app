@@ -40,9 +40,7 @@
             android:label="@string/title_activity_answer_view"
             
             >
-            <intent-filter>
-                
-            </intent-filter>
+          
         </activity>
     </application>
 
