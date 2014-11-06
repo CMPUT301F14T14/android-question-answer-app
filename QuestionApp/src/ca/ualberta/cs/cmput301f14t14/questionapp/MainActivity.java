@@ -99,6 +99,13 @@ public class MainActivity extends Activity {
         switch (id) {
 	        case R.id.action_settings:
 	        	return true;
+	        case R.id.dummy_add_answer:
+	        	break;
+	        case R.id.dummy_answerview:
+	        	Intent i = new Intent(this, AnswerViewActivity.class);
+	        	//Need to give this a QuestionUUID, AnswerUUID.
+	        	startActivity(i);
+	        	break;
         }
         return super.onOptionsItemSelected(item);
     }
