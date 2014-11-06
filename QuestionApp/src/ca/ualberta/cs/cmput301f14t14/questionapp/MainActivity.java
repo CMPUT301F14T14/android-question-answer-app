@@ -60,11 +60,9 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// TODO Auto-generated method stub
-				Toast.makeText(getApplicationContext(), "Sup", Toast.LENGTH_LONG).show();
 				final Question question = qla.getItem(position);
 				UUID qId = question.getId();
-				Intent intent = new Intent();
+				Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
 				intent.putExtra("QUESTION_UUID", qId.toString());
 				startActivity(intent);
 			}
