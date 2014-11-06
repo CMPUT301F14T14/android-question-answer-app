@@ -36,8 +36,11 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 		validQ = qList.iterator().next();
 		List<Answer> aList = validQ.getAnswerList();
 		validA = aList.get(0);
-		
-		mockQuestion = new Question("", "", "", null);
+		try{
+			mockQuestion = new Question("", "", "", null);
+		}catch(IllegalArgumentException e){
+			mockQuestion = new Question("a", "a", "a", null);
+		}
 	}
 	
 	protected void tearDown() throws Exception {

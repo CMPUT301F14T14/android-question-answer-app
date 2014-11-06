@@ -1,6 +1,5 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
