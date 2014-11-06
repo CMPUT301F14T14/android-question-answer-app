@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -89,6 +90,22 @@ public class QuestionActivity extends Activity {
 		cla = new CommentListAdapter<Question>(this, R.layout.list_comment, cl);
 		ListView commentView = (ListView) findViewById(R.id.commentList);
 		commentView.setAdapter(cla);
+		
+		
+		answerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				final Answer a = ala.getItem(position);
+				UUID qId = question.getId();
+				Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+				intent.putExtra("QUESTION_UUID", qId.toString());
+				intent.putExtra("ANSWER_UUID", a.getId().toString());
+				startActivity(intent);
+			}
+		});
+		
 	}
 
 	@Override
