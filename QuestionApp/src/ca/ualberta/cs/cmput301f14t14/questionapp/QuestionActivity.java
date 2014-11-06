@@ -19,7 +19,9 @@ import android.widget.TabHost;
 public class QuestionActivity extends Activity {
 	static final String TAB_ANSWERS = "answer";
 	static final String TAB_COMMENTS = "comment";
-
+	
+	private Question question;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,9 +29,13 @@ public class QuestionActivity extends Activity {
 
 		TabHost tabs = (TabHost) findViewById(android.R.id.tabhost);
 		tabs.setup();
-
-		Question q = new Question("Title", "Body", DataManager.getInstance(this).getUsername(), null);
-		
+		if (savedInstanceState.containsKey("QUESTION_UUID")) {
+			question = (Question) savedInstanceState.get("QUESTION_UUID");
+		}
+		else {
+			// no Question, will handle later
+			question = new Question("", "", "",null);
+		}
 		TabHost.TabSpec aTab = tabs.newTabSpec(TAB_ANSWERS);
 		aTab.setContent(R.id.answerSummaryList);
 		aTab.setIndicator(getString(R.string.tab_answers));
@@ -41,13 +47,14 @@ public class QuestionActivity extends Activity {
 		tabs.addTab(cTab);
 
 		List<Answer> al = new ArrayList<Answer>();
-		// Populate list with dummy data for now...
-		al.add(new Answer(q, "The answer to your question is moot.", "Boo", null));
+		for(Answer a: question.getAnswerList()) {
+			al.add(a);
+		}
 		
 		List<Comment<Question>> cl = new ArrayList<Comment<Question>>();
-		// Populate list with dummy data for now...
-		cl.add(new Comment<Question>(q, "This is a demo comment which will exceed the screen width.", "Boris"));
-		cl.add(new Comment<Question>(q, "Shorter comment.", "Natasha"));
+		for(Comment<Question> c: question.getCommentList()) {
+			cl.add(c);
+		}
 
 		AnswerListAdapter ala = new AnswerListAdapter(this, R.layout.list_answer, al);
 		ListView answerView = (ListView) findViewById(R.id.answerSummaryList);
