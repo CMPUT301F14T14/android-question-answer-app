@@ -30,6 +30,7 @@
     <string name="tab_answers">Answers</string>
     <string name="tab_comments">Comments</string>
     <string name="item_view_add_comment">Add Comment</string> <!-- common to answer and question view -->
+    <string name="question_add_answer">Add Answer</string>
     
     <!--  Add Answer Dialog Fragment -->
 	<string name="add_answer_body_hint">Add a body to your answer</string>

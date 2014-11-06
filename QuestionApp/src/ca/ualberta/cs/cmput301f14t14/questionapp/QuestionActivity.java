@@ -8,13 +8,18 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddAnswerDialogFragment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AnswerListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -24,6 +29,8 @@ public class QuestionActivity extends Activity {
 	static final String TAB_ANSWERS = "answer";
 	static final String TAB_COMMENTS = "comment";
 	
+	private AnswerListAdapter ala = null;
+	private CommentListAdapter<Question> cla = null;
 	private Question question;
 	
 	@Override
@@ -67,6 +74,7 @@ public class QuestionActivity extends Activity {
 		List<Answer> al = new ArrayList<Answer>();
 		for(Answer a: question.getAnswerList()) {
 			al.add(a);
+			Log.d("bob",a.getBody());
 		}
 		
 		List<Comment<Question>> cl = new ArrayList<Comment<Question>>();
@@ -74,11 +82,11 @@ public class QuestionActivity extends Activity {
 			cl.add(c);
 		}
 
-		AnswerListAdapter ala = new AnswerListAdapter(this, R.layout.list_answer, al);
+		ala = new AnswerListAdapter(this, R.layout.list_answer, al);
 		ListView answerView = (ListView) findViewById(R.id.answerSummaryList);
 		answerView.setAdapter(ala);
 		
-		CommentListAdapter<Question> cla = new CommentListAdapter<Question>(this, R.layout.list_comment, cl);
+		cla = new CommentListAdapter<Question>(this, R.layout.list_comment, cl);
 		ListView commentView = (ListView) findViewById(R.id.commentList);
 		commentView.setAdapter(cla);
 	}
@@ -101,4 +109,28 @@ public class QuestionActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+    public void addAnswer(View view){
+    	FragmentManager fm = getFragmentManager();
+    	Bundle QuesBox = new Bundle();
+    	QuesBox.putString( "Qid",question.getId().toString());
+    	AddAnswerDialogFragment aA = new AddAnswerDialogFragment();
+    	aA.setArguments(QuesBox);
+    	aA.show(fm, "addanswerdialogfragmentlayout");
+    }
+    
+    public void updateQuestion(Question q) {
+    	this.question = q;
+    	ala.clear();
+    	cla.clear();
+    	for(Answer a: question.getAnswerList()) {
+			ala.add(a);
+		}
+    	for(Comment<Question> c: question.getCommentList()) {
+			cla.add(c);
+		}
+    	ala.update();
+    	cla.update();
+    	Toast.makeText(getApplicationContext(), "Item successfully added", Toast.LENGTH_LONG).show();
+    }
 }
