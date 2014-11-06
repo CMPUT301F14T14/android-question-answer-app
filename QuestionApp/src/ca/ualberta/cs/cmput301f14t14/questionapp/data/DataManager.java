@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -153,6 +154,16 @@ public class DataManager {
 	
 	public void clearClientData() {
 		clientData.clear();
+	}
+	
+	public Question getReadLaterQuestion(UUID qId){
+		if(readLater.contains(qId)){
+			
+			return getQuestion(qId);
+		}
+		else{
+			throw new NullPointerException("id is not in the list");
+		}
 	}
 
 }

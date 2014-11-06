@@ -22,6 +22,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 	private DataManager manager;
 	private Question validQ;
 	private Answer validA;
+	private Question mockQuestion;
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -35,6 +36,8 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 		validQ = qList.iterator().next();
 		List<Answer> aList = validQ.getAnswerList();
 		validA = aList.get(0);
+		
+		mockQuestion = new Question("", "", "", null);
 	}
 	
 	protected void tearDown() throws Exception {
@@ -48,7 +51,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 	}
 	
 	public void testGetQuestion(){
-		Question mockQuestion = new Question("", "", "", null);
+
 		try{
 		manager.addQuestion(mockQuestion);
 		assertTrue("Mock question and valid question are the same!", !manager.getQuestion(mockQuestion.getId()).equals(validQ));
@@ -95,6 +98,11 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 	
 	public void testReadQuestionLater(){
 		manager.readQuestionLater(validQ.getId());
+		try{
+			assertEquals(validQ, manager.getReadLaterQuestion(validQ.getId()));
+			Question testQ = manager.getReadLaterQuestion(mockQuestion.getId());
+			assertNotNull(testQ);
+		}catch(NullPointerException e){}
 	}
 	
 }
