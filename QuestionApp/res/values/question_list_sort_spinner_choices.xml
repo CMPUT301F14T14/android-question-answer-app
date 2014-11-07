@@ -2,9 +2,8 @@
 <resources>
  
     <string-array name="sort_spinner_data">
-        <item>Sort By</item>
+        <item>Date</item>
         <item>By # upvotes</item>
-        <item>By most recent</item>
         <item>Your favorites</item>
         <item>Your questions</item>
         <item>By most answered</item>

@@ -1,5 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +41,6 @@ public class MainActivity extends Activity {
         				);
         // Specify the layout to use when the list of choices appears
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getActionBar().setListNavigationCallbacks(sortAdapter, changeSort());
                 
@@ -75,14 +76,71 @@ public class MainActivity extends Activity {
     	return new OnNavigationListener() {
 			@Override
 			public boolean onNavigationItemSelected(int itemposition, long itemid) {
-				// Auto-generated method stub
-				return false;
+				List<Question> sortedList = MainActivity.sortList(itemposition, dataManager);
+				qla.clear();
+				qla.addAll(sortedList);
+				qla.update();
+				return true;
+				
 			}
 		};
     }
 
 
-    @Override
+    protected static List<Question> sortList(int itemposition, final DataManager dm) {
+		
+    	List<Question> qlist = dm.load();
+
+		switch (itemposition){
+		case 0:{
+			Collections.sort(qlist, new Comparator<Question>(){
+			
+				@Override
+				public int compare(Question q1, Question q2) {
+					
+					return q2.getDate().compareTo(q1.getDate());
+				}
+			
+			
+		});
+		}	
+		case 1:{
+			Collections.sort(qlist, new Comparator<Question>(){
+
+				@Override
+				public int compare(Question q1, Question q2) {
+					
+					return q2.getUpvotes() - q1.getUpvotes();
+				}
+								
+				
+				});
+			}
+		case 2:{
+			
+		}
+		case 3:{
+			Collections.sort(qlist, new Comparator<Question>(){
+
+				@Override
+				public int compare(Question q1, Question q2) {
+					if(q1.getAuthor().equals(dm.getUsername()) && q2.getAuthor().equals(dm.getUsername())){
+						return 0;
+					}
+					else if(q1.getAuthor().equals(dm.getUsername()) && !q2.getAuthor().equals(dm.getUsername()))
+						return -1;
+					else{
+						return 1;
+					}
+				}
+				
+			});
+			
+		}
+		}
+		return qlist;
+    }
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
