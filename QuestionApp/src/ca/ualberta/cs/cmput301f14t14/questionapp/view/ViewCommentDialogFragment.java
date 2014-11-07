@@ -25,9 +25,9 @@ public class ViewCommentDialogFragment extends DialogFragment  {
 		
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		
-		UUID questionId = UUID.fromString(savedInstanceState.getString("questionId"));
-		UUID answerId = UUID.fromString(savedInstanceState.getString("answerId"));
-		UUID commentId = UUID.fromString(savedInstanceState.getString("commentId"));
+		UUID questionId = UUID.fromString(getArguments().getString("questionId"));
+		UUID answerId = UUID.fromString(getArguments().getString("answerId"));
+		UUID commentId = UUID.fromString(getArguments().getString("commentId"));
 		
 		DataManager datamanager = DataManager.getInstance(getActivity());
 		
