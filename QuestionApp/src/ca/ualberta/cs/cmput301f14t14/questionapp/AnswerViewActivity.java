@@ -7,6 +7,7 @@ import java.util.UUID;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddCommentDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.ViewCommentDialogFragment;
@@ -27,6 +28,9 @@ public class AnswerViewActivity extends Activity {
 	String qId = null;
 	String aId = null;
 	
+
+	private List<Comment<Answer>> cl = new ArrayList<Comment<Answer>>();
+	CommentListAdapter<Answer> ucla = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,10 +58,11 @@ public class AnswerViewActivity extends Activity {
 		((TextView) findViewById(R.id.answer_username)).setText(this.answer.getAuthor());
 		
 		/* Populate comment list */
-		List<Comment<Answer>> cl = new ArrayList<Comment<Answer>>();
+		//created as class variable.
 		cl.addAll(answer.getCommentList());
 			//Set list adapter
 		final CommentListAdapter<Answer> cla = new CommentListAdapter<Answer>(this, R.layout.list_comment, cl);
+		ucla = cla;
 		ListView commentView = (ListView) findViewById(R.id.answer_view_comment_list);
 		commentView.setAdapter(cla);
 		
@@ -71,7 +76,7 @@ public class AnswerViewActivity extends Activity {
 				argbundle.putString("questionId", qId);
 				argbundle.putString("answerId", aId);
 				
-				final Comment<Answer> comment = cla.getItem(position);			
+				Comment<Answer> comment = cla.getItem(position);			
 				argbundle.putString("commentId", comment.getId().toString());
 				vcdf.setArguments(argbundle);
 				
@@ -118,5 +123,15 @@ public class AnswerViewActivity extends Activity {
 		super.onResume();
 		//Update list adapters.
 		
+	}
+	
+	public void updateAnswer(Answer a) {
+		//Need to update the list adapters.
+		//move to class variables so I can access them.
+		ucla.clear();
+		ucla.addAll(a.getCommentList());
+		ucla.update();
+    	//Toast.makeText(getApplicationContext(), "Item successfully added", Toast.LENGTH_LONG).show();
+
 	}
 }

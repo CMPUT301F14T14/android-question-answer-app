@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import ca.ualberta.cs.cmput301f14t14.questionapp.AnswerViewActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.QuestionActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
@@ -64,7 +65,14 @@ public class AddCommentDialogFragment extends DialogFragment {
 								Comment<Question> comment = new Comment(question,body.getText().toString(), username);
 								datamanager.addQuestionComment(questionId, comment);
 							}
-							((QuestionActivity)getActivity()).updateQuestion(question);
+							
+							//Ugly, but this if statement will only ever be this big.
+							if (getActivity() instanceof QuestionActivity){
+								((QuestionActivity)getActivity()).updateQuestion(question);
+							} 
+							if (getActivity() instanceof AnswerViewActivity) {
+								((AnswerViewActivity)getActivity()).updateAnswer(answer);
+							}
 						}
 					}
 			).setNegativeButton(R.string.cancel,

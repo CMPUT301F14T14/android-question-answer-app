@@ -30,10 +30,10 @@ public class ViewCommentDialogFragment extends DialogFragment  {
 		UUID answerId = null;
 		UUID commentId = null;
 		
-		try {
-			questionId = UUID.fromString(getArguments().getString("questionId"));
-			answerId = UUID.fromString(getArguments().getString("answerId"));
-			commentId = UUID.fromString(getArguments().getString("commentId"));
+		//These two should never be null/empty.
+		questionId = UUID.fromString(getArguments().getString("questionId"));
+		commentId = UUID.fromString(getArguments().getString("commentId"));
+		try {answerId = UUID.fromString(getArguments().getString("answerId"));
 		} catch(NullPointerException e){}
 		
 		DataManager datamanager = DataManager.getInstance(getActivity());
