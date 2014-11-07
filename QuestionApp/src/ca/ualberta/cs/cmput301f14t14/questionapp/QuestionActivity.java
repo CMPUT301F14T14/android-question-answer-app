@@ -32,13 +32,14 @@ public class QuestionActivity extends Activity {
 	private AnswerListAdapter ala = null;
 	private CommentListAdapter<Question> cla = null;
 	private Question question;
+	private TabHost tabs;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question);
 
-		TabHost tabs = (TabHost) findViewById(android.R.id.tabhost);
+		tabs = (TabHost) findViewById(android.R.id.tabhost);
 		tabs.setup();
 		
 		Intent intent = getIntent();
@@ -53,23 +54,7 @@ public class QuestionActivity extends Activity {
 			Toast.makeText(getApplicationContext(), "Could not open specified question.", Toast.LENGTH_LONG).show();
 			finish();
 		}
-		
-		TabHost.TabSpec aTab = tabs.newTabSpec(TAB_ANSWERS);
-		aTab.setContent(R.id.answerSummaryList);
-		aTab.setIndicator(getString(R.string.tab_answers));
-		tabs.addTab(aTab);
 
-		TabHost.TabSpec cTab = tabs.newTabSpec(TAB_COMMENTS);
-		cTab.setContent(R.id.commentList);
-		cTab.setIndicator(getString(R.string.tab_comments));
-		tabs.addTab(cTab);
-
-		TextView qTitle = (TextView) findViewById(R.id.questionTitle);
-		qTitle.setText(question.getTitle());
-		TextView qBody = (TextView) findViewById(R.id.questionBody);
-		qBody.setText(question.getBody());
-		TextView qUser = (TextView) findViewById(R.id.questionUser);
-		qUser.setText(question.getAuthor());
 		
 		List<Answer> al = new ArrayList<Answer>();
 		for(Answer a: question.getAnswerList()) {
@@ -89,6 +74,23 @@ public class QuestionActivity extends Activity {
 		cla = new CommentListAdapter<Question>(this, R.layout.list_comment, cl);
 		ListView commentView = (ListView) findViewById(R.id.commentList);
 		commentView.setAdapter(cla);
+
+		TabHost.TabSpec aTab = tabs.newTabSpec(TAB_ANSWERS);
+		aTab.setContent(R.id.answerSummaryList);
+		aTab.setIndicator(String.format("%s (%d)", getString(R.string.tab_answers), ala.getCount()));
+		tabs.addTab(aTab);
+
+		TabHost.TabSpec cTab = tabs.newTabSpec(TAB_COMMENTS);
+		cTab.setContent(R.id.commentList);
+		cTab.setIndicator(getString(R.string.tab_comments));
+		tabs.addTab(cTab);
+
+		TextView qTitle = (TextView) findViewById(R.id.questionTitle);
+		qTitle.setText(question.getTitle());
+		TextView qBody = (TextView) findViewById(R.id.questionBody);
+		qBody.setText(question.getBody());
+		TextView qUser = (TextView) findViewById(R.id.questionUser);
+		qUser.setText(question.getAuthor());
 		
 		
 		answerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
