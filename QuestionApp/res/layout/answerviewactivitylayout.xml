@@ -7,7 +7,7 @@
     
     
     <TextView
-        android:id="@+id/answer_view_body"
+        android:id="@+id/answer_body"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
@@ -15,7 +15,7 @@
         android:text="SomeDummyText so that I can see whats going on in the graphical editor"
         />
 	<TextView 
-        android:id="@+id/answer_view_username"
+        android:id="@+id/answer_username"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/answer_view_dummy_username"
