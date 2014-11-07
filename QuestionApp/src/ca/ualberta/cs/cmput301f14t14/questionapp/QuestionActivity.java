@@ -9,7 +9,6 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddAnswerDialogFragment;
-import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AnswerListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
 import android.app.Activity;
@@ -99,7 +98,7 @@ public class QuestionActivity extends Activity {
 					int position, long id) {
 				final Answer a = ala.getItem(position);
 				UUID qId = question.getId();
-				Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+				Intent intent = new Intent(getBaseContext(), AnswerViewActivity.class);
 				intent.putExtra("QUESTION_UUID", qId.toString());
 				intent.putExtra("ANSWER_UUID", a.getId().toString());
 				startActivity(intent);
