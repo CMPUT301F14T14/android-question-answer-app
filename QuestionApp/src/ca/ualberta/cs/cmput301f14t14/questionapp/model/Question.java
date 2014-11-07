@@ -31,6 +31,7 @@ public class Question extends Model implements Serializable {
 		answerList = new ArrayList<Answer>();
 		commentList = new ArrayList<Comment<Question>>();
 		setDate(new Date());
+		upVotes = 0;
 	}
 
 	public Question(String title, String body, String author, Image image) {
@@ -42,6 +43,7 @@ public class Question extends Model implements Serializable {
 		setImage(image);
 		this.setAnswerList(new ArrayList<Answer>());
 		this.setCommentList(new ArrayList<Comment<Question>>());
+		upVotes = 0;
 		setDate(new Date());
 	}
 
