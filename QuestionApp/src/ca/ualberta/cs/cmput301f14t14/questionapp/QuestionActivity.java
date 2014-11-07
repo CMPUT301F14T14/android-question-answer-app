@@ -11,6 +11,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddAnswerDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AnswerListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.ViewCommentDialogFragment;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -104,6 +105,25 @@ public class QuestionActivity extends Activity {
 				intent.putExtra("QUESTION_UUID", qId.toString());
 				intent.putExtra("ANSWER_UUID", a.getId().toString());
 				startActivity(intent);
+			}
+		});
+		
+		commentView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				final Comment<Question> c = cla.getItem(position);
+				//Need questionId, commentId
+				UUID qId = question.getId();
+				UUID cId = c.getId();
+				
+				ViewCommentDialogFragment vcdf = new ViewCommentDialogFragment();
+				Bundle argbundle = new Bundle();
+				argbundle.putString("questionId", qId.toString());
+				argbundle.putString("commentId", cId.toString());
+				vcdf.setArguments(argbundle);
+				vcdf.show(getFragmentManager(), "QuestionActivityViewCommentDF");
+				
 			}
 		});
 		
