@@ -9,6 +9,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddAnswerDialogFragment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddCommentDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AnswerListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.ViewCommentDialogFragment;
@@ -95,7 +96,6 @@ public class QuestionActivity extends Activity {
 		
 		
 		answerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -127,6 +127,8 @@ public class QuestionActivity extends Activity {
 			}
 		});
 		
+	
+		
 	}
 
 	@Override
@@ -142,19 +144,41 @@ public class QuestionActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		
+		switch(id) {
+			case R.id.action_settings:
+				return true;
+			case R.id.action_add_answer:
+				addAnswer(null);
+				break;
+			case R.id.action_add_comment:
+				addComment(null);
+				break;
 		}
+
 		return super.onOptionsItemSelected(item);
 	}
 	
     public void addAnswer(View view){
     	FragmentManager fm = getFragmentManager();
     	Bundle QuesBox = new Bundle();
-    	QuesBox.putString( "Qid",question.getId().toString());
+    	QuesBox.putString( "Qid", question.getId().toString());
     	AddAnswerDialogFragment aA = new AddAnswerDialogFragment();
     	aA.setArguments(QuesBox);
     	aA.show(fm, "addanswerdialogfragmentlayout");
+    }
+    
+    public void addComment(View view) {
+    	/* Add a comment to this question */
+		AddCommentDialogFragment acdf = new AddCommentDialogFragment();
+		Bundle argbundle = new Bundle();
+		try{
+			argbundle.putString("questionId", question.getId().toString());
+		} catch (NullPointerException e) {
+			Log.d("QuestionActivity Add Comment", "NPE on addcomment. Question object null");
+		}
+		acdf.setArguments(argbundle);
+		acdf.show(getFragmentManager(), "AVAaddcommentDF");
     }
     
     public void updateQuestion(Question q) {

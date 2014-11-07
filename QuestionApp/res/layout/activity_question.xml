@@ -74,10 +74,5 @@
 
         </LinearLayout>
     </TabHost>
-    <Button
-        android:id="@+id/action_add_answer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="addAnswer"
-        android:text="@string/question_add_answer" />
+
 </LinearLayout>

@@ -76,6 +76,7 @@ public class AnswerViewActivity extends Activity {
 				vcdf.setArguments(argbundle);
 				
 				vcdf.show(getFragmentManager(), "AVCommentViewDF");
+				cla.update();
 			}
 		});
 		
@@ -102,6 +103,7 @@ public class AnswerViewActivity extends Activity {
 						acdf.setArguments(argbundle);
 						acdf.show(getFragmentManager(), "AVAaddcommentDF");
 						//Need to update AddComentDialogFragment to do an update on the views. (this)
+						cla.update();
 					}
 				});
 		
@@ -114,6 +116,7 @@ public class AnswerViewActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		//
+		//Update list adapters.
+		
 	}
 }

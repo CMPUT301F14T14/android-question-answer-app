@@ -8,4 +8,15 @@
         android:showAsAction="never"
         android:title="@string/action_settings"/>
 
+    <item android:id="@+id/action_add_comment"
+		  android:orderInCategory="98"
+		  android:showAsAction="always"
+		  android:title="@string/item_view_add_comment"
+		  />        
+        
+    <item android:id="@+id/action_add_answer"
+          android:orderInCategory="99"
+          android:showAsAction="always"
+          android:title="@string/question_add_answer"
+          />
 </menu>
