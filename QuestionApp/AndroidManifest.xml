@@ -27,20 +27,12 @@
             android:label="@string/title_activity_welcomes_screen" >
         </activity>
         <activity
-            android:name="QuestionActivity"
+            android:name="AnswerViewActivity"
             android:label="@string/title_activity_question" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
-            android:name="AnswerViewActivity"
-            android:label="@string/title_activity_answer_view"
-            
-            >
-          
+            android:name="QuestionActivity"
+            android:label="@string/title_activity_answer_view" >
         </activity>
     </application>
 
