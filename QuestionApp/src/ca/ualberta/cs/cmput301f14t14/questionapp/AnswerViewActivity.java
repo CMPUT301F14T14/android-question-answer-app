@@ -7,7 +7,6 @@ import java.util.UUID;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddCommentDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.ViewCommentDialogFragment;
@@ -17,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,7 +80,7 @@ public class AnswerViewActivity extends Activity {
 		});
 		
 		/* Onclick listeners for upvote, add comment */
-		((Button)findViewById(R.id.answer_view_upvote_answer))
+		((ImageButton)findViewById(R.id.answer_view_upvote_answer))
 				.setOnClickListener(new Button.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -90,7 +90,7 @@ public class AnswerViewActivity extends Activity {
 						//TODO: Once we start displaying upvote count, need to do a view update.
 					}
 				});
-		((Button)findViewById(R.id.answer_view_add_comment))
+		((ImageButton)findViewById(R.id.answer_view_add_comment))
 				.setOnClickListener(new Button.OnClickListener() {
 					@Override
 					public void onClick(View v) {
