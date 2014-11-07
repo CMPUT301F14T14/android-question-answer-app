@@ -65,12 +65,13 @@ public class QuestionActivity extends Activity {
 		tabs.addTab(cTab);
 
 		TextView qTitle = (TextView) findViewById(R.id.questionTitle);
+		TextView upvotes = (TextView) findViewById(R.id.upvotes);
 		qTitle.setText(question.getTitle());
 		TextView qBody = (TextView) findViewById(R.id.questionBody);
 		qBody.setText(question.getBody());
 		TextView qUser = (TextView) findViewById(R.id.questionUser);
 		qUser.setText(question.getAuthor());
-		
+		upvotes.setText(question.getUpvotes().toString());
 		List<Answer> al = new ArrayList<Answer>();
 		for(Answer a: question.getAnswerList()) {
 			al.add(a);
@@ -148,5 +149,11 @@ public class QuestionActivity extends Activity {
     	ala.update();
     	cla.update();
     	Toast.makeText(getApplicationContext(), "Item successfully added", Toast.LENGTH_LONG).show();
+    }
+    
+    public void upvoteQuestion(View v){
+    	question.addUpvote();
+    	TextView upvotes = (TextView) findViewById(R.id.upvotes);
+    	upvotes.setText(question.getUpvotes().toString());
     }
 }
