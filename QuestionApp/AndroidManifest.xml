@@ -28,11 +28,11 @@
         </activity>
         <activity
             android:name="AnswerViewActivity"
-            android:label="@string/title_activity_question" >
+            android:label="@string/title_activity_answer_view" >
         </activity>
         <activity
             android:name="QuestionActivity"
-            android:label="@string/title_activity_answer_view" >
+            android:label="@string/title_activity_question" >
         </activity>
     </application>
 
