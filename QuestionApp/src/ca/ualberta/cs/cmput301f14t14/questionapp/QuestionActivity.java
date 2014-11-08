@@ -212,5 +212,6 @@ public class QuestionActivity extends Activity {
     	question.addUpvote();
     	TextView upvotes = (TextView) findViewById(R.id.upvotes);
     	upvotes.setText(question.getUpvotes().toString());
+    	DataManager.getInstance(this).updateQuestion(question);
     }
 }

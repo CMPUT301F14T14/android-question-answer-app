@@ -92,7 +92,7 @@ public class MainActivity extends Activity {
     	List<Question> qlist = dm.load();
 
 		switch (itemposition){
-		case 0:{
+		case 1:{
 			Collections.sort(qlist, new Comparator<Question>(){
 			
 				@Override
@@ -102,9 +102,10 @@ public class MainActivity extends Activity {
 				}
 			
 			
-		});
+			});
+			break;
 		}	
-		case 1:{
+		case 2:{
 			Collections.sort(qlist, new Comparator<Question>(){
 
 				@Override
@@ -115,11 +116,12 @@ public class MainActivity extends Activity {
 								
 				
 				});
+			break;
 			}
-		case 2:{
+		case 3:{
 			
 		}
-		case 3:{
+		case 4:{
 			Collections.sort(qlist, new Comparator<Question>(){
 
 				@Override
@@ -135,7 +137,7 @@ public class MainActivity extends Activity {
 				}
 				
 			});
-			
+			break;
 		}
 		}
 		return qlist;
