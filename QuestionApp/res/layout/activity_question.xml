@@ -102,6 +102,7 @@
         </LinearLayout>
     
     </TabHost>
+
     <Button
         android:id="@+id/action_add_answer"
         android:layout_width="wrap_content"

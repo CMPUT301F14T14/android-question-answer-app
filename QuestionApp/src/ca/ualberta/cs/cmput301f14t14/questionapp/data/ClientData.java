@@ -1,5 +1,9 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -37,5 +41,23 @@ public class ClientData {
 		Editor e = prefs.edit();
 		e.clear();
 		e.apply();
+	}
+
+	public List<UUID> getFavoriteAnswers() {
+		// TODO Auto-generated method stub
+		ArrayList<UUID> list = new ArrayList<UUID>();
+		return list;
+	}
+
+	public ArrayList<UUID> getFavoriteQuestions() {
+		// TODO Auto-generated method stub
+		ArrayList<UUID> list = new ArrayList<UUID>();
+		return list;
+	}
+
+	public List<UUID> getReadLater() {
+		// TODO Auto-generated method stub
+		ArrayList<UUID> list = new ArrayList<UUID>();
+		return list;
 	}
 }
