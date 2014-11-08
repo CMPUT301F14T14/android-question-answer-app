@@ -148,7 +148,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 	
 	public void testReadQuestionLater() {
 		Question q = new Question(title, body, author, null);
-		manager.readLater(q);
+		manager.readQuestionLater(q.getId());
 		UUID id = q.getId();
 		assertNotNull(local.getQuestion(id));
 	}

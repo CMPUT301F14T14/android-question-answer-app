@@ -32,6 +32,8 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		super.setUp();
 		mQuestion = new Question("Title", "Body", "Author", null);
 		mAnswer = new Answer(mQuestion, "Answer body.", "Author", null);
+		mComment = new Comment<Question>(mQuestion, "Comment question body", "Author");
+		aComment = new Comment<Answer>(mAnswer, "Comment answer body", "aAuthor");
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		local =  new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		remote = new RemoteDataStore();

@@ -47,7 +47,7 @@ public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainAc
 	
 	public void testPutAnswer() {
 		mRemoteStore.putAnswer(mAnswer);
-		Answer retrieved = manager.getAnswer(mAnswer.getId(), null);
+		Answer retrieved = manager.getAnswer(mQuestion.getId(), mAnswer.getId());
 		assertEquals(mAnswer, retrieved);
 	}
 	
