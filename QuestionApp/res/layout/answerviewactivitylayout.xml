@@ -26,6 +26,12 @@
         android:layout_height="wrap_content" 
         android:gravity="right"
         >
+
+        <TextView
+            android:id="@+id/answer_upvotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0" />
         
         <ImageButton
             android:id="@+id/answer_view_upvote_answer"
@@ -33,7 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/answer_view_upvote_answer" 
-            android:src="@drawable/ic_action_upvote"/>
+            android:src="@drawable/ic_action_upvote"
+            android:onClick="addAnsUpvote"/>
         <ImageButton
             android:id="@+id/answer_view_add_comment"
             style="?android:attr/buttonStyleSmall"

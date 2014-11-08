@@ -2,6 +2,7 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +17,8 @@ public class Answer extends Model implements Serializable {
 	private List<Comment<Answer>> commentList;
 	private String author;
 	private Question parent;
+	private Date date;
+	private int upVotes;
 
 	
 	public Answer() {
@@ -25,6 +28,8 @@ public class Answer extends Model implements Serializable {
 		this.image = null;
 		this.parent = null;
 		this.commentList = new ArrayList<Comment<Answer>>();
+		setDate(new Date());
+		upVotes = 0;
 	}
 
 	public Answer(Question parent, String body, String author, Image image) {
@@ -34,6 +39,8 @@ public class Answer extends Model implements Serializable {
 		setImage(image);
 		setParent(parent);
 		setCommentList(new ArrayList<Comment<Answer>>());
+		setDate(new Date());
+		upVotes = 0;
 	}
 	
 	public Image getImage() {
@@ -73,14 +80,12 @@ public class Answer extends Model implements Serializable {
 		}
 	}
 
-	public int getUpvotes() {
-		// TODO Auto-generated method stub
-		return 0;
+	public Integer getUpvotes() {
+		return upVotes;
 	}
 
 	public void addUpvote() {
-		// TODO Auto-generated method stub
-		
+		upVotes++;
 	}
 
 	public List<Comment<Answer>> getCommentList() {
@@ -131,5 +136,13 @@ public class Answer extends Model implements Serializable {
 	@Override
 	public String toString() {
 		return String.format("Answer [%s - %s]", body, author);
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 }

@@ -57,7 +57,24 @@ public class QuestionActivity extends Activity {
 			finish();
 		}
 
+		TabHost.TabSpec aTab = tabs.newTabSpec(TAB_ANSWERS);
+		aTab.setContent(R.id.answerSummaryList);
+		aTab.setIndicator(String.format("%s (%d)", getString(R.string.tab_answers), ala.getCount()));
+		tabs.addTab(aTab);
 		
+		TabHost.TabSpec cTab = tabs.newTabSpec(TAB_COMMENTS);
+		cTab.setContent(R.id.commentList);
+		cTab.setIndicator(getString(R.string.tab_comments));
+		tabs.addTab(cTab);
+
+		TextView qTitle = (TextView) findViewById(R.id.questionTitle);
+		qTitle.setText(question.getTitle());
+		TextView qBody = (TextView) findViewById(R.id.questionBody);
+		qBody.setText(question.getBody());
+		TextView qUser = (TextView) findViewById(R.id.questionUser);
+		qUser.setText(question.getAuthor());
+		TextView upvotes = (TextView) findViewById(R.id.upvotes);
+		upvotes.setText(question.getUpvotes().toString());
 		List<Answer> al = new ArrayList<Answer>();
 		for(Answer a: question.getAnswerList()) {
 			al.add(a);
@@ -77,23 +94,6 @@ public class QuestionActivity extends Activity {
 		ListView commentView = (ListView) findViewById(R.id.commentList);
 		commentView.setAdapter(cla);
 
-		TabHost.TabSpec aTab = tabs.newTabSpec(TAB_ANSWERS);
-		aTab.setContent(R.id.answerSummaryList);
-		aTab.setIndicator(String.format("%s (%d)", getString(R.string.tab_answers), ala.getCount()));
-		tabs.addTab(aTab);
-
-		TabHost.TabSpec cTab = tabs.newTabSpec(TAB_COMMENTS);
-		cTab.setContent(R.id.commentList);
-		cTab.setIndicator(getString(R.string.tab_comments));
-		tabs.addTab(cTab);
-
-		TextView qTitle = (TextView) findViewById(R.id.questionTitle);
-		qTitle.setText(question.getTitle());
-		TextView qBody = (TextView) findViewById(R.id.questionBody);
-		qBody.setText(question.getBody());
-		TextView qUser = (TextView) findViewById(R.id.questionUser);
-		qUser.setText(question.getAuthor());
-		
 		
 		answerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
@@ -194,5 +194,11 @@ public class QuestionActivity extends Activity {
     	ala.update();
     	cla.update();
     	Toast.makeText(getApplicationContext(), "Item successfully added", Toast.LENGTH_LONG).show();
+    }
+    
+    public void upvoteQuestion(View v){
+    	question.addUpvote();
+    	TextView upvotes = (TextView) findViewById(R.id.upvotes);
+    	upvotes.setText(question.getUpvotes().toString());
     }
 }
