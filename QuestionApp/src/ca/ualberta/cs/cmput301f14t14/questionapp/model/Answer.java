@@ -29,6 +29,7 @@ public class Answer extends Model implements Serializable {
 		this.parent = null;
 		this.commentList = new ArrayList<Comment<Answer>>();
 		setDate(new Date());
+		upVotes = 0;
 	}
 
 	//Create answer with a parent, body, string and optional image
@@ -40,6 +41,7 @@ public class Answer extends Model implements Serializable {
 		setParent(parent);
 		setCommentList(new ArrayList<Comment<Answer>>());
 		setDate(new Date());
+		upVotes = 0;
 	}
 	
 	public Image getImage() {
@@ -81,7 +83,7 @@ public class Answer extends Model implements Serializable {
 		}
 	}
 
-	public int getUpvotes() {
+	public Integer getUpvotes() {
 		return upVotes;
 	}
 

@@ -9,8 +9,10 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddAnswerDialogFragment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddCommentDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AnswerListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.ViewCommentDialogFragment;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -32,13 +34,14 @@ public class QuestionActivity extends Activity {
 	private AnswerListAdapter ala = null;
 	private CommentListAdapter<Question> cla = null;
 	private Question question;
+	private TabHost tabs;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_question);
 
-		TabHost tabs = (TabHost) findViewById(android.R.id.tabhost);
+		tabs = (TabHost) findViewById(android.R.id.tabhost);
 		tabs.setup();
 		
 		Intent intent = getIntent();
@@ -53,24 +56,24 @@ public class QuestionActivity extends Activity {
 			Toast.makeText(getApplicationContext(), "Could not open specified question.", Toast.LENGTH_LONG).show();
 			finish();
 		}
-		
+
 		TabHost.TabSpec aTab = tabs.newTabSpec(TAB_ANSWERS);
 		aTab.setContent(R.id.answerSummaryList);
-		aTab.setIndicator(getString(R.string.tab_answers));
+		aTab.setIndicator(String.format("%s (%d)", getString(R.string.tab_answers), ala.getCount()));
 		tabs.addTab(aTab);
-
+		
 		TabHost.TabSpec cTab = tabs.newTabSpec(TAB_COMMENTS);
 		cTab.setContent(R.id.commentList);
 		cTab.setIndicator(getString(R.string.tab_comments));
 		tabs.addTab(cTab);
 
 		TextView qTitle = (TextView) findViewById(R.id.questionTitle);
-		TextView upvotes = (TextView) findViewById(R.id.upvotes);
 		qTitle.setText(question.getTitle());
 		TextView qBody = (TextView) findViewById(R.id.questionBody);
 		qBody.setText(question.getBody());
 		TextView qUser = (TextView) findViewById(R.id.questionUser);
 		qUser.setText(question.getAuthor());
+		TextView upvotes = (TextView) findViewById(R.id.upvotes);
 		upvotes.setText(question.getUpvotes().toString());
 		List<Answer> al = new ArrayList<Answer>();
 		for(Answer a: question.getAnswerList()) {
@@ -90,10 +93,9 @@ public class QuestionActivity extends Activity {
 		cla = new CommentListAdapter<Question>(this, R.layout.list_comment, cl);
 		ListView commentView = (ListView) findViewById(R.id.commentList);
 		commentView.setAdapter(cla);
-		
+
 		
 		answerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -105,6 +107,27 @@ public class QuestionActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+		
+		commentView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				final Comment<Question> c = cla.getItem(position);
+				//Need questionId, commentId
+				UUID qId = question.getId();
+				UUID cId = c.getId();
+				
+				ViewCommentDialogFragment vcdf = new ViewCommentDialogFragment();
+				Bundle argbundle = new Bundle();
+				argbundle.putString("questionId", qId.toString());
+				argbundle.putString("commentId", cId.toString());
+				vcdf.setArguments(argbundle);
+				vcdf.show(getFragmentManager(), "QuestionActivityViewCommentDF");
+				
+			}
+		});
+		
+	
 		
 	}
 
@@ -121,19 +144,41 @@ public class QuestionActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		
+		switch(id) {
+			case R.id.action_settings:
+				return true;
+			case R.id.action_add_answer:
+				addAnswer(null);
+				break;
+			case R.id.action_add_comment:
+				addComment(null);
+				break;
 		}
+
 		return super.onOptionsItemSelected(item);
 	}
 	
     public void addAnswer(View view){
     	FragmentManager fm = getFragmentManager();
     	Bundle QuesBox = new Bundle();
-    	QuesBox.putString( "Qid",question.getId().toString());
+    	QuesBox.putString( "Qid", question.getId().toString());
     	AddAnswerDialogFragment aA = new AddAnswerDialogFragment();
     	aA.setArguments(QuesBox);
     	aA.show(fm, "addanswerdialogfragmentlayout");
+    }
+    
+    public void addComment(View view) {
+    	/* Add a comment to this question */
+		AddCommentDialogFragment acdf = new AddCommentDialogFragment();
+		Bundle argbundle = new Bundle();
+		try{
+			argbundle.putString("questionId", question.getId().toString());
+		} catch (NullPointerException e) {
+			Log.d("QuestionActivity Add Comment", "NPE on addcomment. Question object null");
+		}
+		acdf.setArguments(argbundle);
+		acdf.show(getFragmentManager(), "AVAaddcommentDF");
     }
     
     public void updateQuestion(Question q) {

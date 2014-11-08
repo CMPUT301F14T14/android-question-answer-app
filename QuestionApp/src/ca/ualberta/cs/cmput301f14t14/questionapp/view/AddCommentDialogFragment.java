@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import ca.ualberta.cs.cmput301f14t14.questionapp.AnswerViewActivity;
+import ca.ualberta.cs.cmput301f14t14.questionapp.QuestionActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
@@ -23,9 +25,23 @@ public class AddCommentDialogFragment extends DialogFragment {
 		
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		
-		final UUID questionId = UUID.fromString(savedInstanceState.getString("questionId"));
-		final UUID answerId = UUID.fromString(savedInstanceState.getString("answerId"));
+		/* If you don't like getArguments(), then figure out why this NPE's yourself */
+		//final UUID questionId = UUID.fromString(savedInstanceState.getString("questionId"));
+		//final UUID answerId = UUID.fromString(savedInstanceState.getString("answerId"));
 
+		UUID tqid = null;
+		UUID taid = null;
+		
+		try {
+			tqid = UUID.fromString(getArguments().getString("questionId"));
+			taid = UUID.fromString(getArguments().getString("answerId"));
+		} catch(NullPointerException e) {
+			
+		}
+		
+		final UUID questionId = tqid;
+		final UUID answerId = taid;
+		
 		final View viewComment = inflater.inflate(R.layout.addcommentdialogfragmentlayout, null);
 		builder.setView(viewComment)
 		.setPositiveButton(R.string.OK, 
@@ -41,13 +57,21 @@ public class AddCommentDialogFragment extends DialogFragment {
 							
 							if(answerId != null){
 								@SuppressWarnings({ "rawtypes", "unchecked" })
-								Comment<Answer> comment = new Comment(answer, body.toString(), username);
+								Comment<Answer> comment = new Comment(answer, body.getText().toString(), username);
 								datamanager.addAnswerComment(questionId, answerId, comment);
 							}
 							else{
 								@SuppressWarnings({ "unchecked", "rawtypes" })
-								Comment<Question> comment = new Comment(question,body.toString(), username);
+								Comment<Question> comment = new Comment(question,body.getText().toString(), username);
 								datamanager.addQuestionComment(questionId, comment);
+							}
+							
+							//Ugly, but this if statement will only ever be this big.
+							if (getActivity() instanceof QuestionActivity){
+								((QuestionActivity)getActivity()).updateQuestion(question);
+							} 
+							if (getActivity() instanceof AnswerViewActivity) {
+								((AnswerViewActivity)getActivity()).updateAnswer(answer);
 							}
 						}
 					}
