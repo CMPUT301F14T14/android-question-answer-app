@@ -8,9 +8,11 @@ import android.content.Context;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.Model;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
+/**
+ * DataManager is a singleton that talks to local and remote data sources
+ */
 public class DataManager {
 
 	private static DataManager instance;
@@ -30,7 +32,12 @@ public class DataManager {
 		this.clientData = new ClientData(context);
 		this.localDataStore = new LocalDataStore(context);
 	}
-	
+
+	/**
+	 * Singleton getter
+	 * @param context
+	 * @return Instance of DataManager
+	 */
 	public static DataManager getInstance(Context context){
 		if (instance == null){
 			instance = new DataManager(context.getApplicationContext());
@@ -47,6 +54,11 @@ public class DataManager {
 		
 	}
 
+	/**
+	 * Get a question by its UUID
+	 * @param id
+	 * @return
+	 */
 	public Question getQuestion(UUID id) {
 		questionList = localDataStore.getQuestionList();
 		Iterator<Question> list = questionList.iterator();
@@ -59,7 +71,12 @@ public class DataManager {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Add an answer record
+	 * @param Qid Parent question ID
+	 * @param A Answer to add
+	 */
 	public void addAnswer(UUID Qid, Answer A){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
@@ -69,14 +86,25 @@ public class DataManager {
 		questionList.set(position, question);
 		localDataStore.save();
 	}
-	
+
+	/**
+	 * Get answer record
+	 * @param Qid Parent question ID
+	 * @param Aid Answer ID
+	 * @return
+	 */
 	public Answer getAnswer(UUID Qid, UUID Aid) {
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Answer answer = question.getAnswer(Aid);
 		return answer;
 	}
-	
+
+	/**
+	 * Add comment record to question
+	 * @param Qid Parent question
+	 * @param C
+	 */
 	public void addQuestionComment(UUID Qid, Comment<Question> C){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
@@ -87,13 +115,25 @@ public class DataManager {
 		localDataStore.save();
 	}
 
+	/**
+	 * Get comment record from question
+	 * @param Qid Parent question
+	 * @param cid
+	 * @return
+	 */
 	public Comment<Question> getQuestionComment(UUID Qid, UUID cid) {
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
 		Comment<Question> comment = question.getComment(cid);
 		return comment;
 	}
-	
+
+	/**
+	 * Add comment record for answer
+	 * @param Qid Parent question
+	 * @param Aid Parent answer
+	 * @param C
+	 */
 	public void addAnswerComment(UUID Qid, UUID Aid, Comment<Answer> C){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
@@ -105,7 +145,14 @@ public class DataManager {
 		localDataStore.putAComment(C);
 		localDataStore.save();
 	}
-	
+
+	/**
+	 * Get comment record from answer
+	 * @param Qid Parent question
+	 * @param Aid Parent answer
+	 * @param Cid
+	 * @return
+	 */
 	public Comment<Answer> getAnswerComment(UUID Qid, UUID Aid, UUID Cid){
 		questionList = localDataStore.getQuestionList();
 		Question question = getQuestion(Qid);
@@ -113,18 +160,32 @@ public class DataManager {
 		Comment<Answer> comment = answer.getComment(Cid);
 		return comment;
 	}
-	
+
+	/**
+	 * Get a list of all existing questions.
+	 * 
+	 * This list is not returned with any particular order.
+	 * @return
+	 */
 	public List<Question> load(){
 		questionList = localDataStore.getQuestionList();
 		return questionList;
 	}
 
+	/**
+	 * Mark a question as a favorite
+	 * @param questionId
+	 */
 	public void favoriteQuestion(UUID questionId) {
 		favouriteQuestions = clientData.getFavoriteQuestions();
 		favouriteQuestions.add(questionId);
 		//localdatamanager.save(favouriteQuestions);
 	}
 
+	/**
+	 * Mark an answer as a favorite
+	 * @param Aid
+	 */
 	public void favoriteAnswer(UUID Aid) {
 		favouriteAnswers = clientData.getFavoriteAnswers();
 		favouriteAnswers.add(Aid);
