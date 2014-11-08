@@ -77,7 +77,9 @@ public class QuestionActivity extends Activity {
 		qUser.setText(question.getAuthor());
 		TextView upvotes = (TextView) findViewById(R.id.upvotes);
 		upvotes.setText(question.getUpvotes().toString());
-		
+		TextView date = (TextView) findViewById(R.id.questionDate);
+		date.setText(question.getDate().toString());
+
 		// set arrayLists of relevant comments and answers
 		List<Answer> al = new ArrayList<Answer>();
 		for(Answer a: question.getAnswerList()) {

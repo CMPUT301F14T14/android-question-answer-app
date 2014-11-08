@@ -26,9 +26,11 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 		TextView qTitle = (TextView) convertView.findViewById(R.id.question_title); 
 		TextView qText = (TextView) convertView.findViewById(R.id.question_body);
 		TextView qAuthor = (TextView) convertView.findViewById(R.id.question_username);
+		TextView qDate = (TextView) convertView.findViewById(R.id.question_date);
 		qTitle.setText(q.getTitle());
 		qText.setText(q.getBody());
 		qAuthor.setText(q.getAuthor());
+		qDate.setText(q.getDate().toString());
 		
 		return convertView;
 	}
