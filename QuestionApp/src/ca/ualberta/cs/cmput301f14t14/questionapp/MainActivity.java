@@ -46,12 +46,14 @@ public class MainActivity extends Activity {
                 
         dataManager = DataManager.getInstance(this);
         
+        // if first time logging in, prompt user to set username
         if(dataManager.getUsername() == null){
 
         	Intent intent = new Intent(this.getBaseContext(), WelcomeScreenActivity.class);
         	startActivityForResult(intent, Activity.RESULT_FIRST_USER);
         }
         
+        //create the list of questions
         List<Question> qList = dataManager.load();
         qla = new QuestionListAdapter(this, R.layout.list_question, qList);  
         ListView questionView = (ListView) findViewById(R.id.question_list);
@@ -61,6 +63,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				// run off to the question view if you tap an item
 				final Question question = qla.getItem(position);
 				UUID qId = question.getId();
 				Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
@@ -76,6 +79,7 @@ public class MainActivity extends Activity {
     	return new OnNavigationListener() {
 			@Override
 			public boolean onNavigationItemSelected(int itemposition, long itemid) {
+				// change way of sorting based on way selected
 				List<Question> sortedList = MainActivity.sortList(itemposition, dataManager);
 				qla.clear();
 				qla.addAll(sortedList);
@@ -88,11 +92,12 @@ public class MainActivity extends Activity {
 
 
     protected static List<Question> sortList(int itemposition, final DataManager dm) {
-		
+		// sort the list based on way selected
     	List<Question> qlist = dm.load();
 
 		switch (itemposition){
 		case 1:{
+			// Sort by date
 			Collections.sort(qlist, new Comparator<Question>(){
 			
 				@Override
@@ -106,6 +111,7 @@ public class MainActivity extends Activity {
 			break;
 		}	
 		case 2:{
+			// Sort by most upvoted
 			Collections.sort(qlist, new Comparator<Question>(){
 
 				@Override
@@ -122,6 +128,7 @@ public class MainActivity extends Activity {
 			
 		}
 		case 4:{
+			// Sort by current user posts
 			Collections.sort(qlist, new Comparator<Question>(){
 
 				@Override
@@ -171,7 +178,7 @@ public class MainActivity extends Activity {
     }
     
     public void onActivityResult(int requestCode, int resultCode,Intent intent){
-    	
+    	// Come back to this activity after creating username
     	if (requestCode == Activity.RESULT_FIRST_USER && resultCode == Activity.RESULT_OK){
     		String username = intent.getStringExtra("username");
     		Toast.makeText(this, "Welcome " + username + " to Qasper", Toast.LENGTH_SHORT).show();
@@ -182,12 +189,14 @@ public class MainActivity extends Activity {
     }
     
     public void addQuestion(View view){
+    	// open dialog to create a question
     	FragmentManager fm = getFragmentManager();
     	AddQuestionDialogFragment aQ = new AddQuestionDialogFragment();
     	aQ.show(fm, "addquestiondialogfragmentlayout");
     }
     
     public void updateList(Question q) {
+    	// update the list
     	qla.add(q);
     	qla.update();
     	Toast.makeText(getApplicationContext(), "Question successfully added", Toast.LENGTH_LONG).show();
