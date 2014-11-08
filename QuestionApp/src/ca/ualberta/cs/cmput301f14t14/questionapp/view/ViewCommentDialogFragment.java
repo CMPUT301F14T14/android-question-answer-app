@@ -25,20 +25,27 @@ public class ViewCommentDialogFragment extends DialogFragment  {
 		
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		
-		UUID questionId = UUID.fromString(getArguments().getString("questionId"));
-		UUID answerId = UUID.fromString(getArguments().getString("answerId"));
-		UUID commentId = UUID.fromString(getArguments().getString("commentId"));
+		//UUID.fromString NPEs if property is missing. Need to fix this.
+		UUID questionId = null;
+		UUID answerId = null;
+		UUID commentId = null;
+		
+		//These two should never be null/empty.
+		questionId = UUID.fromString(getArguments().getString("questionId"));
+		commentId = UUID.fromString(getArguments().getString("commentId"));
+		try {answerId = UUID.fromString(getArguments().getString("answerId"));
+		} catch(NullPointerException e){}
 		
 		DataManager datamanager = DataManager.getInstance(getActivity());
 		
 		Comment<?> comment = null;
 		if(answerId != null){
 			 comment = datamanager.getAnswerComment(questionId, answerId, commentId);
-		}
-		else{
+		}else{
 			 comment = datamanager.getQuestionComment(questionId, commentId);
 		}
 		 
+		builder.setTitle(R.string.viewing_comments);
 		View viewComment = inflater.inflate(R.layout.viewcommentdialogfragmentlayout, null);
 		builder.setView(viewComment);
 		
