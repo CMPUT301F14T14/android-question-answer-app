@@ -37,6 +37,7 @@ implements IView{
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
+							//Create a new question from data given
 							DataManager datamanager = DataManager.getInstance(context);
 							EditText title = (EditText) text.findViewById(R.id.add_question_title);
 							EditText body = (EditText) text.findViewById(R.id.add_question_body);

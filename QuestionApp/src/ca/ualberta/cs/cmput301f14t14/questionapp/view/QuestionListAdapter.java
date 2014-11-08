@@ -22,7 +22,7 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_question, parent, false);
 		}
 		
-		Question q = getItem(position); //Emotional Comment
+		Question q = getItem(position); 
 		TextView qTitle = (TextView) convertView.findViewById(R.id.question_title); 
 		TextView qText = (TextView) convertView.findViewById(R.id.question_body);
 		TextView qAuthor = (TextView) convertView.findViewById(R.id.question_username);
@@ -37,6 +37,7 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 
 	@Override
 	public void update() {
+		//This is proper MVC
 		notifyDataSetChanged();
 	}
 
