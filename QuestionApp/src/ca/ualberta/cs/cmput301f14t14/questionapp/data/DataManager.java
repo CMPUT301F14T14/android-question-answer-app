@@ -154,6 +154,21 @@ public class DataManager {
 		clientData.clear();
 	}
 	
+	public void updateQuestion(Question upQuestion){
+		questionList = localDataStore.getQuestionList();
+		Iterator<Question> list = questionList.iterator();
+		while(list.hasNext()){
+			Question question = list.next();
+			UUID qid = question.getId();
+			if(upQuestion.getId().equals(qid)){
+				questionList.remove(question);
+				questionList.add(upQuestion);
+				localDataStore.save();
+				return;
+			}
+		}
+	}
+	
 	public Question getReadLaterQuestion(UUID qId){
 		if(readLater.contains(qId)){
 			

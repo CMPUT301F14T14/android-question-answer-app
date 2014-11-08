@@ -9,7 +9,7 @@ import java.util.UUID;
 
 
 public class Question extends Model implements Serializable {
-
+	
 	private static final long serialVersionUID = -8123919371607337418L;
 
 	private UUID id;
@@ -47,6 +47,7 @@ public class Question extends Model implements Serializable {
 		setDate(new Date());
 	}
 
+	//Add an answer if it already hasn't been
 	public void addAnswer(Answer a) {
 		if (!answerList.contains(a)) {
 			answerList.add(a);
@@ -62,6 +63,7 @@ public class Question extends Model implements Serializable {
 		return title;
 	}
 
+	//Set the title if there is one and trim the whitespace
 	private void setTitle(String title) {
 		if (title == null || title.trim().length() == 0)
 			throw new IllegalArgumentException("Question title may not be blank.");
@@ -72,6 +74,7 @@ public class Question extends Model implements Serializable {
 		return body;
 	}
 
+	//Set the body if there is one and trim the whitespace
 	private void setBody(String body) {
 		if (body == null || body.trim().length() == 0)
 			throw new IllegalArgumentException("Question body may not be blank.");
@@ -98,6 +101,7 @@ public class Question extends Model implements Serializable {
 		return commentList.contains(comment);
 	}
 
+	//Add comment if it already hasn't been added
 	public void addComment(Comment<Question> comment) {
 		if (!commentList.contains(comment)) {
 			commentList.add(comment);
@@ -137,6 +141,7 @@ public class Question extends Model implements Serializable {
 		this.answerList = answerList;
 	}
 	
+	//If the question has an answer return it return null otherwise
 	public Answer getAnswer(UUID Aid){
 		Iterator<Answer> list = answerList.iterator();
 		while(list.hasNext()){
@@ -149,6 +154,7 @@ public class Question extends Model implements Serializable {
 		return null;
 	}
 	
+	//If the question has the comment, return it. Return null otherwise
 	public Comment<Question> getComment(UUID Cid){
 		Iterator<Comment<Question>> list = commentList.iterator();
 		while(list.hasNext()){
@@ -161,12 +167,15 @@ public class Question extends Model implements Serializable {
 		return null;
 	}
 	
+	//Set the position of the answer in the answer list
 	public void setAnswer(UUID Aid, Answer answer){
 		Answer ans = getAnswer(Aid);
 		Integer position = answerList.indexOf(ans);
 		answerList.set(position, answer);
 	}
 	
+	//Check the Question attributes against each other and return true if they are the same. 
+	//Returns false if a non question is put in
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Question)) return false;
@@ -177,6 +186,7 @@ public class Question extends Model implements Serializable {
 				q.commentList.equals(this.commentList);
 	}
 
+	//Return the string representation of a question
 	@Override
 	public String toString() {
 		return String.format("Question [%s: %s - %s]", title, body, author);
