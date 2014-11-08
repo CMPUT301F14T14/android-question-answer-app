@@ -33,6 +33,7 @@ public class AnswerListAdapter extends ArrayAdapter<Answer> implements IView {
 
 	@Override
 	public void update() {
+		//This is Proper MVC
 		notifyDataSetChanged();
 	}
 

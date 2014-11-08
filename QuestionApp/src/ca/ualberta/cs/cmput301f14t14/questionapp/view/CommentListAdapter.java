@@ -34,6 +34,7 @@ public class CommentListAdapter<T extends Model> extends ArrayAdapter<Comment<T>
 
 	@Override
 	public void update() {
+		//This is proper MVC
 		notifyDataSetChanged();
 	}
 

@@ -24,10 +24,6 @@ public class AddCommentDialogFragment extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		
 		LayoutInflater inflater = getActivity().getLayoutInflater();
-		
-		/* If you don't like getArguments(), then figure out why this NPE's yourself */
-		//final UUID questionId = UUID.fromString(savedInstanceState.getString("questionId"));
-		//final UUID answerId = UUID.fromString(savedInstanceState.getString("answerId"));
 
 		UUID tqid = null;
 		UUID taid = null;
@@ -48,6 +44,8 @@ public class AddCommentDialogFragment extends DialogFragment {
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
+							//Creates a new comment for either answer or question depending on where the button
+							//is pushed. Uses the data from the dialog fragment
 							EditText body = (EditText) viewComment.findViewById(R.id.add_comment_body);
 						
 							DataManager datamanager = DataManager.getInstance(getActivity());

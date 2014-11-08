@@ -193,6 +193,8 @@ public class QuestionActivity extends Activity {
     }
     
     public void updateQuestion(Question q) {
+    	/*Adds all aspects of a new question to the adapters and 
+    	 * updates the lists with the new Question */
     	this.question = q;
     	ala.clear();
     	cla.clear();
@@ -207,8 +209,9 @@ public class QuestionActivity extends Activity {
     	Toast.makeText(getApplicationContext(), "Item successfully added", Toast.LENGTH_LONG).show();
     }
     
-    // Upvote DAT QUESTION
+    
     public void upvoteQuestion(View v){
+    	//Adds upvotes and updates textview to show number of upvotes
     	question.addUpvote();
     	TextView upvotes = (TextView) findViewById(R.id.upvotes);
     	upvotes.setText(question.getUpvotes().toString());

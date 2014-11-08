@@ -25,7 +25,6 @@ implements IView{
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -41,6 +40,7 @@ implements IView{
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
+							//Creates a new answer with data from dialog fragment
 							DataManager datamanager = DataManager.getInstance(context);
 							UUID Qid = UUID.fromString(getArguments().getString( "Qid"));
 							EditText body = (EditText) text.findViewById(R.id.add_answer_body);
