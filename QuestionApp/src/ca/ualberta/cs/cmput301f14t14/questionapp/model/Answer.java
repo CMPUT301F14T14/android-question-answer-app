@@ -31,6 +31,7 @@ public class Answer extends Model implements Serializable {
 		setDate(new Date());
 	}
 
+	//Create answer with a parent, body, string and optional image
 	public Answer(Question parent, String body, String author, Image image) {
 		setId(UUID.randomUUID());
 		setBody(body);
@@ -53,6 +54,7 @@ public class Answer extends Model implements Serializable {
 		return body;
 	}
 	
+	//Make sure there is a body and trim the whitespace
 	public void setBody(String body) {
 		if (body == null || body.trim().length() == 0)
 			throw new IllegalArgumentException("Answer body may not be blank.");
@@ -71,8 +73,9 @@ public class Answer extends Model implements Serializable {
 		return commentList.contains(comment);
 	}
 
+	//add comment if not already added
 	public void addComment(Comment<Answer> comment) {
-		if (!commentList.contains(comment)) {
+		if (!hasComment(comment)) {
 			commentList.add(comment);
 			comment.setParent(this);
 		}
@@ -110,6 +113,7 @@ public class Answer extends Model implements Serializable {
 		this.parent = parent;
 	}
 	
+	//Grab a comment from the list return null if not in the list
 	public Comment<Answer> getComment(UUID Cid){
 		Iterator<Comment<Answer>> list = commentList.iterator();
 		while(list.hasNext()){
@@ -122,6 +126,7 @@ public class Answer extends Model implements Serializable {
 		return null;
 	}
 
+	//Checks the attributes of an answer against the object and this to make sure it is the same
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Answer)) return false;
@@ -131,6 +136,7 @@ public class Answer extends Model implements Serializable {
 				a.author.equals(this.author) && a.commentList.equals(this.commentList);
 	}
 	
+	//Give the string representation of an answer
 	@Override
 	public String toString() {
 		return String.format("Answer [%s - %s]", body, author);

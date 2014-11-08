@@ -27,6 +27,7 @@ public class UsernameFragment extends DialogFragment {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						//Callback to WelcomeScreenActivity
 						((WelcomeScreenActivity) getActivity()).setUsername(UsernameFragment.this);
 						
 					}
@@ -39,7 +40,6 @@ public class UsernameFragment extends DialogFragment {
 				new DialogInterface.OnClickListener() {	
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
 						//Do nothing
 					}
 		

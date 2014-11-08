@@ -45,7 +45,9 @@ public class Comment<T extends Model> implements Serializable {
 	public void setParent(T parent) {
 		this.parent = parent;
 	}
-	
+
+	//Check the attributes against each other and returns true if . Returns false otherwise or if a 
+	//non comment is equated
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Comment<?>)) return false;
@@ -54,6 +56,7 @@ public class Comment<T extends Model> implements Serializable {
 		return c.id.equals(this.id) && c.body.equals(this.body) && c.username.equals(this.username); 
 	}
 	
+	//Return string representation of a comment
 	@Override
 	public String toString() {
 		return String.format("Comment [%s - %s]", body, username);

@@ -18,15 +18,15 @@ public class WelcomeScreenActivity extends Activity implements IView {
 		findViewById(R.id.specifyUsernameButton).setOnClickListener(ocl);
 	}
 
-	private View.OnClickListener ocl = new View.OnClickListener() {
-		
+	
+	//Private required onClickListener to start fragment 
+	private View.OnClickListener ocl = new View.OnClickListener() {		
 		@Override
 		public void onClick(View v) {
 			
 			switch (v.getId()){
 			case R.id.specifyUsernameButton:
 				onCreateUsername();
-				
 				 break;
 
 			}
@@ -48,6 +48,7 @@ public class WelcomeScreenActivity extends Activity implements IView {
 		String username = userText.getText().toString();
 		
 		if (username.length() > 0) {
+			// return to main activity
 			Intent intent = new Intent();
 			intent.putExtra("username", username);
 			setResult(Activity.RESULT_OK, intent);
@@ -60,7 +61,6 @@ public class WelcomeScreenActivity extends Activity implements IView {
 	
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 		
 	}
 	
