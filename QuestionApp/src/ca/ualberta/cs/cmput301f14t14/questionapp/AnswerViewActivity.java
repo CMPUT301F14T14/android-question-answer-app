@@ -52,7 +52,7 @@ public class AnswerViewActivity extends Activity {
 		/* Populate the answer text into the top part of the form */
 		((TextView) findViewById(R.id.answer_body)).setText(this.answer.getBody());
 		((TextView) findViewById(R.id.answer_username)).setText(this.answer.getAuthor());
-		
+		((TextView) findViewById(R.id.answer_upvotes)).setText(answer.getUpvotes().toString());
 		/* Populate comment list */
 		List<Comment<Answer>> cl = new ArrayList<Comment<Answer>>();
 		cl.addAll(answer.getCommentList());
@@ -65,7 +65,7 @@ public class AnswerViewActivity extends Activity {
 		commentView.setOnItemClickListener(new ListView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-				/* Open a new ViewCommentDialogFragment */
+				 //Open a new ViewCommentDialogFragment 
 				ViewCommentDialogFragment vcdf = new ViewCommentDialogFragment();
 				Bundle argbundle = new Bundle();
 				argbundle.putString("questionId", qId);
@@ -78,23 +78,11 @@ public class AnswerViewActivity extends Activity {
 				vcdf.show(getFragmentManager(), "AVCommentViewDF");
 			}
 		});
-		
-		/* Onclick listeners for upvote, add comment */
-		((ImageButton)findViewById(R.id.answer_view_upvote_answer))
-				.setOnClickListener(new Button.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						/* Upvote this answer */
-						DataManager dm = DataManager.getInstance(getApplicationContext());
-						dm.getAnswer(UUID.fromString(qId), UUID.fromString(aId)).addUpvote();
-						//TODO: Once we start displaying upvote count, need to do a view update.
-					}
-				});
 		((ImageButton)findViewById(R.id.answer_view_add_comment))
 				.setOnClickListener(new Button.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						/* Add a comment to this answer */
+						// Add a comment to this answer 
 						AddCommentDialogFragment acdf = new AddCommentDialogFragment();
 						Bundle argbundle = new Bundle();
 						argbundle.putString("questionId", qId);
@@ -115,5 +103,11 @@ public class AnswerViewActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		//
+	}
+	
+	public void addAnsUpvote(View v){
+		answer.addUpvote();
+		TextView upvotes = (TextView) findViewById(R.id.answer_upvotes);
+		upvotes.setText(answer.getUpvotes().toString());
 	}
 }
