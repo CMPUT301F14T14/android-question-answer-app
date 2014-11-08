@@ -16,6 +16,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.view.ViewCommentDialogFragment;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -58,6 +59,27 @@ public class QuestionActivity extends Activity {
 			finish();
 		}
 
+		
+		// set arrayLists of relevant comments and answers
+		List<Answer> al = new ArrayList<Answer>();
+		for(Answer a: question.getAnswerList()) {
+			al.add(a);
+		}
+		
+		List<Comment<Question>> cl = new ArrayList<Comment<Question>>();
+		for(Comment<Question> c: question.getCommentList()) {
+			cl.add(c);
+		}
+
+		// create the array adapters to show information
+		ala = new AnswerListAdapter(this, R.layout.list_answer, al);
+		ListView answerView = (ListView) findViewById(R.id.answerSummaryList);
+		answerView.setAdapter(ala);
+		
+		cla = new CommentListAdapter<Question>(this, R.layout.list_comment, cl);
+		ListView commentView = (ListView) findViewById(R.id.commentList);
+		commentView.setAdapter(cla);
+
 		TabHost.TabSpec aTab = tabs.newTabSpec(TAB_ANSWERS);
 		aTab.setContent(R.id.answerSummaryList);
 		aTab.setIndicator(String.format("%s (%d)", getString(R.string.tab_answers), ala.getCount()));
@@ -79,26 +101,6 @@ public class QuestionActivity extends Activity {
 		upvotes.setText(question.getUpvotes().toString());
 		TextView date = (TextView) findViewById(R.id.questionDate);
 		date.setText(question.getDate().toString());
-
-		// set arrayLists of relevant comments and answers
-		List<Answer> al = new ArrayList<Answer>();
-		for(Answer a: question.getAnswerList()) {
-			al.add(a);
-		}
-		
-		List<Comment<Question>> cl = new ArrayList<Comment<Question>>();
-		for(Comment<Question> c: question.getCommentList()) {
-			cl.add(c);
-		}
-
-		// create the array adapters to show information
-		ala = new AnswerListAdapter(this, R.layout.list_answer, al);
-		ListView answerView = (ListView) findViewById(R.id.answerSummaryList);
-		answerView.setAdapter(ala);
-		
-		cla = new CommentListAdapter<Question>(this, R.layout.list_comment, cl);
-		ListView commentView = (ListView) findViewById(R.id.commentList);
-		commentView.setAdapter(cla);
 
 		// when clicking an answer item, view the answer in a separate activity
 		answerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
