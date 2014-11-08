@@ -28,7 +28,10 @@ public class AnswerViewActivity extends Activity {
 	String qId = null;
 	String aId = null;
 	
-
+	/* These need to be class variables so that update
+	 * updateAnswer() can access them. ucla is initialized
+	 * as null right now, later initialized to a final.
+	 */
 	private List<Comment<Answer>> cl = new ArrayList<Comment<Answer>>();
 	CommentListAdapter<Answer> ucla = null;
 	@Override
@@ -62,7 +65,7 @@ public class AnswerViewActivity extends Activity {
 		cl.addAll(answer.getCommentList());
 			//Set list adapter
 		final CommentListAdapter<Answer> cla = new CommentListAdapter<Answer>(this, R.layout.list_comment, cl);
-		ucla = cla;
+		ucla = cla; // set UCLA to be a reference to the final cla.
 		ListView commentView = (ListView) findViewById(R.id.answer_view_comment_list);
 		commentView.setAdapter(cla);
 		
@@ -102,17 +105,18 @@ public class AnswerViewActivity extends Activity {
 		
 	}
 	
-	//Need Onclick Listeners for Upvote, Comment.
-	//Need to populate ListView with comments for this answer.
-	//Need to have an onitemclicked listener on the list view to open the ViewCommentDialogFragment.
-	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		//Update list adapters.
 		
 	}
-	
+	/**
+	 * Updates the comment list adapter in the AnswerView
+	 * activity once an AddCommentDialogFragment adds a comment
+	 * to this answer.
+	 * @param a an answer object 
+	 */
 	public void updateAnswer(Answer a) {
 		//Need to update the list adapters.
 		//move to class variables so I can access them.
@@ -122,7 +126,11 @@ public class AnswerViewActivity extends Activity {
     	//Toast.makeText(getApplicationContext(), "Item successfully added", Toast.LENGTH_LONG).show();
 
 	}
-	
+	/** 
+	 * Adds an upvote to the answer, increments the counter
+	 * in the view. Also updates the model.
+	 * @param v View needed for xml hook to run.
+	 */
 	public void addAnsUpvote(View v){
 		answer.addUpvote();
 		TextView upvotes = (TextView) findViewById(R.id.answer_upvotes);
