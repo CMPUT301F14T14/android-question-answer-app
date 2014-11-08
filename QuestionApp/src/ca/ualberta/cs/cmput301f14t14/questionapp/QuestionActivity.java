@@ -48,6 +48,7 @@ public class QuestionActivity extends Activity {
 		DataManager dataManager = DataManager.getInstance(getApplicationContext());
 		String qId = intent.getStringExtra("QUESTION_UUID");
 		if (qId != null) {
+			// we have a Question, grab it from dataManager
 			UUID id = UUID.fromString(qId);
 			question = dataManager.getQuestion(id);
 		}
@@ -67,6 +68,7 @@ public class QuestionActivity extends Activity {
 		cTab.setIndicator(getString(R.string.tab_comments));
 		tabs.addTab(cTab);
 
+		// set text on view with relevant data from question
 		TextView qTitle = (TextView) findViewById(R.id.questionTitle);
 		qTitle.setText(question.getTitle());
 		TextView qBody = (TextView) findViewById(R.id.questionBody);
@@ -75,10 +77,11 @@ public class QuestionActivity extends Activity {
 		qUser.setText(question.getAuthor());
 		TextView upvotes = (TextView) findViewById(R.id.upvotes);
 		upvotes.setText(question.getUpvotes().toString());
+		
+		// set arrayLists of relevant comments and answers
 		List<Answer> al = new ArrayList<Answer>();
 		for(Answer a: question.getAnswerList()) {
 			al.add(a);
-			Log.d("bob",a.getBody());
 		}
 		
 		List<Comment<Question>> cl = new ArrayList<Comment<Question>>();
@@ -86,6 +89,7 @@ public class QuestionActivity extends Activity {
 			cl.add(c);
 		}
 
+		// create the array adapters to show information
 		ala = new AnswerListAdapter(this, R.layout.list_answer, al);
 		ListView answerView = (ListView) findViewById(R.id.answerSummaryList);
 		answerView.setAdapter(ala);
@@ -94,7 +98,7 @@ public class QuestionActivity extends Activity {
 		ListView commentView = (ListView) findViewById(R.id.commentList);
 		commentView.setAdapter(cla);
 
-		
+		// when clicking an answer item, view the answer in a separate activity
 		answerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -159,6 +163,7 @@ public class QuestionActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	// method for the add answer button, to given question
     public void addAnswer(View view){
     	FragmentManager fm = getFragmentManager();
     	Bundle QuesBox = new Bundle();
@@ -168,6 +173,8 @@ public class QuestionActivity extends Activity {
     	aA.show(fm, "addanswerdialogfragmentlayout");
     }
     
+    // after adding comment or answer, reset and update the lists
+    // associated with the question
     public void addComment(View view) {
     	/* Add a comment to this question */
 		AddCommentDialogFragment acdf = new AddCommentDialogFragment();
@@ -196,6 +203,7 @@ public class QuestionActivity extends Activity {
     	Toast.makeText(getApplicationContext(), "Item successfully added", Toast.LENGTH_LONG).show();
     }
     
+    // Upvote DAT QUESTION
     public void upvoteQuestion(View v){
     	question.addUpvote();
     	TextView upvotes = (TextView) findViewById(R.id.upvotes);

@@ -120,16 +120,19 @@ public class DataManager {
 	}
 
 	public void favoriteQuestion(UUID questionId) {
+		favouriteQuestions = clientData.getFavoriteQuestions();
 		favouriteQuestions.add(questionId);
 		//localdatamanager.save(favouriteQuestions);
 	}
 
 	public void favoriteAnswer(UUID Aid) {
+		favouriteAnswers = clientData.getFavoriteAnswers();
 		favouriteAnswers.add(Aid);
 		//localdatamanager.save(favouriteAnswers)
 	}
 	
 	public void readQuestionLater(UUID Qid) {
+		readLater = clientData.getReadLater();
 		readLater.add(Qid);
 		//localdatamanager.save(readLater);
 	}
@@ -142,12 +145,8 @@ public class DataManager {
 		clientData.setUsername(username);
 	}
 
-	
-	public void readLater(Question q) {
-		// TODO Auto-generated method stub	
-	}
 
-	public void readLater(Answer mAnswer) {
+	public void readAnswerLater(Answer mAnswer) {
 		// TODO Auto-generated method stub
 	}
 	
