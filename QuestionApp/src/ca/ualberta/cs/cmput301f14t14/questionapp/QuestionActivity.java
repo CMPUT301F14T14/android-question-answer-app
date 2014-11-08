@@ -65,12 +65,12 @@ public class QuestionActivity extends Activity {
 		tabs.addTab(cTab);
 
 		TextView qTitle = (TextView) findViewById(R.id.questionTitle);
-		TextView upvotes = (TextView) findViewById(R.id.upvotes);
 		qTitle.setText(question.getTitle());
 		TextView qBody = (TextView) findViewById(R.id.questionBody);
 		qBody.setText(question.getBody());
 		TextView qUser = (TextView) findViewById(R.id.questionUser);
 		qUser.setText(question.getAuthor());
+		TextView upvotes = (TextView) findViewById(R.id.upvotes);
 		upvotes.setText(question.getUpvotes().toString());
 		List<Answer> al = new ArrayList<Answer>();
 		for(Answer a: question.getAnswerList()) {
