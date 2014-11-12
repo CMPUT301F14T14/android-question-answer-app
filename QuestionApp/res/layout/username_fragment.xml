@@ -7,9 +7,13 @@
         android:id="@+id/usernameText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        
         android:layout_marginTop="20dp"
-        android:ems="10" >
+        android:autoLink="none"
+        android:ems="10"
+        android:hint="@string/username_hint"
+        android:inputType="textPersonName"
+        android:maxLines="1"
+        android:scrollHorizontally="true" >
 
         <requestFocus />
     </EditText>
