@@ -16,7 +16,6 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.view.ViewCommentDialogFragment;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -75,16 +74,17 @@ public class QuestionActivity extends Activity {
 		ala = new AnswerListAdapter(this, R.layout.list_answer, al);
 		ListView answerView = (ListView) findViewById(R.id.answerSummaryList);
 		answerView.setAdapter(ala);
-		
+
 		cla = new CommentListAdapter<Question>(this, R.layout.list_comment, cl);
 		ListView commentView = (ListView) findViewById(R.id.commentList);
 		commentView.setAdapter(cla);
 
 		TabHost.TabSpec aTab = tabs.newTabSpec(TAB_ANSWERS);
 		aTab.setContent(R.id.answerSummaryList);
-		aTab.setIndicator(String.format("%s (%d)", getString(R.string.tab_answers), ala.getCount()));
+		aTab.setIndicator(String.format("%s (%d)",
+				getString(R.string.tab_answers), ala.getCount()));
 		tabs.addTab(aTab);
-		
+
 		TabHost.TabSpec cTab = tabs.newTabSpec(TAB_COMMENTS);
 		cTab.setContent(R.id.commentList);
 		cTab.setIndicator(getString(R.string.tab_comments));
@@ -190,31 +190,40 @@ public class QuestionActivity extends Activity {
 		}
 		acdf.setArguments(argbundle);
 		acdf.show(getFragmentManager(), "AVAaddcommentDF");
-    }
-    
-    public void updateQuestion(Question q) {
-    	/*Adds all aspects of a new question to the adapters and 
-    	 * updates the lists with the new Question */
-    	this.question = q;
-    	ala.clear();
-    	cla.clear();
-    	for(Answer a: question.getAnswerList()) {
+	}
+
+	public void updateQuestion(Question q) {
+		/*
+		 * Adds all aspects of a new question to the adapters and updates the
+		 * lists with the new Question
+		 */
+		this.question = q;
+		ala.clear();
+		cla.clear();
+		for (Answer a : question.getAnswerList()) {
 			ala.add(a);
 		}
-    	for(Comment<Question> c: question.getCommentList()) {
+		for (Comment<Question> c : question.getCommentList()) {
 			cla.add(c);
 		}
-    	ala.update();
-    	cla.update();
-    	Toast.makeText(getApplicationContext(), "Item successfully added", Toast.LENGTH_LONG).show();
-    }
-    
-    
-    public void upvoteQuestion(View v){
-    	//Adds upvotes and updates textview to show number of upvotes
-    	question.addUpvote();
-    	TextView upvotes = (TextView) findViewById(R.id.upvotes);
-    	upvotes.setText(question.getUpvotes().toString());
-    	DataManager.getInstance(this).updateQuestion(question);
-    }
+		ala.update();
+		cla.update();
+
+		// Update count on answer tab
+		TextView aTabLabel = (TextView) tabs.getTabWidget().getChildAt(0)
+				.findViewById(android.R.id.title);
+		aTabLabel.setText(String.format("%s (%d)",
+				getString(R.string.tab_answers), ala.getCount()));
+
+		Toast.makeText(getApplicationContext(), "Item successfully added",
+				Toast.LENGTH_LONG).show();
+	}
+
+	public void upvoteQuestion(View v) {
+		// Adds upvotes and updates textview to show number of upvotes
+		question.addUpvote();
+		TextView upvotes = (TextView) findViewById(R.id.upvotes);
+		upvotes.setText(question.getUpvotes().toString());
+		DataManager.getInstance(this).updateQuestion(question);
+	}
 }
