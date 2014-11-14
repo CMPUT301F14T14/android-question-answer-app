@@ -79,7 +79,6 @@ public class Answer extends Model implements Serializable {
 	public void addComment(UUID comment) {
 		if (!hasComment(comment)) {
 			commentList.add(comment);
-			comment.setParent(this.id);
 		}
 	}
 

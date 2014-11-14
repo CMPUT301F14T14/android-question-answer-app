@@ -51,7 +51,6 @@ public class Question extends Model implements Serializable {
 	public void addAnswer(UUID a) {
 		if (!answerList.contains(a)) {
 			answerList.add(a);
-			a.setParent(this.id);
 		}
 	}
 	
@@ -105,7 +104,6 @@ public class Question extends Model implements Serializable {
 	public void addComment(UUID comment) {
 		if (!commentList.contains(comment)) {
 			commentList.add(comment);
-			comment.setParent(this.id);
 		}
 	}
 
