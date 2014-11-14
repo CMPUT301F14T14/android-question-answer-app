@@ -5,18 +5,14 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="username_hint">Username</string>
-
-	<string name="add_question_title_hint">Title your question</string>
-	<string name="add_question_body_hint">Add a body to your question</string>
-	<string name="add_question_image">Add an image to the question</string>
-	<string name="add_question_include_location">Include Location</string>
-	
-	<string name="OK">OK</string>
-	<string name="cancel">Cancel</string>
-	<string name="question_list_add_question">Add Question</string>
-	
-	<string name="add_comment_body_hint">Add your comment</string>
-
+    <string name="add_question_title_hint">Title your question</string>
+    <string name="add_question_body_hint">Add a body to your question</string>
+    <string name="add_question_image">Add an image to the question</string>
+    <string name="add_question_include_location">Include Location</string>
+    <string name="OK">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="question_list_add_question">Add Question</string>
+    <string name="add_comment_body_hint">Add your comment</string>
     <string name="welcome_to_qasper">Welcome to Qasper</string>
     <string name="use_google_account_email">Use Google Account email</string>
     <string name="please_choose_how_to_specify_your_username">Please choose how to specify your username</string>
@@ -24,31 +20,32 @@
     <string name="please_enter_a_username_below_">Please enter a Username below:</string>
     <string name="enter">Enter</string>
     <string name="title_activity_welcomes_screen">Welcome Screen</string>
-	<string name="title_activity_answer_view">View Answer</string>
+    <string name="title_activity_answer_view">View Answer</string>
 
     <!-- Question View -->
     <string name="title_activity_question">Question</string>
     <string name="tab_answers">Answers</string>
     <string name="tab_comments">Comments</string>
-    <string name="item_view_add_comment">Add Comment</string> <!-- common to answer and question view -->
+    <string name="item_view_add_comment">Add Comment</string>
+ <!-- common to answer and question view -->
     <string name="question_add_answer">Add Answer</string>
-    
-    <!--  Add Answer Dialog Fragment -->
-	<string name="add_answer_body_hint">Add a body to your answer</string>
-	<string name="add_answer_image">Add an image to your answer</string>
-	
-	<!-- Answer View -->
-	<string name="answer_view_upvote_answer">Upvote Answer</string>
-	<string name="answer_view_dummy_username">Username</string>
-	
+
+    <!-- Add Answer Dialog Fragment -->
+    <string name="add_answer_body_hint">Add a body to your answer</string>
+    <string name="add_answer_image">Add an image to your answer</string>
+
+    <!-- Answer View -->
+    <string name="answer_view_upvote_answer">Upvote Answer</string>
+    <string name="answer_view_dummy_username">Username</string>
+
     <!-- Comment List -->
     <string name="commentlist_comment_placeholder">The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.</string>
     <string name="commentlist_author_placeholder">Boris</string>
-	<string name="viewing_comments">Comment</string>
-    
+    <string name="viewing_comments">Comment</string>
+
     <!-- Answer List -->
     <string name="answerlist_body_placeholder">Peter Piper picked a peck of pickled peppers. How many peppers did he pick?</string>
     <string name="answerlist_author_placeholder">Natasha</string>
-    
-</resources>
+    <string name="title_activity_search">SearchActivity</string>
 
+</resources>
