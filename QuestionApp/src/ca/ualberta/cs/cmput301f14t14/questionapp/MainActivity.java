@@ -50,7 +50,8 @@ public class MainActivity extends Activity {
         if(dataManager.getUsername() == null){
 
         	Intent intent = new Intent(this.getBaseContext(), WelcomeScreenActivity.class);
-        	startActivityForResult(intent, Activity.RESULT_FIRST_USER);
+        	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        	startActivity(intent);
         }
         
         //create the list of questions
