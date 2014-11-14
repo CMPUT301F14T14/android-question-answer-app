@@ -50,7 +50,8 @@ public class MainActivity extends Activity {
         if(dataManager.getUsername() == null){
 
         	Intent intent = new Intent(this.getBaseContext(), WelcomeScreenActivity.class);
-        	startActivityForResult(intent, Activity.RESULT_FIRST_USER);
+        	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        	startActivity(intent);
         }
         
         //create the list of questions
@@ -175,17 +176,6 @@ public class MainActivity extends Activity {
 	        	break;
         }
         return super.onOptionsItemSelected(item);
-    }
-    
-    public void onActivityResult(int requestCode, int resultCode,Intent intent){
-    	// Come back to this activity after creating username
-    	if (requestCode == Activity.RESULT_FIRST_USER && resultCode == Activity.RESULT_OK){
-    		String username = intent.getStringExtra("username");
-    		Toast.makeText(this, "Welcome " + username + " to Qasper", Toast.LENGTH_SHORT).show();
-    		dataManager.setUsername(username);
-    		
-    	}
-    	
     }
     
     public void addQuestion(View view){
