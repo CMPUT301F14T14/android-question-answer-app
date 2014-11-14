@@ -9,6 +9,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.QuestionListAdapter;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.SearchQueryDialogFragment;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
@@ -173,6 +174,11 @@ public class MainActivity extends Activity {
 	        	Intent i = new Intent(this, AnswerViewActivity.class);
 	        	//Need to give this a QuestionUUID, AnswerUUID.
 	        	startActivity(i);
+	        	break;
+	        case R.id.action_question_list_search:
+	        	FragmentManager fm = getFragmentManager();
+	        	SearchQueryDialogFragment sQ = new SearchQueryDialogFragment();
+	        	sQ.show(fm, "search");
 	        	break;
         }
         return super.onOptionsItemSelected(item);
