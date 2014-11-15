@@ -78,5 +78,7 @@ public interface IDataStore {
 	 * Persist the state of the data store.
 	 */
 	public void save();
+	
+	public boolean hasAccess();
 
 }
