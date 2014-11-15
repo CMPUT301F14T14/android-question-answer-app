@@ -1,3 +1,8 @@
+/* This file was written by Victor Guana
+ * See https://github.com/guana/elasticsearch
+ * 
+ * Used with permission
+ */
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
 public class SearchHit<T> {
