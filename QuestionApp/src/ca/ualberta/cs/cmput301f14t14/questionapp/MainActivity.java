@@ -197,4 +197,10 @@ public class MainActivity extends Activity {
     	qla.update();
     	Toast.makeText(getApplicationContext(), "Question successfully added", Toast.LENGTH_LONG).show();
     }
+    
+    public void searchQuestions(String q) {
+    	Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+		intent.putExtra("QUERY_STRING", q);
+		startActivity(intent);
+    }
 }
