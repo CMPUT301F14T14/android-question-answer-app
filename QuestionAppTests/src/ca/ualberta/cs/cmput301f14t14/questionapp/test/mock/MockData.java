@@ -1,15 +1,15 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test.mock;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class MockData {
-	public static Collection<Question> getMockData() {
-		Collection<Question> data = new ArrayList<Question>();
+	public static List<Question> getMockData() {
+		List<Question> data = new ArrayList<Question>();
 
 		Question q1 = new Question("Coconut laden swallow", "What is the terminal velocity of a coconut laden swallow?", "Boris", null);
 		q1.addComment(new Comment<Question>(q1, "What kind of swallow is it?", "Bob"));

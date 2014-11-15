@@ -151,4 +151,8 @@ public class Answer extends Model implements Serializable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
+	public void setUpvotes(int upvotes) {
+		this.upVotes = upvotes;
+	}
 }

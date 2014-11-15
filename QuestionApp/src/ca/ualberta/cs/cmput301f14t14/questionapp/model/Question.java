@@ -63,8 +63,11 @@ public class Question extends Model implements Serializable {
 		return title;
 	}
 
-	//Set the title if there is one and trim the whitespace
-	private void setTitle(String title) {
+	/**
+	 * Set the title if there is one and trim the whitespace
+	 * @param title
+	 */
+	public void setTitle(String title) {
 		if (title == null || title.trim().length() == 0)
 			throw new IllegalArgumentException("Question title may not be blank.");
 		this.title = title.trim();
@@ -74,8 +77,11 @@ public class Question extends Model implements Serializable {
 		return body;
 	}
 
-	//Set the body if there is one and trim the whitespace
-	private void setBody(String body) {
+	/**
+	 * Set the body if there is one and trim the whitespace
+	 * @param body
+	 */
+	public void setBody(String body) {
 		if (body == null || body.trim().length() == 0)
 			throw new IllegalArgumentException("Question body may not be blank.");
 		this.body = body.trim();
@@ -116,12 +122,16 @@ public class Question extends Model implements Serializable {
 	public Integer getUpvotes() {
 		return upVotes;
 	}
+	
+	public void setUpvotes(int val) {
+		upVotes = val;
+	}
 
 	public String getAuthor() {
 		return this.author;
 	}
 
-	private void setAuthor(String author) {
+	public void setAuthor(String author) {
 		this.author = author;
 	}
 

@@ -1,5 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test.data;
 
+import java.util.List;
+
 import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
@@ -7,15 +9,12 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
+import ca.ualberta.cs.cmput301f14t14.questionapp.test.mock.MockData;
 
 public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
-	private RemoteDataStore mRemoteStore;
-	private Question mQuestion;
-	private DataManager manager;
-	private Answer mAnswer;
-	private Comment<Question> qComment;
-	private Comment<Answer> aComment;
+	private RemoteDataStore remoteStore;
+	private List<Question> mockData;
 
 	public RemoteDataStoreTest() {
 		super(MainActivity.class);
@@ -23,28 +22,18 @@ public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainAc
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		mRemoteStore = new RemoteDataStore();
-		mQuestion = new Question("TITLE", "BODY", "Author", null);
-		mAnswer = new Answer(mQuestion, "ANSWERBODY", "Author", null);
-		qComment = new Comment<Question>(mQuestion, "COMMENTBODY", "Boris");
-		aComment = new Comment<Answer>(mAnswer, "CBody", "Natasha");
-		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
+		remoteStore = new RemoteDataStore();
+		mockData = MockData.getMockData();
 	}
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-	
-	public void testRemoteAccess() {
-		assertTrue(mRemoteStore.hasAccess());
-	}
-	
 	public void testPutQuestion() {
-		mRemoteStore.putQuestion(mQuestion);
-		Question retrieved = manager.getQuestion(mQuestion.getId());
-		assertEquals(mQuestion, retrieved);
+		Question q = mockData.get(0);
+		remoteStore.putQuestion(q);
+		Question retrievedQuestion = remoteStore.getQuestion(q.getId());
+		assertEquals(q, retrievedQuestion);
 	}
-	
+
+	/*
 	public void testPutAnswer() {
 		mRemoteStore.putAnswer(mAnswer);
 		Answer retrieved = manager.getAnswer(mQuestion.getId(), mAnswer.getId());
@@ -57,12 +46,12 @@ public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainAc
 		assertEquals(qComment, retrieved);
 	}
 	
-	/* UC1 TC 1.2 */
+	 UC1 TC 1.2 
 	public void testDispRemoteQ() {
 		
 		mRemoteStore.putQuestion(mQuestion);
 		Question retrieved = manager.getQuestion(mQuestion.getId());
 		assertEquals(mQuestion, retrieved);
-	}
+	}*/
 	
 }
