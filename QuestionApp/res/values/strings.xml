@@ -46,7 +46,7 @@
     <!-- Answer List -->
     <string name="answerlist_body_placeholder">Peter Piper picked a peck of pickled peppers. How many peppers did he pick?</string>
     <string name="answerlist_author_placeholder">Natasha</string>
-    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search">Search Results</string>
     <string name="enter_search_query">Please enter a search phrase</string>
 
 </resources>

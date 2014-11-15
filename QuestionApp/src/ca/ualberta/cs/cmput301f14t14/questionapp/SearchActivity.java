@@ -41,9 +41,9 @@ public class SearchActivity extends Activity {
         Iterator<Question> list = qList.iterator();
 		while(list.hasNext()){
 			Question question = list.next();
-			// if the body or title contains any search word, add question
+			// if the body or title contains any search word, add question (if not already added)
 			for(String word : words) {
-				if(question.getBody().contains(word) || question.getTitle().contains(word)){
+				if((question.getBody().contains(word) || question.getTitle().contains(word)) && !qSearchList.contains(question)){
 					qSearchList.add(question);
 				}
 			}
