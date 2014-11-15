@@ -91,8 +91,6 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		assertNotNull(mQuestion.getComment(mComment.getId()));
 		remote.putQComment(mComment);
 		remote.putQuestion(mQuestion);
-		boolean inRemote = remote.isComment(id);
-		assertTrue(inRemote);
 		assertTrue(mQuestion.hasComment(mComment));
 		
 		// adding to answer
@@ -103,8 +101,6 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		assertNotNull(manager.getAnswerComment(mQuestion.getId(), mAnswer.getId(), secId));
 		remote.putAComment(secComment);
 		remote.putAnswer(mAnswer);
-		boolean secInRemote = remote.isComment(secId);
-		assertTrue(secInRemote);
 		assertTrue(mQuestion.hasComment(mComment));
 	}
 	

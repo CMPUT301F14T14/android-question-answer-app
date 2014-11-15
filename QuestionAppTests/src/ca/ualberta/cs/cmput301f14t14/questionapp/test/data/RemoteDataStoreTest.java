@@ -4,14 +4,14 @@ import java.util.List;
 
 import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.test.mock.MockData;
 
-public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainActivity> {
+public class RemoteDataStoreTest extends
+		ActivityInstrumentationTestCase2<MainActivity> {
 
 	private RemoteDataStore remoteStore;
 	private List<Question> mockData;
@@ -26,6 +26,9 @@ public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainAc
 		mockData = MockData.getMockData();
 	}
 
+	/**
+	 * Verify that a question object can be sent to ElasticSearch
+	 */
 	public void testPutQuestion() {
 		Question q = mockData.get(0);
 		remoteStore.putQuestion(q);
@@ -33,25 +36,34 @@ public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainAc
 		assertEquals(q, retrievedQuestion);
 	}
 
-	/*
+	/**
+	 * Verify that an answer object can be sent to ElasticSearch
+	 */
 	public void testPutAnswer() {
-		mRemoteStore.putAnswer(mAnswer);
-		Answer retrieved = manager.getAnswer(mQuestion.getId(), mAnswer.getId());
-		assertEquals(mAnswer, retrieved);
+		Answer a = mockData.get(0).getAnswerList().get(0);
+		remoteStore.putAnswer(a);
+		Answer retrievedAnswer = remoteStore.getAnswer(a.getId());
+		assertEquals(a, retrievedAnswer);
 	}
-	
-	public void testPutComment() {
-		mRemoteStore.putQComment(qComment);
-		Comment<Question> retrieved = (Comment<Question>) manager.getQuestionComment(qComment.getId(), qComment.getId());
-		assertEquals(qComment, retrieved);
+
+	/**
+	 * Verify that an answer comment object can be sent to ElasticSearch
+	 */
+	public void testPutAnswerComment() {
+		Comment<Answer> c = mockData.get(0).getAnswerList().get(0)
+				.getCommentList().get(0);
+		remoteStore.putAComment(c);
+		Comment<Answer> retrievedComment = remoteStore.getAComment(c.getId());
+		assertEquals(c, retrievedComment);
 	}
-	
-	 UC1 TC 1.2 
-	public void testDispRemoteQ() {
-		
-		mRemoteStore.putQuestion(mQuestion);
-		Question retrieved = manager.getQuestion(mQuestion.getId());
-		assertEquals(mQuestion, retrieved);
-	}*/
-	
+
+	/**
+	 * Verify that a question comment object can be sent to ElasticSearch
+	 */
+	public void testPutQuestionComment() {
+		Comment<Question> c = mockData.get(0).getCommentList().get(0);
+		remoteStore.putQComment(c);
+		Comment<Question> retrievedComment = remoteStore.getQComment(c.getId());
+		assertEquals(c, retrievedComment);
+	}
 }
