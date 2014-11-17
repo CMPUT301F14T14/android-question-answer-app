@@ -226,7 +226,18 @@ public class DataManager {
 	public void favoriteQuestion(UUID questionId) {
 		favouriteQuestions = clientData.getFavoriteQuestions();
 		favouriteQuestions.add(questionId);
-		//localdatamanager.save(favouriteQuestions);
+		clientData.saveFavoriteQuestions(favouriteQuestions);
+	
+	}
+	
+	public List<UUID> getFavoritedQuestions() {
+		return clientData.getFavoriteQuestions();
+	}
+	
+	public void unfavoriteQuestion(UUID questionId) {
+		favouriteQuestions = clientData.getFavoriteQuestions();
+		favouriteQuestions.remove(questionId);
+		clientData.saveFavoriteQuestions(favouriteQuestions);
 	}
 
 	/**
