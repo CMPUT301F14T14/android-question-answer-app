@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -135,8 +136,25 @@ public class QuestionActivity extends Activity {
 			}
 		});
 		
-	
 		
+		
+	}
+	
+	@Override 
+	public void onResume(){
+		super.onResume();
+		//Set the star on the favorite button to match the favorited state
+		//of the question.
+		if (DataManager.getInstance(this).getFavoritedQuestions().contains(this.question.getId())) {
+			//Question is already favorited.
+			//Set the star to be highlighted on create.
+			ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
+			Favbutton.setImageResource(R.drawable.ic_fav_highlighted);	
+		} else {
+			//Question is not favorited.
+			ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
+			Favbutton.setImageResource(R.drawable.ic_fav_reg);
+		}		
 	}
 
 	@Override
@@ -225,5 +243,24 @@ public class QuestionActivity extends Activity {
 		TextView upvotes = (TextView) findViewById(R.id.upvotes);
 		upvotes.setText(question.getUpvotes().toString());
 		DataManager.getInstance(this).updateQuestion(question);
+	}
+	
+	public void favQuestion(View v){
+		//Need to change icon
+		//Perhaps have a HashMap holding whether the question
+		//is favorited or not.
+		
+		ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
+		Favbutton.setImageResource(R.drawable.ic_fav_highlighted);
+		
+		if (DataManager.getInstance(this).getFavoritedQuestions().contains(this.question.getId())) {
+			//Question is already favorited.
+			DataManager.getInstance(this).unfavoriteQuestion(question.getId());
+			Favbutton.setImageResource(R.drawable.ic_fav_reg);
+		} else {
+			DataManager.getInstance(this).favoriteQuestion(question.getId());
+			Favbutton.setImageResource(R.drawable.ic_fav_highlighted);
+		}
+
 	}
 }

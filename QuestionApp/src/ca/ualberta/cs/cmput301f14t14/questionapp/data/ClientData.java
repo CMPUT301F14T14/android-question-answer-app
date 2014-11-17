@@ -1,12 +1,15 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 /**
  * This class handles data that only exists on the client, and is
@@ -48,11 +51,50 @@ public class ClientData {
 		ArrayList<UUID> list = new ArrayList<UUID>();
 		return list;
 	}
+	
+	public void saveFavoriteQuestions(List<UUID> list){
+		//Saves the magic list of favorited questions to 
+		//sharedPreferences.
+		
+		Editor e = prefs.edit();
+		Set<String> favset = new HashSet<String>();
+		
+		for (UUID i : list) {
+			favset.add(i.toString());
+		}
+		e.putStringSet("favqlist", favset);
+		e.commit();
+		return;
+	}
+	
 
 	public ArrayList<UUID> getFavoriteQuestions() {
-		// TODO Auto-generated method stub
-		ArrayList<UUID> list = new ArrayList<UUID>();
-		return list;
+		//Supposed to return a list of favorite questions
+		//We can then add to this list
+		
+	
+		
+		//Pull a list of favorited questions from SharedPrefs
+		
+		//TODO: SharedPreferences Magic!!!
+		
+		
+		Set<String> favset = prefs.getStringSet("favqlist", null);
+		if (favset == null ){ //Only on first run of the app this will be null
+			return new ArrayList<UUID>();
+		}
+		//Need to build up a new set of UUIDs before converting to List
+		Set<UUID> intset = new HashSet<UUID>();
+		for (String s : favset) {
+			try {
+				intset.add(UUID.fromString(s));
+			} catch (NullPointerException e){
+				Log.e("ClientData", "Error converting UUID from String to UUID");
+			}
+		}
+		ArrayList<UUID> returnlist = new ArrayList<UUID>();
+		returnlist.addAll(intset);
+		return returnlist;
 	}
 
 	public List<UUID> getReadLater() {

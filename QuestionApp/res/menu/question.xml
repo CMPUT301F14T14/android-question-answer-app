@@ -2,11 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ca.ualberta.cs.cmput301f14t14.questionapp.QuestionActivity" >
 
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+    
 
     <item android:id="@+id/action_add_comment"
 		  android:orderInCategory="98"
