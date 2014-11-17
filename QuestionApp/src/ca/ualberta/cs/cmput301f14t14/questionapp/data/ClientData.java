@@ -71,14 +71,7 @@ public class ClientData {
 	public ArrayList<UUID> getFavoriteQuestions() {
 		//Supposed to return a list of favorite questions
 		//We can then add to this list
-		
-	
-		
-		//Pull a list of favorited questions from SharedPrefs
-		
-		//TODO: SharedPreferences Magic!!!
-		
-		
+		//Pull a list of favorited questions from SharedPrefs		
 		Set<String> favset = prefs.getStringSet("favqlist", null);
 		if (favset == null ){ //Only on first run of the app this will be null
 			return new ArrayList<UUID>();
