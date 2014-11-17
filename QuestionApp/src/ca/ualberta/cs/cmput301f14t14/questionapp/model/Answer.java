@@ -3,7 +3,6 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -150,5 +149,9 @@ public class Answer extends Model implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public void setUpvotes(int upvotes) {
+		this.upVotes = upvotes;
 	}
 }

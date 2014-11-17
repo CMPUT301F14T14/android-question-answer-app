@@ -30,7 +30,7 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		mAnswer = new Answer(mQuestion.getId(), "Answer body.", "Author", null);
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		local =  new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
-		remote = new RemoteDataStore();
+		remote = new RemoteDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 	}
 
 	protected void tearDown() throws Exception {

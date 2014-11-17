@@ -36,7 +36,7 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		aComment = new Comment<Answer>(mAnswer.getId(), "Comment answer body", "aAuthor");
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		local =  new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
-		remote = new RemoteDataStore();
+		remote = new RemoteDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 	}
 
 	protected void tearDown() throws Exception {
@@ -91,8 +91,6 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		assertNotNull(mQuestion.hasComment(mComment.getId()));
 		remote.putQComment(mComment);
 		remote.putQuestion(mQuestion);
-		boolean inRemote = remote.isComment(id);
-		assertTrue(inRemote);
 		assertTrue(mQuestion.hasComment(mComment.getId()));
 		
 		// adding to answer
@@ -103,8 +101,6 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		assertNotNull(manager.getAnswerComment(secId));
 		remote.putAComment(secComment);
 		remote.putAnswer(mAnswer);
-		boolean secInRemote = remote.isComment(secId);
-		assertTrue(secInRemote);
 		assertTrue(mQuestion.hasComment(mComment.getId()));
 	}
 	

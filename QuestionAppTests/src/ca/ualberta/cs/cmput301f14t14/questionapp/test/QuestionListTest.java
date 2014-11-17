@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	private LocalDataStore mLocalStore;
-	public RemoteDataStore mRemoteStore = new RemoteDataStore();
+	public RemoteDataStore mRemoteStore = new RemoteDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 
 	private Question mQuestion;
 	private DataManager manager;
