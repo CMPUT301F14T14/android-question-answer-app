@@ -48,7 +48,7 @@ public class AnswerViewActivity extends Activity {
 		if (qId != null || aId != null) {
 			UUID Qid = UUID.fromString(qId);
 			UUID Aid = UUID.fromString(aId);
-			answer = dataManager.getAnswer(Qid, Aid);
+			answer = dataManager.getAnswer(Aid);
 		}
 		else {
 			// no Question, toss er back to somewhere
@@ -62,7 +62,7 @@ public class AnswerViewActivity extends Activity {
 		((TextView) findViewById(R.id.answer_upvotes)).setText(answer.getUpvotes().toString());
 		/* Populate comment list */
 		//created as class variable.
-		cl.addAll(answer.getCommentList());
+		cl.addAll(dataManager.getCommentList(answer));
 			//Set list adapter
 		final CommentListAdapter<Answer> cla = new CommentListAdapter<Answer>(this, R.layout.list_comment, cl);
 		ucla = cla; // set UCLA to be a reference to the final cla.
@@ -120,8 +120,9 @@ public class AnswerViewActivity extends Activity {
 	public void updateAnswer(Answer a) {
 		//Need to update the list adapters.
 		//move to class variables so I can access them.
+		DataManager dataManager = DataManager.getInstance(getApplicationContext());
 		ucla.clear();
-		ucla.addAll(a.getCommentList());
+		ucla.addAll(dataManager.getCommentList(a));
 		ucla.update();
     	//Toast.makeText(getApplicationContext(), "Item successfully added", Toast.LENGTH_LONG).show();
 

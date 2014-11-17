@@ -50,18 +50,18 @@ public class AddCommentDialogFragment extends DialogFragment {
 						
 							DataManager datamanager = DataManager.getInstance(getActivity());
 							Question question = datamanager.getQuestion(questionId);
-							Answer answer = datamanager.getAnswer(questionId, answerId);
+							Answer answer = datamanager.getAnswer(answerId);
 							String username = datamanager.getUsername();
 							
 							if(answerId != null){
 								@SuppressWarnings({ "rawtypes", "unchecked" })
-								Comment<Answer> comment = new Comment(answer, body.getText().toString(), username);
-								datamanager.addAnswerComment(questionId, answerId, comment);
+								Comment<Answer> comment = new Comment(answer.getId(), body.getText().toString(), username);
+								datamanager.addAnswerComment(comment);
 							}
 							else{
 								@SuppressWarnings({ "unchecked", "rawtypes" })
-								Comment<Question> comment = new Comment(question,body.getText().toString(), username);
-								datamanager.addQuestionComment(questionId, comment);
+								Comment<Question> comment = new Comment(question.getId(),body.getText().toString(), username);
+								datamanager.addQuestionComment(comment);
 							}
 							
 							//Ugly, but this if statement will only ever be this big.
