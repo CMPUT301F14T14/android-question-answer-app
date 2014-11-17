@@ -31,9 +31,9 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 	protected void setUp() throws Exception {
 		super.setUp();
 		mQuestion = new Question("Title", "Body", "Author", null);
-		mAnswer = new Answer(mQuestion, "Answer body.", "Author", null);
-		mComment = new Comment<Question>(mQuestion, "Comment question body", "Author");
-		aComment = new Comment<Answer>(mAnswer, "Comment answer body", "aAuthor");
+		mAnswer = new Answer(mQuestion.getId(), "Answer body.", "Author", null);
+		mComment = new Comment<Question>(mQuestion.getId(), "Comment question body", "Author");
+		aComment = new Comment<Answer>(mAnswer.getId(), "Comment answer body", "aAuthor");
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		local =  new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		remote = new RemoteDataStore();
@@ -48,9 +48,9 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 	 */
 	public void testAddComment() {
 		// Add to Question
-		assertFalse(mQuestion.hasComment(mComment));
-		mQuestion.addComment(mComment);
-		assertTrue(mQuestion.hasComment(mComment));
+		assertFalse(mQuestion.hasComment(mComment.getId()));
+		mQuestion.addComment(mComment.getId());
+		assertTrue(mQuestion.hasComment(mComment.getId()));
 		
 		// Add to Answer
 		assertFalse(mAnswer.hasComment(aComment));
@@ -64,14 +64,14 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 	public void testInvalidBody() {
 		// Test invalid body
 		try {
-			new Comment<Question>(mQuestion, null, "Author");
+			new Comment<Question>(mQuestion.getId(), null, "Author");
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
 		}
 		
 		try {
-			new Comment<Question>(mQuestion, "", "Author");
+			new Comment<Question>(mQuestion.getId(), "", "Author");
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
@@ -86,26 +86,26 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 	public void testLocalAnswerCreate() {
 		// adding to question
 		local.putQComment(mComment);
-		mQuestion.addComment(mComment);
+		mQuestion.addComment(mComment.getId());
 		UUID id = mComment.getId();
-		assertNotNull(mQuestion.getComment(mComment.getId()));
+		assertNotNull(mQuestion.hasComment(mComment.getId()));
 		remote.putQComment(mComment);
 		remote.putQuestion(mQuestion);
 		boolean inRemote = remote.isComment(id);
 		assertTrue(inRemote);
-		assertTrue(mQuestion.hasComment(mComment));
+		assertTrue(mQuestion.hasComment(mComment.getId()));
 		
 		// adding to answer
-		Comment<Answer> secComment = new Comment<Answer>(mAnswer, "Comment has a body", "Userrrrname");
+		Comment<Answer> secComment = new Comment<Answer>(mAnswer.getId(), "Comment has a body", "Userrrrname");
 		local.putAComment(secComment);
 		mAnswer.addComment(secComment);
 		UUID secId = mComment.getId();
-		assertNotNull(manager.getAnswerComment(mQuestion.getId(), mAnswer.getId(), secId));
+		assertNotNull(manager.getAnswerComment(secId));
 		remote.putAComment(secComment);
 		remote.putAnswer(mAnswer);
 		boolean secInRemote = remote.isComment(secId);
 		assertTrue(secInRemote);
-		assertTrue(mQuestion.hasComment(mComment));
+		assertTrue(mQuestion.hasComment(mComment.getId()));
 	}
 	
 	

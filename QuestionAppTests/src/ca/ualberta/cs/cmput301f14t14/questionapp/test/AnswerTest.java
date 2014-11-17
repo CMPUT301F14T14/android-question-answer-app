@@ -27,7 +27,7 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	protected void setUp() throws Exception {
 		super.setUp();
 		mQuestion = new Question("Title", "Body", "Author", null);
-		mAnswer = new Answer(mQuestion, "Answer body.", "Author", null);
+		mAnswer = new Answer(mQuestion.getId(), "Answer body.", "Author", null);
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		local =  new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		remote = new RemoteDataStore();
@@ -42,9 +42,9 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	 */
 	public void testAddAnswer() {
 		
-		assertFalse(mQuestion.hasAnswer(mAnswer));
-		mQuestion.addAnswer(mAnswer);
-		assertTrue(mQuestion.hasAnswer(mAnswer));
+		assertFalse(mQuestion.hasAnswer(mAnswer.getId()));
+		mQuestion.addAnswer(mAnswer.getId());
+		assertTrue(mQuestion.hasAnswer(mAnswer.getId()));
 	}
 	
 	/**
@@ -54,14 +54,14 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		// Test invalid body
 		Image image = new Image(null,null);
 		try {
-			new Answer(mQuestion, null, "Author", image);
+			new Answer(mQuestion.getId(), null, "Author", image);
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
 		}
 		
 		try {
-			new Answer(mQuestion, "", "Author", image);
+			new Answer(mQuestion.getId(), "", "Author", image);
 			fail();
 		} catch (IllegalArgumentException ex) {
 			// Passed
@@ -76,15 +76,15 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	public void testLocalAnswerCreate() {
 		manager.addQuestion(mQuestion);
 		UUID qId = mQuestion.getId();
-		mQuestion.addAnswer(mAnswer);
-		manager.addAnswer(qId, mAnswer);
+		mQuestion.addAnswer(mAnswer.getId());
+		manager.addAnswer(mAnswer);
 		UUID aId = mAnswer.getId();
-		assertNotNull(manager.getAnswer(qId, aId));
+		assertNotNull(manager.getAnswer(aId));
 		
 		remote.putAnswer(mAnswer);
 		remote.putQuestion(mQuestion);
 		//assertNotNull(remote.getAnswer(aId));
-		assertTrue(mQuestion.hasAnswer(mAnswer));
+		assertTrue(mQuestion.hasAnswer(mAnswer.getId()));
 	}
 	
 	

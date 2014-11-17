@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -268,6 +269,45 @@ public class DataManager {
 		else{
 			throw new NullPointerException("id is not in the list");
 		}
+	}
+	
+	public List<Comment<Answer>> getCommentList(Answer a){
+		List<Comment<Answer>> comments = new ArrayList<Comment<Answer>>();
+		for(UUID c : a.getCommentList()){
+			comments.add(getAnswerComment(c));
+		}
+		return comments;
+	}
+	
+	public List<Comment<Question>> getCommentList(Question q){
+		List<Comment<Question>> comments = new ArrayList<Comment<Question>>();
+		for(UUID c : q.getCommentList()){
+			comments.add(getQuestionComment(c));
+		}
+		return comments;
+	}
+	
+	public List<Answer> getAnswerList(Question q){
+		List<Answer> answers = new ArrayList<Answer>();
+		for(UUID a : q.getAnswerList()){
+			answers.add(getAnswer(a));
+		}
+		return answers;
+	}
+	
+	public void upvoteQuestion(Question q){
+		if(remoteDataStore.hasAccess()){
+			remoteDataStore.putQuestion(q);
+		  	remoteDataStore.save();
+		}
+		else{
+			pushOnline.add(q.getId());
+			upVoteOnline.add(q.getId());
+		}  
+		localDataStore.putQuestion(q);
+		localDataStore.save();
+		
+		
 	}
 
 }

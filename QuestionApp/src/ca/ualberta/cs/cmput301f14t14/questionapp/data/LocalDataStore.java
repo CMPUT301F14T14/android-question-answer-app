@@ -135,7 +135,7 @@ public class LocalDataStore implements IDataStore {
 
 	public void putAnswer(Answer answer) {
 		answers.put(answer.getId(), answer);
-		if (questions.get(answer.getParent().getId()) == null) {
+		if (questions.get(answer.getParent()) == null) {
 			putQuestion(answer.getParent());
 		}
 		for (Comment<Answer> c: answer.getCommentList()) {
@@ -187,6 +187,12 @@ public class LocalDataStore implements IDataStore {
 		LocalDataStore lds = (LocalDataStore) o;
 		return this.questions.equals(lds.questions) && this.answers.equals(lds.answers) &&
 				this.qcomments.equals(lds.qcomments) && this.acomments.equals(lds.acomments);
+	}
+
+	@Override
+	public boolean hasAccess() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

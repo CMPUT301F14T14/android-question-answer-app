@@ -62,12 +62,12 @@ public class QuestionActivity extends Activity {
 		
 		// set arrayLists of relevant comments and answers
 		List<Answer> al = new ArrayList<Answer>();
-		for(Answer a: question.getAnswerList()) {
+		for(Answer a: dataManager.getAnswerList(question)) {
 			al.add(a);
 		}
 		
 		List<Comment<Question>> cl = new ArrayList<Comment<Question>>();
-		for(Comment<Question> c: question.getCommentList()) {
+		for(Comment<Question> c: dataManager.getCommentList(question)) {
 			cl.add(c);
 		}
 
@@ -195,13 +195,14 @@ public class QuestionActivity extends Activity {
     public void updateQuestion(Question q) {
     	/*Adds all aspects of a new question to the adapters and 
     	 * updates the lists with the new Question */
+    	DataManager dataManager = DataManager.getInstance(getApplicationContext());
     	this.question = q;
     	ala.clear();
     	cla.clear();
-    	for(Answer a: question.getAnswerList()) {
+    	for(Answer a: dataManager.getAnswerList(question)) {
 			ala.add(a);
 		}
-    	for(Comment<Question> c: question.getCommentList()) {
+    	for(Comment<Question> c: dataManager.getCommentList(question)) {
 			cla.add(c);
 		}
     	ala.update();
@@ -215,6 +216,6 @@ public class QuestionActivity extends Activity {
     	question.addUpvote();
     	TextView upvotes = (TextView) findViewById(R.id.upvotes);
     	upvotes.setText(question.getUpvotes().toString());
-    	DataManager.getInstance(this).updateQuestion(question);
+    	DataManager.getInstance(this).upvoteQuestion(question);
     }
 }

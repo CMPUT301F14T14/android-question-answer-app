@@ -74,11 +74,21 @@ public class Answer extends Model implements Serializable {
 	public boolean hasComment(UUID comment) {
 		return commentList.contains(comment);
 	}
+	
+	public boolean hasComment(Comment<Answer> comment) {
+		return commentList.contains(comment.getId());
+	}
 
 	//add comment if not already added
 	public void addComment(UUID comment) {
 		if (!hasComment(comment)) {
 			commentList.add(comment);
+		}
+	}
+	
+	public void addComment(Comment<Answer> comment) {
+		if (!hasComment(comment.getId())) {
+			commentList.add(comment.getId());
 		}
 	}
 
@@ -112,6 +122,10 @@ public class Answer extends Model implements Serializable {
 	
 	public void setParent(UUID parent) {
 		this.parent = parent;
+	}
+	
+	public void setParent(Question parent) {
+		this.parent = parent.getId();
 	}
 
 	//Checks the attributes of an answer against the object and this to make sure it is the same
