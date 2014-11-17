@@ -127,19 +127,21 @@ public class MainActivity extends Activity {
 			break;
 			}
 		case 3:{
-			List<Question> favQ = dm.getFavoriteQuestions();
-			qlist.addAll(favQ);
+			final List<UUID> favQ = dm.getFavoritedQuestions();
+			for (UUID q : favQ){
+				qlist.add(dm.getQuestion(q));
+			}
 			Collections.sort(qlist,new Comparator<Question>(){
 
 				@Override
 				public int compare(Question arg0, Question arg1) {
-					if(favQ.contains(arg0) && favQ.contains(arg1)){
+					if(favQ.contains(arg0.getId()) && favQ.contains(arg1.getId())){
 						return 0;
 					}
-					else if(favQ.contains(arg0) && !favQ.contains(arg1)){
-						return 1;
+					else if(favQ.contains(arg0.getId()) && !favQ.contains(arg1.getId())){
+						return -1;
 					}
-					return -1;
+					return 1;
 				}
 				
 			});
