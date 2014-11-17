@@ -13,9 +13,9 @@ public class LocalDataStoreTest extends ActivityInstrumentationTestCase2<MainAct
 	private LocalDataStore localStore;
 
 	private final Question new_q = new Question("Geometry troubles", "Why does my triangle have four sides?", "Jim", null);
-	private final Answer new_a = new Answer(new_q, "You are looking at this from the wrong dimension.", "John", null);
-	private final Comment<Question> new_cq = new Comment<Question>(new_q, "Are you sure you're looking at a triangle?", "Joe");
-	private final Comment<Answer> new_ca = new Comment<Answer>(new_a, "I don't think so...", "Jane");
+	private final Answer new_a = new Answer(new_q.getId(), "You are looking at this from the wrong dimension.", "John", null);
+	private final Comment<Question> new_cq = new Comment<Question>(new_q.getId(), "Are you sure you're looking at a triangle?", "Joe");
+	private final Comment<Answer> new_ca = new Comment<Answer>(new_a.getId(), "I don't think so...", "Jane");
 	
 	public LocalDataStoreTest() {
 		super(MainActivity.class);
@@ -23,13 +23,22 @@ public class LocalDataStoreTest extends ActivityInstrumentationTestCase2<MainAct
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		MockData.initMockData();
 		localStore = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		localStore.clear();
 		localStore.save();
-		for (Question q: MockData.getMockData()) {
+		for (Question q: MockData.questions) {
 			localStore.putQuestion(q);
 		}
-		localStore.buildMaps();
+		for (Answer a: MockData.answers) {
+			localStore.putAnswer(a);
+		}
+		for (Comment<Question> c: MockData.qcomments) {
+			localStore.putQComment(c);
+		}
+		for (Comment<Answer> c: MockData.acomments) {
+			localStore.putAComment(c);
+		}
 	}
 
 	protected void tearDown() throws Exception {

@@ -3,7 +3,6 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,9 +13,9 @@ public class Answer extends Model implements Serializable {
 	private UUID id;
 	private Image image;
 	private String body;
-	private List<Comment<Answer>> commentList;
+	private List<UUID> commentList;
 	private String author;
-	private Question parent;
+	private UUID parent;
 	private Date date;
 	private int upVotes;
 
@@ -27,19 +26,19 @@ public class Answer extends Model implements Serializable {
 		this.author = null;
 		this.image = null;
 		this.parent = null;
-		this.commentList = new ArrayList<Comment<Answer>>();
+		this.commentList = new ArrayList<UUID>();
 		setDate(new Date());
 		upVotes = 0;
 	}
 
 	//Create answer with a parent, body, string and optional image
-	public Answer(Question parent, String body, String author, Image image) {
+	public Answer(UUID parent, String body, String author, Image image) {
 		setId(UUID.randomUUID());
 		setBody(body);
 		setAuthor(author);
 		setImage(image);
 		setParent(parent);
-		setCommentList(new ArrayList<Comment<Answer>>());
+		setCommentList(new ArrayList<UUID>());
 		setDate(new Date());
 		upVotes = 0;
 	}
@@ -71,15 +70,24 @@ public class Answer extends Model implements Serializable {
 		this.author = author;
 	}
 
-	public boolean hasComment(Comment<Answer> comment) {
+	public boolean hasComment(UUID comment) {
 		return commentList.contains(comment);
+	}
+	
+	public boolean hasComment(Comment<Answer> comment) {
+		return commentList.contains(comment.getId());
 	}
 
 	//add comment if not already added
-	public void addComment(Comment<Answer> comment) {
+	public void addComment(UUID comment) {
 		if (!hasComment(comment)) {
 			commentList.add(comment);
-			comment.setParent(this);
+		}
+	}
+	
+	public void addComment(Comment<Answer> comment) {
+		if (!hasComment(comment.getId())) {
+			commentList.add(comment.getId());
 		}
 	}
 
@@ -91,11 +99,11 @@ public class Answer extends Model implements Serializable {
 		upVotes++;
 	}
 
-	public List<Comment<Answer>> getCommentList() {
+	public List<UUID> getCommentList() {
 		return commentList;
 	}
 
-	public void setCommentList(List<Comment<Answer>> commentList) {
+	public void setCommentList(List<UUID> commentList) {
 		this.commentList = commentList;
 	}
 
@@ -107,25 +115,16 @@ public class Answer extends Model implements Serializable {
 		this.id = id;
 	}
 	
-	public Question getParent() {
+	public UUID getParent() {
 		return parent;
 	}
 	
-	public void setParent(Question parent) {
+	public void setParent(UUID parent) {
 		this.parent = parent;
 	}
 	
-	//Grab a comment from the list return null if not in the list
-	public Comment<Answer> getComment(UUID Cid){
-		Iterator<Comment<Answer>> list = commentList.iterator();
-		while(list.hasNext()){
-			Comment<Answer> comment = list.next();
-			UUID cid = comment.getId();
-			if(cid.equals(Cid)){
-				return comment;
-			}
-		}
-		return null;
+	public void setParent(Question parent) {
+		this.parent = parent.getId();
 	}
 
 	//Checks the attributes of an answer against the object and this to make sure it is the same
@@ -150,5 +149,9 @@ public class Answer extends Model implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public void setUpvotes(int upvotes) {
+		this.upVotes = upvotes;
 	}
 }

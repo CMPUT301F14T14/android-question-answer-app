@@ -11,10 +11,18 @@ public class Comment<T extends Model> implements Serializable {
 	private String body;
 	private String username;
 	private UUID id;
-	private T parent;
+	private UUID parent;
 	private Date date;
+
+	public Comment() {
+		setId(new UUID(0L, 0L));
+		this.body = "";
+		this.username = "";
+		this.parent = null;
+		setDate(new Date());
+	}
 	
-	public Comment(T parent, String body, String username) {
+	public Comment(UUID parent, String body, String username) {
 		setId(UUID.randomUUID());
 		this.body = body;
 		this.username = username;
@@ -25,9 +33,17 @@ public class Comment<T extends Model> implements Serializable {
 	public String getBody() {
 		return body;
 	}
+	
+	public void setBody(String body) {
+		this.body = body;
+	}
 
 	public String getUsername() {
 		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public UUID getId() {
@@ -38,11 +54,11 @@ public class Comment<T extends Model> implements Serializable {
 		this.id = id;
 	}
 	
-	public T getParent() {
+	public UUID getParent() {
 		return parent;
 	}
 	
-	public void setParent(T parent) {
+	public void setParent(UUID parent) {
 		this.parent = parent;
 	}
 

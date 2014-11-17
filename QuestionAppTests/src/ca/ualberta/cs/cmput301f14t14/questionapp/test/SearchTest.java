@@ -28,7 +28,7 @@ public class SearchTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		super.setUp();
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		local = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
-		remote = new RemoteDataStore();
+		remote = new RemoteDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		remoteSearch = new MockElasticSearch();
 	}
 
@@ -68,8 +68,8 @@ public class SearchTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		List<Answer> resultAnswers = new ArrayList<Answer>();
 		List<Question> resultQuestions = new ArrayList<Question>();
 		for (UUID i : results) {
-			if (manager.getAnswer(i, null) != null) {
-				resultAnswers.add(manager.getAnswer(i, null));
+			if (manager.getAnswer(i) != null) {
+				resultAnswers.add(manager.getAnswer(i));
 			} else {
 				resultQuestions.add(manager.getQuestion(i));
 			}
