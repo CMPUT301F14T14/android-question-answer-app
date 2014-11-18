@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import android.content.Context;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -26,6 +27,7 @@ public class DataManager {
 	private List<UUID> readLater;
 	private List<UUID> pushOnline;
 	private List<UUID> upVoteOnline;
+	private Context singletoncontext; //Needed for Threading instantiations
 	String Username;
 
 	
@@ -35,6 +37,7 @@ public class DataManager {
 		this.remoteDataStore = new RemoteDataStore(context);
 		this.pushOnline = new ArrayList<UUID>();
 		this.upVoteOnline = new ArrayList<UUID>();
+		this.singletoncontext = context;
 	}
 
 	/**
@@ -52,8 +55,10 @@ public class DataManager {
 	//View Interface Begins
 	public void addQuestion(Question validQ) {
 		if(remoteDataStore.hasAccess()){
-			remoteDataStore.putQuestion(validQ);
-		  	remoteDataStore.save();
+			
+			AddQuestionTask aqt = new AddQuestionTask(this.singletoncontext);
+			aqt.execute(validQ);
+			
 		}
 		else{
 			pushOnline.add(validQ.getId());
@@ -320,6 +325,14 @@ public class DataManager {
 		localDataStore.save();
 		
 		
+	}
+
+	public IDataStore getLocalDataStore() {
+		return localDataStore;
+	}
+
+	public IDataStore getRemoteDataStore() {
+		return remoteDataStore;
 	}
 
 }
