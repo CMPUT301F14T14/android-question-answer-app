@@ -12,7 +12,8 @@
         android:id="@+id/question_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/action_add_question" />
+        android:layout_above="@+id/action_add_question"
+        android:clickable="true" />
 
     <Button
         android:id="@+id/action_add_question"

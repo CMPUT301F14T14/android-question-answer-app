@@ -27,6 +27,12 @@ public class DataManager {
 	private List<UUID> pushOnline;
 	private List<UUID> upVoteOnline;
 	String Username;
+	static final String favQ = "fav_Que";
+	static final String favA = "fav_Ans";
+	static final String recV = "rec_Vis";
+	static final String redL = "red_Lat";
+	static final String pusO = "pus_Onl";
+	static final String upvO = "upv_Onl";
 
 	
 	private DataManager(Context context){
@@ -224,20 +230,20 @@ public class DataManager {
 	 * @param questionId
 	 */
 	public void favoriteQuestion(UUID questionId) {
-		favouriteQuestions = clientData.getFavoriteQuestions();
+		favouriteQuestions = clientData.getClientList(favQ);
 		favouriteQuestions.add(questionId);
-		clientData.saveFavoriteQuestions(favouriteQuestions);
+		clientData.saveClientList(favQ,favouriteQuestions);
 	
 	}
 	
 	public List<UUID> getFavoritedQuestions() {
-		return clientData.getFavoriteQuestions();
+		return clientData.getClientList(favQ);
 	}
 	
 	public void unfavoriteQuestion(UUID questionId) {
-		favouriteQuestions = clientData.getFavoriteQuestions();
+		favouriteQuestions = clientData.getClientList(favQ);
 		favouriteQuestions.remove(questionId);
-		clientData.saveFavoriteQuestions(favouriteQuestions);
+		clientData.saveClientList(favQ,favouriteQuestions);
 	}
 
 	/**
@@ -245,15 +251,21 @@ public class DataManager {
 	 * @param Aid
 	 */
 	public void favoriteAnswer(UUID Aid) {
-		favouriteAnswers = clientData.getFavoriteAnswers();
+		favouriteAnswers = clientData.getClientList(favA);
 		favouriteAnswers.add(Aid);
-		//localdatamanager.save(favouriteAnswers)
+		clientData.saveClientList(favA, favouriteAnswers);
 	}
 	
-	public void readQuestionLater(UUID Qid) {
-		readLater = clientData.getReadLater();
-		readLater.add(Qid);
-		//localdatamanager.save(readLater);
+	public void readLater(UUID uid) {
+		readLater = clientData.getClientList(redL);
+		readLater.add(uid);
+		clientData.saveClientList(redL, readLater);
+	}
+	
+	public void unreadLater(UUID uid){
+		readLater = clientData.getClientList(redL);
+		readLater.remove(uid);
+		clientData.saveClientList(redL, readLater);
 	}
 
 	public String getUsername() {
@@ -262,11 +274,6 @@ public class DataManager {
 	
 	public void setUsername(String username) {
 		clientData.setUsername(username);
-	}
-
-
-	public void readAnswerLater(Answer mAnswer) {
-		// TODO Auto-generated method stub
 	}
 	
 	public void clearClientData() {
@@ -320,6 +327,10 @@ public class DataManager {
 		localDataStore.save();
 		
 		
+	}
+
+	public List<UUID> getReadLaterList() {
+		return clientData.getClientList(redL);
 	}
 
 }
