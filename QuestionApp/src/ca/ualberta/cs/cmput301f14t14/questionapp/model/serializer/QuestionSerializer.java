@@ -1,9 +1,8 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer;
 
 import java.lang.reflect.Type;
+import java.util.UUID;
 
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 import com.google.gson.JsonArray;
@@ -30,14 +29,14 @@ public class QuestionSerializer implements JsonSerializer<Question> {
 		object.addProperty("date", item.getDate().toString());
 		object.addProperty("upvotes", item.getUpvotes());
 		final JsonArray answerList = new JsonArray();
-		for (Answer a: item.getAnswerList()) {
-			final JsonPrimitive answerId = new JsonPrimitive(a.getId().toString());
+		for (UUID aid: item.getAnswerList()) {
+			final JsonPrimitive answerId = new JsonPrimitive(aid.toString());
 			answerList.add(answerId);
 		}
 		object.add("answers", answerList);
 		final JsonArray commentList = new JsonArray();
-		for (Comment<Question> c: item.getCommentList()) {
-			final JsonPrimitive answerId = new JsonPrimitive(c.getId().toString());
+		for (UUID cid: item.getCommentList()) {
+			final JsonPrimitive answerId = new JsonPrimitive(cid.toString());
 			commentList.add(answerId);
 		}
 		object.add("comments", commentList);

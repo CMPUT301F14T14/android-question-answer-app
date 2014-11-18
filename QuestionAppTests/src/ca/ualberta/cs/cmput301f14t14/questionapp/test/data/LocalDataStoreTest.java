@@ -23,11 +23,21 @@ public class LocalDataStoreTest extends ActivityInstrumentationTestCase2<MainAct
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		MockData.initMockData();
 		localStore = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		localStore.clear();
 		localStore.save();
-		for (Question q: MockData.getMockData()) {
+		for (Question q: MockData.questions) {
 			localStore.putQuestion(q);
+		}
+		for (Answer a: MockData.answers) {
+			localStore.putAnswer(a);
+		}
+		for (Comment<Question> c: MockData.qcomments) {
+			localStore.putQComment(c);
+		}
+		for (Comment<Answer> c: MockData.acomments) {
+			localStore.putAComment(c);
 		}
 	}
 

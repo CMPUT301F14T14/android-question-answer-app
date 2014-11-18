@@ -1,9 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import android.content.Context;
@@ -34,7 +32,7 @@ public class DataManager {
 	private DataManager(Context context){
 		this.clientData = new ClientData(context);
 		this.localDataStore = new LocalDataStore(context);
-		this.remoteDataStore = new RemoteDataStore();
+		this.remoteDataStore = new RemoteDataStore(context);
 		this.pushOnline = new ArrayList<UUID>();
 		this.upVoteOnline = new ArrayList<UUID>();
 	}

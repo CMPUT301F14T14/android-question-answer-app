@@ -28,7 +28,7 @@ public class SearchTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		super.setUp();
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		local = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
-		remote = new RemoteDataStore();
+		remote = new RemoteDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 		remoteSearch = new MockElasticSearch();
 	}
 

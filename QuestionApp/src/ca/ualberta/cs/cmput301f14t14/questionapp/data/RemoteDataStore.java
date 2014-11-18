@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -42,9 +43,11 @@ public class RemoteDataStore implements IDataStore {
 	private static final String ANSWER_COMMENT_PATH = "acomment/";
 	private static final String TAG = "RemoteDataStore";
 
+	private Context context;
 	private Gson gson;
 
-	public RemoteDataStore() {
+	public RemoteDataStore(Context context) {
+		this.context = context;
 		GsonBuilder gb = new GsonBuilder();
 		// Register serializers and deserializers
 		// Note: The comment stuff is ugly, but it should work
@@ -113,7 +116,7 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL + ANSWER_PATH
-					+ answer.getId() + "?parent=" + answer.getParent().getId());
+					+ answer.getId() + "?parent=" + answer.getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(answer));
 			addRequest.setEntity(stringEntity);
@@ -140,7 +143,7 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL
-					+ QUESTION_COMMENT_PATH + comment.getId() + "?parent=" + comment.getParent().getId());
+					+ QUESTION_COMMENT_PATH + comment.getId() + "?parent=" + comment.getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(comment,
 					new TypeToken<Comment<Question>>(){}.getType()));
@@ -158,13 +161,14 @@ public class RemoteDataStore implements IDataStore {
 
 	@Override
 	public void putAComment(Comment<Answer> comment) {
+		DataManager dm = DataManager.getInstance(context);
 		HttpClient httpClient = new DefaultHttpClient();
 
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL
 					+ ANSWER_COMMENT_PATH + comment.getId()
-					+ "?parent=" + comment.getParent().getId()
-					+ "&routing=" + comment.getParent().getParent().getId());
+					+ "?parent=" + comment.getParent()
+					+ "&routing=" + dm.getAnswer(comment.getParent()).getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(comment,
 					new TypeToken<Comment<Answer>>(){}.getType()));
@@ -239,5 +243,11 @@ public class RemoteDataStore implements IDataStore {
 		}
 
 		return result.toString();
+	}
+
+	@Override
+	public boolean hasAccess() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

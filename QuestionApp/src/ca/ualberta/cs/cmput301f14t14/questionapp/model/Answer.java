@@ -3,7 +3,6 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 

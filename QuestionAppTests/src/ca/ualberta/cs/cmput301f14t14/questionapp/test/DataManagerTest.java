@@ -29,11 +29,14 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 		manager.clearClientData();
 		manager.setUsername("User");
-		Collection<Question> qList = MockData.getMockData();
-		for(Question question : qList){
+		MockData.initMockData();
+		for(Question question : MockData.questions){
 			manager.addQuestion(question);
 		}
-		validQ = qList.iterator().next();
+		for(Answer answer : MockData.answers) {
+			manager.addAnswer(answer);
+		}
+		validQ = MockData.questions.iterator().next();
 		List<Answer> aList = manager.getAnswerList(validQ);
 		validA = aList.get(0);
 		try{
