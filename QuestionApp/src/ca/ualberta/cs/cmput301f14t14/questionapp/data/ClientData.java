@@ -60,7 +60,6 @@ public class ClientData {
 		saveItems(list, "favqlist");
 	}
 	
-
 	public ArrayList<UUID> getFavoriteQuestions() {
 		return getItems("favqlist");
 	}

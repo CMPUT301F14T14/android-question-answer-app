@@ -228,8 +228,6 @@ public class DataManager {
 		}
 		return questionList;
 	}
-
-
 	
 	public List<Comment<Answer>> getCommentList(Answer a){
 		List<Comment<Answer>> comments = new ArrayList<Comment<Answer>>();

@@ -90,18 +90,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 		//boolean favorited = local.isFavorite(validQ.getId());
 		//assertTrue(favorited);
 	}
-	
-	/**
-	 * UC12 TC 12.2 - Favorite an Answer
-	 */
-	
-	public void testFavoriteAnswer() {
-		manager.favoriteAnswer(validA.getId());
-		LocalDataStore local = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
-		//boolean favorited = local.isFavorite(validA.getId());
-		//assertTrue(favorited);
-	}
-	
+		
 	public void testReadQuestionLater(){
 		manager.readQuestionLater(validQ.getId());
 		try{

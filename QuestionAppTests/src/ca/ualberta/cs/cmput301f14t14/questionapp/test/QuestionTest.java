@@ -5,6 +5,7 @@ import java.util.UUID;
 import android.test.ActivityInstrumentationTestCase2;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
@@ -148,7 +149,8 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 	
 	public void testReadQuestionLater() {
 		Question q = new Question(title, body, author, null);
-		manager.readQuestionLater(q.getId());
+		ClientData cd = new ClientData(getActivity().getApplicationContext());
+		cd.markQuestionReadLater(q.getId());
 		UUID id = q.getId();
 		assertNotNull(local.getQuestion(id));
 	}
