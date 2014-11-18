@@ -34,6 +34,9 @@ public class DataManager {
 	private DataManager(Context context){
 		this.clientData = new ClientData(context);
 		this.localDataStore = new LocalDataStore(context);
+		this.remoteDataStore = new RemoteDataStore();
+		this.pushOnline = new ArrayList<UUID>();
+		this.upVoteOnline = new ArrayList<UUID>();
 	}
 
 	/**
