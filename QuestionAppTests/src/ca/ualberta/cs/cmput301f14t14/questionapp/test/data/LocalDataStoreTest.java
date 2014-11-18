@@ -29,7 +29,6 @@ public class LocalDataStoreTest extends ActivityInstrumentationTestCase2<MainAct
 		for (Question q: MockData.getMockData()) {
 			localStore.putQuestion(q);
 		}
-		localStore.buildMaps();
 	}
 
 	protected void tearDown() throws Exception {
