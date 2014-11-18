@@ -4,6 +4,7 @@ import java.util.UUID;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import ca.ualberta.cs.cmput301f14t14.questionapp.AnswerViewActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.QuestionActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -34,7 +36,7 @@ public class AddCommentDialogFragment extends DialogFragment {
 		} catch(NullPointerException e) {
 			
 		}
-		
+		final Context c = getActivity().getApplicationContext();
 		final UUID questionId = tqid;
 		final UUID answerId = taid;
 		
@@ -51,7 +53,8 @@ public class AddCommentDialogFragment extends DialogFragment {
 							DataManager datamanager = DataManager.getInstance(getActivity());
 							Question question = datamanager.getQuestion(questionId);
 							Answer answer = datamanager.getAnswer(answerId);
-							String username = datamanager.getUsername();
+							ClientData cd = new ClientData(c);
+							String username = cd.getUsername();
 							
 							if(answerId != null){
 								@SuppressWarnings({ "rawtypes", "unchecked" })

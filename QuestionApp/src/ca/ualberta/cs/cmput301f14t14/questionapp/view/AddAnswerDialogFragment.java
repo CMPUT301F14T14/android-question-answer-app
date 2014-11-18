@@ -6,6 +6,7 @@ import java.util.UUID;
 import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.QuestionActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
@@ -45,7 +46,8 @@ implements IView{
 							UUID Qid = UUID.fromString(getArguments().getString( "Qid"));
 							EditText body = (EditText) text.findViewById(R.id.add_answer_body);
 							String bd = body.getText().toString();
-							String username = datamanager.getUsername();
+							ClientData cd = new ClientData(context);
+							String username = cd.getUsername();
 							Question Ques = datamanager.getQuestion(Qid);
 							Image img = null;
 							Answer Ans = new Answer(Ques.getId(),bd,username, img);
