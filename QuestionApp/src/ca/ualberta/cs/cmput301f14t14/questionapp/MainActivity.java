@@ -135,14 +135,16 @@ public class MainActivity extends Activity {
 
 				@Override
 				public int compare(Question arg0, Question arg1) {
-					if(favQ.contains(arg0.getId()) && favQ.contains(arg1.getId())){
-						//Sort by date if both in favourites
+					if(favQ.contains(arg0.getId()) == favQ.contains(arg1.getId())){
+						//Sort by date if both in or not in favourites
 						return arg0.getDate().compareTo(arg1.getDate());
 					}
 					else if(favQ.contains(arg0.getId()) && !favQ.contains(arg1.getId())){
+						return 1;
+					}
+					else{
 						return -1;
 					}
-					return 1;
 				}
 				
 			});
@@ -154,8 +156,8 @@ public class MainActivity extends Activity {
 
 				@Override
 				public int compare(Question q1, Question q2) {
-					if(q1.getAuthor().equals(dm.getUsername()) && q2.getAuthor().equals(dm.getUsername())){
-						return 0;
+					if(q1.getAuthor().equals(dm.getUsername()) == q2.getAuthor().equals(dm.getUsername())){
+						return q1.getDate().compareTo(q2.getDate());
 					}
 					else if(q1.getAuthor().equals(dm.getUsername()) && !q2.getAuthor().equals(dm.getUsername()))
 						return -1;
