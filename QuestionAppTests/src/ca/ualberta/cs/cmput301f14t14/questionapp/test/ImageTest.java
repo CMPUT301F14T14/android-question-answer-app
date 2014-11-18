@@ -26,7 +26,7 @@ public class ImageTest extends TestCase {
 	public void testAddImage() {
 		Image image = new Image(Uri.parse("android.resource://QuestionAppTests/drawable/under64"), null);
 		mQuestion = new Question("Title", "QBody", "Author", image);
-		mAnswer = new Answer(mQuestion, "ABody", "Author", image);
+		mAnswer = new Answer(mQuestion.getId(), "ABody", "Author", image);
 		assertNotNull(mAnswer.getImage());
 		assertNotNull(mQuestion.getImage());
 	}

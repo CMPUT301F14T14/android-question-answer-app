@@ -48,10 +48,10 @@ implements IView{
 							String username = datamanager.getUsername();
 							Question Ques = datamanager.getQuestion(Qid);
 							Image img = null;
-							Answer Ans = new Answer(Ques,bd,username, img);
-							datamanager.addAnswer(Qid,Ans);
+							Answer Ans = new Answer(Ques.getId(),bd,username, img);
+							datamanager.addAnswer(Ans);
 							QuestionActivity a = (QuestionActivity) getActivity();
-							Answer A = datamanager.getAnswer(Qid,Ans.getId());
+							Answer A = datamanager.getAnswer(Ans.getId());
 							Ques = datamanager.getQuestion(Qid);
 							a.updateQuestion(Ques);
 							

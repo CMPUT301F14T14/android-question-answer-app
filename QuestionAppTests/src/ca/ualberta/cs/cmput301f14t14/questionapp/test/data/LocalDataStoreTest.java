@@ -13,9 +13,9 @@ public class LocalDataStoreTest extends ActivityInstrumentationTestCase2<MainAct
 	private LocalDataStore localStore;
 
 	private final Question new_q = new Question("Geometry troubles", "Why does my triangle have four sides?", "Jim", null);
-	private final Answer new_a = new Answer(new_q, "You are looking at this from the wrong dimension.", "John", null);
-	private final Comment<Question> new_cq = new Comment<Question>(new_q, "Are you sure you're looking at a triangle?", "Joe");
-	private final Comment<Answer> new_ca = new Comment<Answer>(new_a, "I don't think so...", "Jane");
+	private final Answer new_a = new Answer(new_q.getId(), "You are looking at this from the wrong dimension.", "John", null);
+	private final Comment<Question> new_cq = new Comment<Question>(new_q.getId(), "Are you sure you're looking at a triangle?", "Joe");
+	private final Comment<Answer> new_ca = new Comment<Answer>(new_a.getId(), "I don't think so...", "Jane");
 	
 	public LocalDataStoreTest() {
 		super(MainActivity.class);
@@ -29,7 +29,6 @@ public class LocalDataStoreTest extends ActivityInstrumentationTestCase2<MainAct
 		for (Question q: MockData.getMockData()) {
 			localStore.putQuestion(q);
 		}
-		localStore.buildMaps();
 	}
 
 	protected void tearDown() throws Exception {

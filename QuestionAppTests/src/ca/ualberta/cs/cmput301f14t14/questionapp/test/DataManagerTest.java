@@ -34,7 +34,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 			manager.addQuestion(question);
 		}
 		validQ = qList.iterator().next();
-		List<Answer> aList = validQ.getAnswerList();
+		List<Answer> aList = manager.getAnswerList(validQ);
 		validA = aList.get(0);
 		try{
 			mockQuestion = new Question("", "", "", null);
@@ -67,13 +67,13 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 	}
 
 	public void testAddComments(){
-		Comment<Question> mockComment = new Comment<Question>(validQ, "This is not a real question", manager.getUsername());
-		manager.addQuestionComment(validQ.getId(), mockComment);
-		assertEquals(mockComment, manager.getQuestionComment(validQ.getId(), mockComment.getId()));
+		Comment<Question> mockComment = new Comment<Question>(validQ.getId(), "This is not a real question", manager.getUsername());
+		manager.addQuestionComment(mockComment);
+		assertEquals(mockComment, manager.getQuestionComment(mockComment.getId()));
 		
-		Comment<Answer> testComment = new Comment<Answer>(validA, "This answer is not helpful", manager.getUsername());
-		manager.addAnswerComment(validQ.getId(), validA.getId(), testComment);
-		assertEquals(testComment, manager.getAnswerComment(validQ.getId(), validA.getId(), testComment.getId()));
+		Comment<Answer> testComment = new Comment<Answer>(validA.getId(), "This answer is not helpful", manager.getUsername());
+		manager.addAnswerComment(testComment);
+		assertEquals(testComment, manager.getAnswerComment(testComment.getId()));
 	}
 	
 	/**
