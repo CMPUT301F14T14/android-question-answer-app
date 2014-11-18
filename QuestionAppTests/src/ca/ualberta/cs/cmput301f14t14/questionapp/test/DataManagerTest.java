@@ -1,6 +1,5 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
-import java.util.Collection;
 import java.util.List;
 
 import android.test.ActivityInstrumentationTestCase2;
@@ -55,7 +54,7 @@ public class DataManagerTest extends ActivityInstrumentationTestCase2<MainActivi
 		manager.setUsername("Different user");
 		assertEquals("Different user", manager.getUsername());
 	}
-	
+
 	public void testGetQuestion(){
 
 		try{

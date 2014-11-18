@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	private LocalDataStore mLocalStore;
-	public RemoteDataStore mRemoteStore = new RemoteDataStore(getInstrumentation().getTargetContext().getApplicationContext());
+	private RemoteDataStore mRemoteStore;
 
 	private Question mQuestion;
 	private DataManager manager;
@@ -28,6 +28,7 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActiv
 	protected void setUp() throws Exception {
 		super.setUp();
 		mLocalStore = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
+		mRemoteStore = new RemoteDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 
 		mQuestion = new Question("TITLE", "BODY", "AUTHOR", null);
 		mAnswer = new Answer(mQuestion.getId(), "ANSWERBODY", "AUTHOR", null);
