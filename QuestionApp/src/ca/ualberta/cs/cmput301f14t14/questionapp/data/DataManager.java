@@ -1,7 +1,9 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import android.content.Context;
@@ -20,11 +22,12 @@ public class DataManager {
 	private ClientData clientData;
 	private IDataStore localDataStore;
 	private IDataStore remoteDataStore;
-	private List<Question> questionList;
 	private List<UUID> favouriteQuestions;
 	private List<UUID> favouriteAnswers;
 	private List<UUID> recentVisit;
 	private List<UUID> readLater;
+	private List<UUID> pushOnline;
+	private List<UUID> upVoteOnline;
 	String Username;
 
 	
@@ -47,8 +50,13 @@ public class DataManager {
 	
 	//View Interface Begins
 	public void addQuestion(Question validQ) {
-		questionList = localDataStore.getQuestionList();
-		questionList.add(validQ);
+		if(remoteDataStore.hasAccess()){
+			remoteDataStore.putQuestion(validQ);
+		  	remoteDataStore.save();
+		}
+		else{
+			pushOnline.add(validQ.getId());
+		}  
 		localDataStore.putQuestion(validQ);
 		localDataStore.save();
 		
@@ -60,104 +68,136 @@ public class DataManager {
 	 * @return
 	 */
 	public Question getQuestion(UUID id) {
-		questionList = localDataStore.getQuestionList();
-		Iterator<Question> list = questionList.iterator();
-		while(list.hasNext()){
-			Question question = list.next();
-			UUID qid = question.getId();
-			if(id.equals(qid)){
-				return question;
-			}
+		Question q;
+		if(remoteDataStore.hasAccess()){
+			q = remoteDataStore.getQuestion(id);
+			recentVisit.add(id);
+			localDataStore.putQuestion(q);
+		  	localDataStore.save();
 		}
-		return null;
+		else{
+			q = localDataStore.getQuestion(id);
+		}
+		return q;
+		 
 	}
 	
 	/**
 	 * Add an answer record
-	 * @param Qid Parent question ID
 	 * @param A Answer to add
 	 */
-	public void addAnswer(UUID Qid, Answer A){
-		questionList = localDataStore.getQuestionList();
-		Question question = getQuestion(Qid);
-		Integer position = questionList.indexOf(question);
-		question.addAnswer(A);
+	public void addAnswer(Answer A){
+		Question question = getQuestion(A.getParent());
+		question.addAnswer(A.getId());
+		if(remoteDataStore.hasAccess()){
+			remoteDataStore.putAnswer(A);
+			remoteDataStore.putQuestion(question);
+			remoteDataStore.save();
+		}
+		else{
+			pushOnline.add(A.getId());
+		}
 		localDataStore.putAnswer(A);
-		questionList.set(position, question);
+		localDataStore.putQuestion(question);
 		localDataStore.save();
 	}
 
 	/**
 	 * Get answer record
-	 * @param Qid Parent question ID
 	 * @param Aid Answer ID
 	 * @return
 	 */
-	public Answer getAnswer(UUID Qid, UUID Aid) {
-		questionList = localDataStore.getQuestionList();
-		Question question = getQuestion(Qid);
-		Answer answer = question.getAnswer(Aid);
+	public Answer getAnswer(UUID Aid) {
+		Answer answer;
+		if(remoteDataStore.hasAccess()){
+			answer = remoteDataStore.getAnswer(Aid);
+			recentVisit.add(Aid);
+			localDataStore.putAnswer(answer);
+		  	localDataStore.save();
+		}
+		else{
+			answer = localDataStore.getAnswer(Aid);
+		}
 		return answer;
 	}
 
 	/**
 	 * Add comment record to question
-	 * @param Qid Parent question
 	 * @param C
 	 */
-	public void addQuestionComment(UUID Qid, Comment<Question> C){
-		questionList = localDataStore.getQuestionList();
-		Question question = getQuestion(Qid);
-		Integer position = questionList.indexOf(question);
-		question.addComment(C);
-		questionList.set(position, question);
+	public void addQuestionComment(Comment<Question> C){
+		Question question = getQuestion(C.getParent());
+		question.addComment(C.getId());
+		if(remoteDataStore.hasAccess()){
+			remoteDataStore.putQComment(C);
+			remoteDataStore.putQuestion(question);
+			remoteDataStore.save();
+		}
+		else{
+			pushOnline.add(C.getId());
+		}
+		
 		localDataStore.putQComment(C);
+		localDataStore.putQuestion(question);
 		localDataStore.save();
 	}
 
 	/**
 	 * Get comment record from question
-	 * @param Qid Parent question
 	 * @param cid
 	 * @return
 	 */
-	public Comment<Question> getQuestionComment(UUID Qid, UUID cid) {
-		questionList = localDataStore.getQuestionList();
-		Question question = getQuestion(Qid);
-		Comment<Question> comment = question.getComment(cid);
+	public Comment<Question> getQuestionComment(UUID cid) {
+		Comment<Question> comment;
+		if(remoteDataStore.hasAccess()){
+			comment = remoteDataStore.getQComment(cid);
+			recentVisit.add(cid);
+			localDataStore.putQComment(comment);
+		  	localDataStore.save();
+		}
+		else{
+			comment = localDataStore.getQComment(cid);
+		}
 		return comment;
 	}
 
 	/**
 	 * Add comment record for answer
-	 * @param Qid Parent question
-	 * @param Aid Parent answer
 	 * @param C
 	 */
-	public void addAnswerComment(UUID Qid, UUID Aid, Comment<Answer> C){
-		questionList = localDataStore.getQuestionList();
-		Question question = getQuestion(Qid);
-		Integer position = questionList.indexOf(question);
-		Answer answer = question.getAnswer(Aid);
-		answer.addComment(C);
-		question.setAnswer(Aid,answer);
-		questionList.set(position, question);
+	public void addAnswerComment(Comment<Answer> C){
+		Answer answer = getAnswer(C.getParent());
+		answer.addComment(C.getId());
+		if(remoteDataStore.hasAccess()){
+			remoteDataStore.putAComment(C);
+			remoteDataStore.putAnswer(answer);
+			remoteDataStore.save();
+		}
+		else{
+			pushOnline.add(C.getId());
+		}
+		
 		localDataStore.putAComment(C);
+		localDataStore.putAnswer(answer);
 		localDataStore.save();
 	}
 
 	/**
 	 * Get comment record from answer
-	 * @param Qid Parent question
-	 * @param Aid Parent answer
 	 * @param Cid
 	 * @return
 	 */
-	public Comment<Answer> getAnswerComment(UUID Qid, UUID Aid, UUID Cid){
-		questionList = localDataStore.getQuestionList();
-		Question question = getQuestion(Qid);
-		Answer answer = question.getAnswer(Aid);
-		Comment<Answer> comment = answer.getComment(Cid);
+	public Comment<Answer> getAnswerComment(UUID Cid){
+		Comment<Answer> comment;
+		if(remoteDataStore.hasAccess()){
+			comment = remoteDataStore.getAComment(Cid);
+			recentVisit.add(Cid);
+			localDataStore.putAComment(comment);
+		  	localDataStore.save();
+		}
+		else{
+			comment = localDataStore.getAComment(Cid);
+		}
 		return comment;
 	}
 
@@ -168,7 +208,13 @@ public class DataManager {
 	 * @return
 	 */
 	public List<Question> load(){
-		questionList = localDataStore.getQuestionList();
+		List<Question> questionList;
+		if(remoteDataStore.hasAccess()){
+			questionList = remoteDataStore.getQuestionList();
+		}
+		else{
+			questionList = localDataStore.getQuestionList();	
+		}
 		return questionList;
 	}
 
@@ -215,21 +261,6 @@ public class DataManager {
 		clientData.clear();
 	}
 	
-	public void updateQuestion(Question upQuestion){
-		questionList = localDataStore.getQuestionList();
-		Iterator<Question> list = questionList.iterator();
-		while(list.hasNext()){
-			Question question = list.next();
-			UUID qid = question.getId();
-			if(upQuestion.getId().equals(qid)){
-				questionList.remove(question);
-				questionList.add(upQuestion);
-				localDataStore.save();
-				return;
-			}
-		}
-	}
-	
 	public Question getReadLaterQuestion(UUID qId){
 		if(readLater.contains(qId)){
 			
@@ -238,6 +269,45 @@ public class DataManager {
 		else{
 			throw new NullPointerException("id is not in the list");
 		}
+	}
+	
+	public List<Comment<Answer>> getCommentList(Answer a){
+		List<Comment<Answer>> comments = new ArrayList<Comment<Answer>>();
+		for(UUID c : a.getCommentList()){
+			comments.add(getAnswerComment(c));
+		}
+		return comments;
+	}
+	
+	public List<Comment<Question>> getCommentList(Question q){
+		List<Comment<Question>> comments = new ArrayList<Comment<Question>>();
+		for(UUID c : q.getCommentList()){
+			comments.add(getQuestionComment(c));
+		}
+		return comments;
+	}
+	
+	public List<Answer> getAnswerList(Question q){
+		List<Answer> answers = new ArrayList<Answer>();
+		for(UUID a : q.getAnswerList()){
+			answers.add(getAnswer(a));
+		}
+		return answers;
+	}
+	
+	public void upvoteQuestion(Question q){
+		if(remoteDataStore.hasAccess()){
+			remoteDataStore.putQuestion(q);
+		  	remoteDataStore.save();
+		}
+		else{
+			pushOnline.add(q.getId());
+			upVoteOnline.add(q.getId());
+		}  
+		localDataStore.putQuestion(q);
+		localDataStore.save();
+		
+		
 	}
 
 }

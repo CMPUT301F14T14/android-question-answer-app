@@ -25,9 +25,9 @@ public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainAc
 		super.setUp();
 		mRemoteStore = new RemoteDataStore();
 		mQuestion = new Question("TITLE", "BODY", "Author", null);
-		mAnswer = new Answer(mQuestion, "ANSWERBODY", "Author", null);
-		qComment = new Comment<Question>(mQuestion, "COMMENTBODY", "Boris");
-		aComment = new Comment<Answer>(mAnswer, "CBody", "Natasha");
+		mAnswer = new Answer(mQuestion.getId(), "ANSWERBODY", "Author", null);
+		qComment = new Comment<Question>(mQuestion.getId(), "COMMENTBODY", "Boris");
+		aComment = new Comment<Answer>(mAnswer.getId(), "CBody", "Natasha");
 		manager = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
 	}
 
@@ -47,13 +47,13 @@ public class RemoteDataStoreTest extends ActivityInstrumentationTestCase2<MainAc
 	
 	public void testPutAnswer() {
 		mRemoteStore.putAnswer(mAnswer);
-		Answer retrieved = manager.getAnswer(mQuestion.getId(), mAnswer.getId());
+		Answer retrieved = manager.getAnswer(mAnswer.getId());
 		assertEquals(mAnswer, retrieved);
 	}
 	
 	public void testPutComment() {
 		mRemoteStore.putQComment(qComment);
-		Comment<Question> retrieved = (Comment<Question>) manager.getQuestionComment(qComment.getId(), qComment.getId());
+		Comment<Question> retrieved = (Comment<Question>) manager.getQuestionComment(qComment.getId());
 		assertEquals(qComment, retrieved);
 	}
 	
