@@ -3,10 +3,12 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import android.content.Context;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -76,8 +78,9 @@ public class DataManager {
 	public Question getQuestion(UUID id) {
 		Question q;
 		if(remoteDataStore.hasAccess()){
+		  	// Save the question id into the recentVisit list
+		  	recentVisit.add(id);
 			q = remoteDataStore.getQuestion(id);
-			recentVisit.add(id);
 			localDataStore.putQuestion(q);
 		  	localDataStore.save();
 		}
