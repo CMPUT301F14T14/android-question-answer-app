@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -55,26 +57,42 @@ public class ClientData {
 	}
 	
 	public void saveFavoriteQuestions(List<UUID> list){
-		//Saves the magic list of favorited questions to 
-		//sharedPreferences.
-		
-		Editor e = prefs.edit();
-		Set<String> favset = new HashSet<String>();
-		
-		for (UUID i : list) {
-			favset.add(i.toString());
-		}
-		e.putStringSet("favqlist", favset);
-		e.commit();
-		return;
+		saveItems(list, "favqlist");
 	}
 	
 
 	public ArrayList<UUID> getFavoriteQuestions() {
+		return getItems("favqlist");
+	}
+	
+	
+	String readlaterfilename = "readlaterlist";
+	
+	public void markQuestionReadLater(UUID u) {
+		
+		List<UUID> appendlist = getItems(readlaterfilename);
+		appendlist.add(u);
+		saveItems(appendlist, readlaterfilename);
+	}
+	public boolean isQuestionReadLater(UUID id) {
+		/** Call this to see if your desired question is
+		 *  marked as read later. After that, the user will
+		 *  call the datamanager to get the question itself
+		 */  
+		List<UUID> rllist = getItems(readlaterfilename);
+		if (rllist.contains(id)){
+			return true; 
+		} else {
+			return false;
+		}
+	}
+	
+	
+	public ArrayList<UUID> getItems(String filename) {
 		//Supposed to return a list of favorite questions
 		//We can then add to this list
 		//Pull a list of favorited questions from SharedPrefs		
-		Set<String> favset = prefs.getStringSet("favqlist", null);
+		Set<String> favset = prefs.getStringSet(filename, null);
 		if (favset == null ){ //Only on first run of the app this will be null
 			return new ArrayList<UUID>();
 		}
@@ -90,6 +108,19 @@ public class ClientData {
 		ArrayList<UUID> returnlist = new ArrayList<UUID>();
 		returnlist.addAll(intset);
 		return returnlist;
+	}
+	
+	public void saveItems(List<UUID> list, String filename) {
+		//Saves the list to sharedPreferences.
+		
+		Editor e = prefs.edit();
+		Set<String> favset = new HashSet<String>();
+		
+		for (UUID i : list) {
+			favset.add(i.toString());
+		}
+		e.putStringSet(filename, favset);
+		e.commit();
 	}
 
 	public List<UUID> getReadLater() {

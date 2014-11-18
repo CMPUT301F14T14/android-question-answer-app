@@ -229,59 +229,7 @@ public class DataManager {
 		return questionList;
 	}
 
-	/**
-	 * Mark a question as a favorite
-	 * @param questionId
-	 */
-	/*
-	public void favoriteQuestion(UUID questionId) {
-		favouriteQuestions = clientData.getFavoriteQuestions();
-		favouriteQuestions.add(questionId);
-		clientData.saveFavoriteQuestions(favouriteQuestions);
-	
-	}
-	
-	public List<UUID> getFavoritedQuestions() {
-		return clientData.getFavoriteQuestions();
-	}
-	
-	public void unfavoriteQuestion(UUID questionId) {
-		favouriteQuestions = clientData.getFavoriteQuestions();
-		favouriteQuestions.remove(questionId);
-		clientData.saveFavoriteQuestions(favouriteQuestions);
-	}
-	*/
 
-	/**
-	 * Mark an answer as a favorite
-	 * @param Aid
-	 */
-	public void favoriteAnswer(UUID Aid) {
-		//DELETE METHOD
-		favouriteAnswers = clientData.getFavoriteAnswers();
-		favouriteAnswers.add(Aid);
-		//localdatamanager.save(favouriteAnswers)
-	}
-	
-	public void readQuestionLater(UUID Qid) {
-		readLater = clientData.getReadLater();
-		readLater.add(Qid);
-		//localdatamanager.save(readLater);
-	}
-
-
-
-
-	
-	public Question getReadLaterQuestion(UUID qId){
-		if(readLater.contains(qId)){
-			
-			return getQuestion(qId);
-		}
-		else{
-			throw new NullPointerException("id is not in the list");
-		}
-	}
 	
 	public List<Comment<Answer>> getCommentList(Answer a){
 		List<Comment<Answer>> comments = new ArrayList<Comment<Answer>>();
