@@ -129,7 +129,9 @@ public class MainActivity extends Activity {
 		case 3:{
 			final List<UUID> favQ = dm.getFavoritedQuestions();
 			for (UUID q : favQ){
-				qlist.add(dm.getQuestion(q));
+				if(!qlist.contains(dm.getQuestion(q))){
+					qlist.add(dm.getQuestion(q));
+				}
 			}
 			Collections.sort(qlist,new Comparator<Question>(){
 
