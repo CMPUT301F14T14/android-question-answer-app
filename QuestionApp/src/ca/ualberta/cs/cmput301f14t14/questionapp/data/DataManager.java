@@ -233,6 +233,7 @@ public class DataManager {
 	 * Mark a question as a favorite
 	 * @param questionId
 	 */
+	/*
 	public void favoriteQuestion(UUID questionId) {
 		favouriteQuestions = clientData.getFavoriteQuestions();
 		favouriteQuestions.add(questionId);
@@ -249,6 +250,7 @@ public class DataManager {
 		favouriteQuestions.remove(questionId);
 		clientData.saveFavoriteQuestions(favouriteQuestions);
 	}
+	*/
 
 	/**
 	 * Mark an answer as a favorite

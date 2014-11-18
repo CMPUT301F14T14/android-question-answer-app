@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -146,7 +147,8 @@ public class QuestionActivity extends Activity {
 		super.onResume();
 		//Set the star on the favorite button to match the favorited state
 		//of the question.
-		if (DataManager.getInstance(this).getFavoritedQuestions().contains(this.question.getId())) {
+		ClientData cd = new ClientData(this);
+		if (cd.getFavoriteQuestions().contains(this.question.getId())) {
 			//Question is already favorited.
 			//Set the star to be highlighted on create.
 			ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
@@ -254,13 +256,17 @@ public class QuestionActivity extends Activity {
 		
 		ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
 		Favbutton.setImageResource(R.drawable.ic_fav_highlighted);
-		
-		if (DataManager.getInstance(this).getFavoritedQuestions().contains(this.question.getId())) {
+		ClientData cd = new ClientData(this);
+		if (cd.getFavoriteQuestions().contains(this.question.getId())) {
 			//Question is already favorited.
-			DataManager.getInstance(this).unfavoriteQuestion(question.getId());
+			List<UUID> favq = cd.getFavoriteQuestions();
+			favq.remove(question.getId());
+			cd.saveFavoriteQuestions(favq);
 			Favbutton.setImageResource(R.drawable.ic_fav_reg);
 		} else {
-			DataManager.getInstance(this).favoriteQuestion(question.getId());
+			List<UUID> favq = cd.getFavoriteQuestions();
+			favq.add(question.getId());
+			cd.saveFavoriteQuestions(favq);
 			Favbutton.setImageResource(R.drawable.ic_fav_highlighted);
 		}
 

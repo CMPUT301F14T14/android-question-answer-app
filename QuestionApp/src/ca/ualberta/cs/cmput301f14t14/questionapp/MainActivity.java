@@ -137,7 +137,7 @@ public class MainActivity extends Activity {
 			break;
 			}
 		case 3:{
-			final List<UUID> favQ = dm.getFavoritedQuestions();
+			final List<UUID> favQ = cd.getFavoriteQuestions();
 			for (UUID q : favQ){
 				qlist.add(dm.getQuestion(q));
 			}
