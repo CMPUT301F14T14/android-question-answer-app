@@ -15,7 +15,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
  * DataManager is a singleton that talks to local and remote data sources
  */
 public class DataManager {
-
+	
 	private static DataManager instance;
 
 	private ClientData clientData;
@@ -27,17 +27,26 @@ public class DataManager {
 	private List<UUID> readLater;
 	private List<UUID> pushOnline;
 	private List<UUID> upVoteOnline;
-	private Context singletoncontext; //Needed for Threading instantiations
+	private Context context; //Needed for Threading instantiations
 	String Username;
 
 	
-	private DataManager(Context context){
+	private DataManager(Context context) {
+		this.pushOnline = new ArrayList<UUID>();
+		this.upVoteOnline = new ArrayList<UUID>();
+		this.context = context;
+	}
+
+	/**
+	 * Create data stores
+	 * 
+	 * This must be done after the constructor, because some data stores
+	 * refer back to DataManager, and cannot do so until it is constructed.
+	 */
+	private void initDataStores() {
 		this.clientData = new ClientData(context);
 		this.localDataStore = new LocalDataStore(context);
 		this.remoteDataStore = new RemoteDataStore(context);
-		this.pushOnline = new ArrayList<UUID>();
-		this.upVoteOnline = new ArrayList<UUID>();
-		this.singletoncontext = context;
 	}
 
 	/**
@@ -48,6 +57,7 @@ public class DataManager {
 	public static DataManager getInstance(Context context){
 		if (instance == null){
 			instance = new DataManager(context.getApplicationContext());
+			instance.initDataStores();
 		}
 		return instance;
 	}
@@ -56,7 +66,7 @@ public class DataManager {
 	public void addQuestion(Question validQ) {
 		if(remoteDataStore.hasAccess()){
 			
-			AddQuestionTask aqt = new AddQuestionTask(this.singletoncontext);
+			AddQuestionTask aqt = new AddQuestionTask(this.context);
 			aqt.execute(validQ);
 			
 		}
