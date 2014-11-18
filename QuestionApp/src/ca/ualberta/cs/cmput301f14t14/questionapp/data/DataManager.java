@@ -217,6 +217,8 @@ public class DataManager {
 	 * @return
 	 */
 	public List<Question> load(){
+		//TO DELETE AFTER 
+		//getQuestionList is done.
 		List<Question> questionList;
 		if(remoteDataStore.hasAccess()){
 			questionList = remoteDataStore.getQuestionList();
@@ -253,6 +255,7 @@ public class DataManager {
 	 * @param Aid
 	 */
 	public void favoriteAnswer(UUID Aid) {
+		//DELETE METHOD
 		favouriteAnswers = clientData.getFavoriteAnswers();
 		favouriteAnswers.add(Aid);
 		//localdatamanager.save(favouriteAnswers)
@@ -264,22 +267,9 @@ public class DataManager {
 		//localdatamanager.save(readLater);
 	}
 
-	public String getUsername() {
-		return clientData.getUsername();
-	}
-	
-	public void setUsername(String username) {
-		clientData.setUsername(username);
-	}
 
 
-	public void readAnswerLater(Answer mAnswer) {
-		// TODO Auto-generated method stub
-	}
-	
-	public void clearClientData() {
-		clientData.clear();
-	}
+
 	
 	public Question getReadLaterQuestion(UUID qId){
 		if(readLater.contains(qId)){

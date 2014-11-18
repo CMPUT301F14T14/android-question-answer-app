@@ -1,5 +1,5 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
-public class Callback {
-
+public interface Callback {
+	public void run();
 }

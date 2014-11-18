@@ -25,6 +25,8 @@ public class ClientData {
 	public ClientData(Context context) {
 		this.prefs = context.getSharedPreferences(PREF_SET, Context.MODE_PRIVATE);
 	}
+	
+
 
 	public String getUsername() {
 		return this.prefs.getString(VAL_USERNAME, null);
