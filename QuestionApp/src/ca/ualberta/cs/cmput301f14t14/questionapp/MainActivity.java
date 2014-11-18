@@ -136,7 +136,8 @@ public class MainActivity extends Activity {
 				@Override
 				public int compare(Question arg0, Question arg1) {
 					if(favQ.contains(arg0.getId()) && favQ.contains(arg1.getId())){
-						return 0;
+						//Sort by date if both in favourites
+						return arg0.getDate().compareTo(arg1.getDate());
 					}
 					else if(favQ.contains(arg0.getId()) && !favQ.contains(arg1.getId())){
 						return -1;
