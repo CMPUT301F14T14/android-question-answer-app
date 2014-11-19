@@ -17,6 +17,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerComment
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
@@ -226,7 +227,7 @@ public class DataManager {
 	 */
 	public void addAnswerComment(Comment<Answer> C){
 		AddAnswerCommentTask aact = new AddAnswerCommentTask(singletoncontext);
-		aact.execute(C);
+		aact.execute(C);  //Possibly trouble here.
 	}
 
 	/**
@@ -234,18 +235,34 @@ public class DataManager {
 	 * @param Cid
 	 * @return
 	 */
-	public Comment<Answer> getAnswerComment(UUID Cid){
-		Comment<Answer> comment;
-		if(remoteDataStore.hasAccess()){
-			comment = remoteDataStore.getAComment(Cid);
-			recentVisit.add(Cid);
-			localDataStore.putAComment(comment);
-		  	localDataStore.save();
+	//Another case where adding a callback to the function signature didn't break the app
+	//Are we using this?
+	public Comment<Answer> getAnswerComment(UUID Cid, Callback c){
+		GetAnswerCommentTask gact = new GetAnswerCommentTask(singletoncontext);
+		if (c == null) {
+			//User doesn't care about threading and expects this to be blocking.
+			gact.setCallBack(null);
+			Comment<Answer> rca = null;
+			try{ gact.execute(Cid).get(); } 
+				catch (Exception e) { e.printStackTrace();}
+			return rca;
 		}
-		else{
-			comment = localDataStore.getAComment(Cid);
-		}
-		return comment;
+		//Need to add this to the recentVisit list.
+		gact.setCallBack(new Callback() {
+			@Override
+			public void run(Object o) {
+				Comment<Answer> ca = (Comment<Answer>)o; //Yep, more evil casting
+				recentVisit.add(ca.getId());
+				
+			}
+		});
+		gact.execute(Cid);
+		//Now run with the callback the user actually wanted
+		gact.setCallBack(c);
+		gact.execute(Cid);
+		//The user, by not setting a null callback, should know to fetch the result 
+		//out of the callback, and should not be surprised at an NPE.
+		return null;
 	}
 
 	/**
