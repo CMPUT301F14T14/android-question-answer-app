@@ -24,6 +24,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListAn
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListQuesTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.UpvoteQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -42,8 +43,8 @@ public class DataManager {
 	private List<UUID> favouriteAnswers;
 	private List<UUID> recentVisit;
 	private List<UUID> readLater;
-	private List<UUID> pushOnline;
-	private List<UUID> upVoteOnline;
+	//private List<UUID> pushOnline;
+	//private List<UUID> upVoteOnline;
 	private Context singletoncontext; //Needed for Threading instantiations
 	String Username;
 	
@@ -54,8 +55,10 @@ public class DataManager {
 		this.clientData = new ClientData(context);
 		this.localDataStore = new LocalDataStore(context);
 		this.remoteDataStore = new RemoteDataStore(context);
-		this.pushOnline = new ArrayList<UUID>();
-		this.upVoteOnline = new ArrayList<UUID>();
+		//Deprecated. Use the eventbus instead for events that need to happen
+		//upon future internet access
+		//this.pushOnline = new ArrayList<UUID>();
+		//this.upVoteOnline = new ArrayList<UUID>();
 		this.singletoncontext = context;
 	}
 
@@ -339,17 +342,8 @@ public class DataManager {
 	}
 	
 	public void upvoteQuestion(Question q){
-		if(remoteDataStore.hasAccess()){
-			remoteDataStore.putQuestion(q);
-		  	remoteDataStore.save();
-		}
-		else{
-			pushOnline.add(q.getId());
-			upVoteOnline.add(q.getId());
-		}  
-		localDataStore.putQuestion(q);
-		localDataStore.save();
-		
+		UpvoteQuestionTask uqt = new UpvoteQuestionTask(singletoncontext);
+		uqt.execute(q);
 		
 	}
 

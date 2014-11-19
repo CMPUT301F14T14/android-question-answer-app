@@ -65,12 +65,14 @@ public class QuestionActivity extends Activity {
 		
 		// set arrayLists of relevant comments and answers
 		List<Answer> al = new ArrayList<Answer>();
-		for(Answer a: dataManager.getAnswerList(question)) {
+		//TODO: null callbacks mean this will be blocking
+		for(Answer a: dataManager.getAnswerList(question, null)) {
 			al.add(a);
 		}
 		
 		List<Comment<Question>> cl = new ArrayList<Comment<Question>>();
-		for(Comment<Question> c: dataManager.getCommentList(question)) {
+		//TODO: null callbacks mean this will be blocking
+		for(Comment<Question> c: dataManager.getCommentList(question, null)) {
 			cl.add(c);
 		}
 
@@ -223,10 +225,12 @@ public class QuestionActivity extends Activity {
 		this.question = q;
 		ala.clear();
 		cla.clear();
-		for (Answer a : dm.getAnswerList(question)) {
+		//TODO: null callbacks mean this will be blocking
+		for (Answer a : dm.getAnswerList(question, null)) {
 			ala.add(a);
 		}
-		for (Comment<Question> c : dm.getCommentList(question)) {
+		//TODO: null callbacks mean this will be blocking
+		for (Comment<Question> c : dm.getCommentList(question, null)) {
 			cla.add(c);
 		}
 		ala.update();

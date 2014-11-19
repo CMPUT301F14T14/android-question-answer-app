@@ -63,7 +63,8 @@ public class AnswerViewActivity extends Activity {
 		((TextView) findViewById(R.id.answer_upvotes)).setText(answer.getUpvotes().toString());
 		/* Populate comment list */
 		//created as class variable.
-		cl.addAll(dataManager.getCommentList(answer));
+		//TODO: null callbacks mean this will be blocking
+		cl.addAll(dataManager.getCommentList(answer, null));
 			//Set list adapter
 		final CommentListAdapter<Answer> cla = new CommentListAdapter<Answer>(this, R.layout.list_comment, cl);
 		ucla = cla; // set UCLA to be a reference to the final cla.
@@ -123,7 +124,8 @@ public class AnswerViewActivity extends Activity {
 		//move to class variables so I can access them.
 		DataManager dataManager = DataManager.getInstance(getApplicationContext());
 		ucla.clear();
-		ucla.addAll(dataManager.getCommentList(a));
+		//TODO: null callbacks mean this will be blocking
+		ucla.addAll(dataManager.getCommentList(a, null));
 		ucla.update();
     	//Toast.makeText(getApplicationContext(), "Item successfully added", Toast.LENGTH_LONG).show();
 
