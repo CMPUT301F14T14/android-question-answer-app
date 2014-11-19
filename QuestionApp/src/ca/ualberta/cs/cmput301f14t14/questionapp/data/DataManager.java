@@ -10,8 +10,10 @@ import android.content.Context;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AbstractEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerPushDelayedEvent;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionCommentPushDelayedEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionPushDelayedEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
@@ -85,6 +87,9 @@ public class DataManager {
 			}
 			if (e instanceof AnswerPushDelayedEvent) {
 				addAnswer(((AnswerPushDelayedEvent) e).a);
+			}
+			if (e instanceof QuestionCommentPushDelayedEvent) {
+				addQuestionComment(((QuestionCommentPushDelayedEvent) e).qc);
 			}
 		}
 	}
@@ -170,20 +175,9 @@ public class DataManager {
 	 * @param C
 	 */
 	public void addQuestionComment(Comment<Question> C){
-		Question question = getQuestion(C.getParent());
-		question.addComment(C.getId());
-		if(remoteDataStore.hasAccess()){
-			remoteDataStore.putQComment(C);
-			remoteDataStore.putQuestion(question);
-			remoteDataStore.save();
-		}
-		else{
-			pushOnline.add(C.getId());
-		}
+		AddQuestionCommentTask aqct = new AddQuestionCommentTask(singletoncontext);
+		aqct.execute(C); //May have a problem here. Look here first if crashing.
 		
-		localDataStore.putQComment(C);
-		localDataStore.putQuestion(question);
-		localDataStore.save();
 	}
 
 	/**
