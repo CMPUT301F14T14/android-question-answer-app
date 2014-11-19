@@ -16,6 +16,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -177,7 +178,6 @@ public class DataManager {
 	public void addQuestionComment(Comment<Question> C){
 		AddQuestionCommentTask aqct = new AddQuestionCommentTask(singletoncontext);
 		aqct.execute(C); //May have a problem here. Look here first if crashing.
-		
 	}
 
 	/**
@@ -185,18 +185,34 @@ public class DataManager {
 	 * @param cid
 	 * @return
 	 */
-	public Comment<Question> getQuestionComment(UUID cid) {
-		Comment<Question> comment;
-		if(remoteDataStore.hasAccess()){
-			comment = remoteDataStore.getQComment(cid);
-			recentVisit.add(cid);
-			localDataStore.putQComment(comment);
-		  	localDataStore.save();
+	//Wtf, when I added a Callback parameter, nothing broke... Is this 
+	//method actually called anywhere in the app?
+	public Comment<Question> getQuestionComment(UUID cid, Callback c) {
+		GetQuestionCommentTask gqct = new GetQuestionCommentTask(singletoncontext);
+		if (c == null){
+			//User does not care about blocking
+			gqct.setCallBack(null);
+			Comment<Question> cq = null;
+			try {cq = gqct.execute(cid).get();} catch(Exception e){e.printStackTrace();}
+			return cq;
 		}
-		else{
-			comment = localDataStore.getQComment(cid);
-		}
-		return comment;
+		//User cares about threading
+		//Add this questionComment to the recentVisit list
+		gqct.setCallBack(new Callback() {
+			@Override
+			public void run(Object o) {
+				Comment<Question> cq = (Comment<Question>)o; //Yep, this is evil
+				readLater.add(cq.getId());
+				
+			}
+		});
+		gqct.execute(cid);
+		//Now run with the callback the user wanted
+		gqct.setCallBack(c);
+		gqct.execute(cid);
+		//If the user is using threading, they will care to extract their result from the callback
+		return null;
+		
 	}
 
 	/**
