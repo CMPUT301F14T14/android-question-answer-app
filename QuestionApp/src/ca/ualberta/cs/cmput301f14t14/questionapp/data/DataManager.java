@@ -20,6 +20,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListAnsTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListQuesTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
@@ -285,7 +286,7 @@ public class DataManager {
 		}
 		return questionList;
 	}
-	
+	//Changing function signature didn't break things. Are we using this?
 	public List<Comment<Answer>> getCommentList(Answer a, Callback c){
 		GetCommentListAnsTask gclat = new GetCommentListAnsTask(singletoncontext);
 		if (c == null) {
@@ -303,12 +304,20 @@ public class DataManager {
 		return null;
 	}
 	
-	public List<Comment<Question>> getCommentList(Question q){
-		List<Comment<Question>> comments = new ArrayList<Comment<Question>>();
-		for(UUID c : q.getCommentList()){
-			comments.add(getQuestionComment(c));
+	public List<Comment<Question>> getCommentList(Question q, Callback c){
+		GetCommentListQuesTask gclqt = new GetCommentListQuesTask(singletoncontext);
+		if (c == null) {
+			//User doesn't care this is blocking
+			gclqt.setCallBack(null);
+			List<Comment<Question>> lcq = null;
+			try { lcq = gclqt.execute(q).get(); }
+				catch (Exception e){ e.printStackTrace();}
+			return lcq;
 		}
-		return comments;
+		gclqt.setCallBack(c);
+		gclqt.execute(q);
+		//User should pull result out of callback
+		return null;
 	}
 	
 	public List<Answer> getAnswerList(Question q){
