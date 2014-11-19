@@ -48,13 +48,13 @@ implements IView{
 							String bd = body.getText().toString();
 							ClientData cd = new ClientData(context);
 							String username = cd.getUsername();
-							Question Ques = datamanager.getQuestion(Qid);
+							Question Ques = datamanager.getQuestion(Qid, null);
 							Image img = null;
 							Answer Ans = new Answer(Ques.getId(),bd,username, img);
 							datamanager.addAnswer(Ans);
 							QuestionActivity a = (QuestionActivity) getActivity();
-							Answer A = datamanager.getAnswer(Ans.getId());
-							Ques = datamanager.getQuestion(Qid);
+							Answer A = datamanager.getAnswer(Ans.getId(), null);
+							Ques = datamanager.getQuestion(Qid, null);
 							a.updateQuestion(Ques);
 							
 						}

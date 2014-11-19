@@ -48,7 +48,7 @@ implements IView{
 							Question newQues = new Question(tle, bd, cd.getUsername(), null);
 							datamanager.addQuestion(newQues);
 							MainActivity a = (MainActivity) getActivity();
-							Question q = datamanager.getQuestion(newQues.getId());
+							Question q = datamanager.getQuestion(newQues.getId(), null);
 							a.updateList(q);
 						}
 					}

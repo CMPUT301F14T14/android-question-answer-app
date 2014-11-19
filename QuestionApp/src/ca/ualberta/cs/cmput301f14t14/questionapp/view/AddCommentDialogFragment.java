@@ -51,8 +51,8 @@ public class AddCommentDialogFragment extends DialogFragment {
 							EditText body = (EditText) viewComment.findViewById(R.id.add_comment_body);
 						
 							DataManager datamanager = DataManager.getInstance(getActivity());
-							Question question = datamanager.getQuestion(questionId);
-							Answer answer = datamanager.getAnswer(answerId);
+							Question question = datamanager.getQuestion(questionId, null);
+							Answer answer = datamanager.getAnswer(answerId, null);
 							ClientData cd = new ClientData(c);
 							String username = cd.getUsername();
 							
