@@ -9,9 +9,11 @@ import android.content.Context;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AbstractEvent;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerCommentPushDelayedEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerPushDelayedEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionCommentPushDelayedEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionPushDelayedEvent;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
@@ -91,6 +93,9 @@ public class DataManager {
 			}
 			if (e instanceof QuestionCommentPushDelayedEvent) {
 				addQuestionComment(((QuestionCommentPushDelayedEvent) e).qc);
+			}
+			if (e instanceof AnswerCommentPushDelayedEvent) {
+				addAnswerComment(((AnswerCommentPushDelayedEvent)e).ca);
 			}
 		}
 	}
@@ -220,20 +225,8 @@ public class DataManager {
 	 * @param C
 	 */
 	public void addAnswerComment(Comment<Answer> C){
-		Answer answer = getAnswer(C.getParent());
-		answer.addComment(C.getId());
-		if(remoteDataStore.hasAccess()){
-			remoteDataStore.putAComment(C);
-			remoteDataStore.putAnswer(answer);
-			remoteDataStore.save();
-		}
-		else{
-			pushOnline.add(C.getId());
-		}
-		
-		localDataStore.putAComment(C);
-		localDataStore.putAnswer(answer);
-		localDataStore.save();
+		AddAnswerCommentTask aact = new AddAnswerCommentTask(singletoncontext);
+		aact.execute(C);
 	}
 
 	/**
