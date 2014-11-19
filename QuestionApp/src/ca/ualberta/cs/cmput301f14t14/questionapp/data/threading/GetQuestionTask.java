@@ -24,9 +24,21 @@ public class GetQuestionTask extends AbstractDataManagerTask<UUID, Void, Questio
 				.getLocalDataStore();
 
 		Question q = remoteDataStore.getQuestion(id);
+		if (q == null) {
+			//We could not access the question online.
+			return localDataStore.getQuestion(id);
+		}
 		localDataStore.putQuestion(q);
 	  	localDataStore.save();
 	  	return q;
+	}
+	
+	@Override
+	protected void onPostExecute(Question question) {
+		if (callback == null) {
+			return;
+		}
+		callback.run(question);
 	}
 	
 

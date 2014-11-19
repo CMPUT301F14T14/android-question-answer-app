@@ -7,6 +7,11 @@ import java.util.concurrent.ExecutionException;
 
 import android.content.Context;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AbstractEvent;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerPushDelayedEvent;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionPushDelayedEvent;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
@@ -31,6 +36,8 @@ public class DataManager {
 	private List<UUID> upVoteOnline;
 	private Context singletoncontext; //Needed for Threading instantiations
 	String Username;
+	
+	private EventBus eventbus = EventBus.getInstance();
 
 	
 	private DataManager(Context context){
@@ -51,23 +58,40 @@ public class DataManager {
 		if (instance == null){
 			instance = new DataManager(context.getApplicationContext());
 		}
+		
 		return instance;
+	}
+	
+	private void completeQueuedEvents() {
+		//The singleton eventbus contains events that attempted to 
+		//be posted to the internet. If posting failed, an event was created
+		//on the eventbus. These queued events should regularly "tried again"
+		//so that we are as frequently as possible trying to update the internet
+		//with our new local information.
+		//I believe this is the magic that is currently missing to make the DataManager
+		//transparently update the local and remote stores.
+		
+		//For each event in the event bus, try and do it again.
+		for (AbstractEvent e: eventbus.getEventQueue()){				
+			/* Remove the current event from the eventbus. If "trying again" fails,
+			 * it will happen in a separate thread, and it will again be added to the bus
+			 */
+			eventbus.removeEvent(e);
+			
+			if (e instanceof QuestionPushDelayedEvent) {
+				//try pushing the question again
+				addQuestion(((QuestionPushDelayedEvent) e).q);
+			}
+			if (e instanceof AnswerPushDelayedEvent) {
+				addAnswer(((AnswerPushDelayedEvent) e).a);
+			}
+		}
 	}
 	
 	//View Interface Begins
 	public void addQuestion(Question validQ) {
-		if(remoteDataStore.hasAccess()){
-			
-			AddQuestionTask aqt = new AddQuestionTask(this.singletoncontext);
-			aqt.execute(validQ);
-			
-		}
-		else{
-			pushOnline.add(validQ.getId());
-		}  
-		localDataStore.putQuestion(validQ);
-		localDataStore.save();
-		
+		AddQuestionTask aqt = new AddQuestionTask(this.singletoncontext);
+		aqt.execute(validQ);
 	}
 
 	/**
@@ -75,19 +99,24 @@ public class DataManager {
 	 * @param id
 	 * @return
 	 */
-	public Question getQuestion(UUID id) {
-		Question q;
-		if(remoteDataStore.hasAccess()){
-		  	// Save the question id into the recentVisit list
-		  	recentVisit.add(id);
-			q = remoteDataStore.getQuestion(id);
-			localDataStore.putQuestion(q);
-		  	localDataStore.save();
-		}
-		else{
-			q = localDataStore.getQuestion(id);
-		}
-		return q;
+	public void getQuestion(UUID id, Callback c) {
+		//Need to add the question we got into the recentVisit list
+		GetQuestionTask gqt = new GetQuestionTask(singletoncontext);
+		gqt.setCallBack(new Callback() {
+			@Override
+			public void run(Object o) {
+				Question q = (Question) o;
+				recentVisit.add(q.getId());
+			}
+		});
+		gqt.execute(id);
+		//Now need to call the gqt with the callback the user actually wanted.
+		gqt.setCallBack(c);
+		gqt.execute(id);
+		//Each caller of this method will have a callback that can grab the question.
+		//the activities will do stuff so that this method call doesn't block
+		//This method should not return anything. The callback should fetch it.
+		
 		 
 	}
 	
@@ -96,19 +125,8 @@ public class DataManager {
 	 * @param A Answer to add
 	 */
 	public void addAnswer(Answer A){
-		Question question = getQuestion(A.getParent());
-		question.addAnswer(A.getId());
-		if(remoteDataStore.hasAccess()){
-			remoteDataStore.putAnswer(A);
-			remoteDataStore.putQuestion(question);
-			remoteDataStore.save();
-		}
-		else{
-			pushOnline.add(A.getId());
-		}
-		localDataStore.putAnswer(A);
-		localDataStore.putQuestion(question);
-		localDataStore.save();
+		AddAnswerTask aat = new AddAnswerTask(singletoncontext);
+		aat.execute(A);
 	}
 
 	/**
@@ -116,7 +134,7 @@ public class DataManager {
 	 * @param Aid Answer ID
 	 * @return
 	 */
-	public Answer getAnswer(UUID Aid) {
+	public Answer getAnswer(UUID Aid, Callback c) {
 		Answer answer;
 		if(remoteDataStore.hasAccess()){
 			answer = remoteDataStore.getAnswer(Aid);
@@ -217,6 +235,7 @@ public class DataManager {
 	 * @return
 	 */
 	public List<Question> load(){
+		
 		//TO DELETE AFTER 
 		//getQuestionList is done.
 		List<Question> questionList;
