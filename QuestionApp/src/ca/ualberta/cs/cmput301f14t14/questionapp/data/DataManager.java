@@ -167,7 +167,7 @@ public class DataManager {
 		Answer anull = null;
 		if (c == null) {
 			//User wants an answer within a thread, or doesn't care about blocking.
-			return gat.blockingRun(new UUID[]{Aid});
+			return gat.blockingRun(Aid);
 		}
 		gat.setCallBack(new Callback() {
 			@Override
@@ -203,7 +203,7 @@ public class DataManager {
 		GetQuestionCommentTask gqct = new GetQuestionCommentTask(singletoncontext);
 		if (c == null){
 			//User does not care about blocking
-			return gqct.blockingRun(new UUID[]{cid});
+			return gqct.blockingRun(cid);
 		}
 		//User cares about threading
 		//Add this questionComment to the recentVisit list
@@ -244,7 +244,7 @@ public class DataManager {
 		GetAnswerCommentTask gact = new GetAnswerCommentTask(singletoncontext);
 		if (c == null) {
 			//User doesn't care about threading and expects this to be blocking.
-			return gact.blockingRun(new UUID[]{Cid});
+			return gact.blockingRun(Cid);
 		}
 		//Need to add this to the recentVisit list.
 		gact.setCallBack(new Callback() {
@@ -288,7 +288,7 @@ public class DataManager {
 		GetCommentListAnsTask gclat = new GetCommentListAnsTask(singletoncontext);
 		if (c == null) {
 			//User doesn't care this is blocking
-			return gclat.blockingRun(new Answer[]{a});
+			return gclat.blockingRun(a);
 		}
 		gclat.setCallBack(c);
 		gclat.execute(a);
@@ -301,7 +301,7 @@ public class DataManager {
 		GetCommentListQuesTask gclqt = new GetCommentListQuesTask(singletoncontext);
 		if (c == null) {
 			//User doesn't care this is blocking
-			return gclqt.blockingRun(new Question[]{q});
+			return gclqt.blockingRun(q);
 		}
 		gclqt.setCallBack(c);
 		gclqt.execute(q);
@@ -314,7 +314,6 @@ public class DataManager {
 		if (c == null) {
 			//User does not care this is blocking
 			List<Answer> rlist = null;
-			
 			rlist = galt.blockingRun(q);
 			return rlist;
 		}
