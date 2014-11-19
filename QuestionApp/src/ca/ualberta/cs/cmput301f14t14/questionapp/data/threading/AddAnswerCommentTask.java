@@ -25,13 +25,7 @@ public class AddAnswerCommentTask extends AbstractDataManagerTask<Comment<Answer
 		
 		Answer answer = null;
 		GetAnswerTask gat = new GetAnswerTask(getContext());
-		gat.setCallBack(null);
-		
-		try { 
-			answer = gat.execute(C.getParent()).get();
-		} catch (Exception e){
-			e.printStackTrace();
-		}
+		answer = gat.blockingRun(C.getParent());
 		
 		answer.addComment(C.getId());
 		if(remoteDataStore.hasAccess()){

@@ -25,10 +25,11 @@ public class AddQuestionCommentTask extends AbstractDataManagerTask<Comment<Ques
 		
 		//Need to fetch the question.
 		//Its okay to block a non-UI thread.
+		
+		
 		GetQuestionTask gqt = new GetQuestionTask(getContext());
-		Question question = null;
-		try {question = gqt.execute(C.getParent()).get();} 
-			catch (Exception e) {e.printStackTrace();}
+		Question question = gqt.blockingRun(C.getParent());
+		
 		question.addComment(C.getId());
 		
 		if(remoteDataStore.hasAccess()){
