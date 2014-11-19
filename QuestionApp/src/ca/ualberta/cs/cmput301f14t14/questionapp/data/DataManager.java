@@ -127,7 +127,7 @@ public class DataManager {
 			//User wants a question from within a thread, or doesn't care about threading
 			//AsyncTasks cannot be nested as they run in one threadpool. Therefore, we must
 			//do something evil
-			return gqt.blockingRun(id);
+			return gqt.blockingRun(new UUID[]{id});
 		}
 		gqt.setCallBack(new Callback() {
 			@Override
@@ -167,7 +167,7 @@ public class DataManager {
 		Answer anull = null;
 		if (c == null) {
 			//User wants an answer within a thread, or doesn't care about blocking.
-			return gat.blockingRun(Aid);
+			return gat.blockingRun(new UUID[]{Aid});
 		}
 		gat.setCallBack(new Callback() {
 			@Override
@@ -203,7 +203,7 @@ public class DataManager {
 		GetQuestionCommentTask gqct = new GetQuestionCommentTask(singletoncontext);
 		if (c == null){
 			//User does not care about blocking
-			return gqct.blockingRun(cid);
+			return gqct.blockingRun(new UUID[]{cid});
 		}
 		//User cares about threading
 		//Add this questionComment to the recentVisit list
@@ -244,7 +244,7 @@ public class DataManager {
 		GetAnswerCommentTask gact = new GetAnswerCommentTask(singletoncontext);
 		if (c == null) {
 			//User doesn't care about threading and expects this to be blocking.
-			return gact.blockingRun(Cid);
+			return gact.blockingRun(new UUID[]{Cid});
 		}
 		//Need to add this to the recentVisit list.
 		gact.setCallBack(new Callback() {
@@ -288,7 +288,7 @@ public class DataManager {
 		GetCommentListAnsTask gclat = new GetCommentListAnsTask(singletoncontext);
 		if (c == null) {
 			//User doesn't care this is blocking
-			return gclat.blockingRun(a);
+			return gclat.blockingRun(new Answer[]{a});
 		}
 		gclat.setCallBack(c);
 		gclat.execute(a);
@@ -301,7 +301,7 @@ public class DataManager {
 		GetCommentListQuesTask gclqt = new GetCommentListQuesTask(singletoncontext);
 		if (c == null) {
 			//User doesn't care this is blocking
-			return gclqt.blockingRun(q);
+			return gclqt.blockingRun(new Question[]{q});
 		}
 		gclqt.setCallBack(c);
 		gclqt.execute(q);
@@ -314,6 +314,7 @@ public class DataManager {
 		if (c == null) {
 			//User does not care this is blocking
 			List<Answer> rlist = null;
+			
 			rlist = galt.blockingRun(q);
 			return rlist;
 		}

@@ -26,11 +26,10 @@ public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Boo
 		} else {
 			//Put into local data store and don't mark the task as complete
 			IDataStore local = DataManager.getInstance(getContext()).getLocalDataStore();
-			if (local.getQuestion(q.getId()) != null) {
-				//Don't put the same question into the store twice
+				//No need to worry about adding to LDS twice, it's a map.
 				local.putQuestion(q);
 				local.save();
-			}
+			
 			EventBus.getInstance().addEvent(new QuestionPushDelayedEvent(q));
 			return false;
 		}

@@ -26,8 +26,8 @@ public abstract class AbstractDataManagerTask<S,T,V> extends AsyncTask<S,T,V> {
 	 * @param param
 	 * @return
 	 */
-	public V blockingRun(S... param){
-		return doInBackground(param);
+	public V blockingRun(S... params){
+		return this.doInBackground(params);
 	}
 
 }
