@@ -33,6 +33,8 @@ implements IView{
 		final Context context = this.getActivity().getApplicationContext();
 		final View text = inflater.inflate(R.layout.addquestiondialogfragmentlayout , null);
 		
+		
+		
 		builder.setView(text)
 			.setPositiveButton(R.string.OK, 
 					new DialogInterface.OnClickListener() {
@@ -46,10 +48,10 @@ implements IView{
 							String tle = title.getText().toString();
 							ClientData cd = new ClientData(context);
 							Question newQues = new Question(tle, bd, cd.getUsername(), null);
-							datamanager.addQuestion(newQues);
+							datamanager.addQuestion(newQues, null);
 							MainActivity a = (MainActivity) getActivity();
-							Question q = datamanager.getQuestion(newQues.getId(), null);
-							a.updateList(q);
+							//Populate the list with what we have.
+							a.updateList(newQues);
 						}
 					}
 			).setNegativeButton(R.string.cancel,

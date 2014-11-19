@@ -22,7 +22,10 @@ public class GetAnswerTask extends AbstractDataManagerTask<UUID, Void, Answer> {
 				.getRemoteDataStore();
 		IDataStore localDataStore = DataManager.getInstance(this.getContext())
 				.getLocalDataStore();
-		Answer answer = remoteDataStore.getAnswer(Aid);
+		Answer answer = null;
+		if (remoteDataStore.hasAccess()){
+			answer = remoteDataStore.getAnswer(Aid);
+		}
 		if (answer == null) {
 			//We were unable to fetch it online
 			return localDataStore.getAnswer(Aid);

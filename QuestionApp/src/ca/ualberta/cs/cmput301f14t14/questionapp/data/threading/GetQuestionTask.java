@@ -22,8 +22,10 @@ public class GetQuestionTask extends AbstractDataManagerTask<UUID, Void, Questio
 				.getRemoteDataStore();
 		IDataStore localDataStore = DataManager.getInstance(this.getContext())
 				.getLocalDataStore();
-
-		Question q = remoteDataStore.getQuestion(id);
+		Question q = null;
+		if (remoteDataStore.hasAccess()){
+			q = remoteDataStore.getQuestion(id);
+		}
 		if (q == null) {
 			//We could not access the question online.
 			return localDataStore.getQuestion(id);

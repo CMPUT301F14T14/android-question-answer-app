@@ -93,7 +93,7 @@ public class DataManager {
 			
 			if (e instanceof QuestionPushDelayedEvent) {
 				//try pushing the question again
-				addQuestion(((QuestionPushDelayedEvent) e).q);
+				addQuestion(((QuestionPushDelayedEvent) e).q, null);
 			}
 			if (e instanceof AnswerPushDelayedEvent) {
 				addAnswer(((AnswerPushDelayedEvent) e).a);
@@ -108,8 +108,9 @@ public class DataManager {
 	}
 	
 	//View Interface Begins
-	public void addQuestion(Question validQ) {
+	public void addQuestion(Question validQ, Callback c) {
 		AddQuestionTask aqt = new AddQuestionTask(this.singletoncontext);
+		aqt.setCallBack(c);
 		aqt.execute(validQ);
 	}
 
@@ -121,11 +122,12 @@ public class DataManager {
 	public Question getQuestion(UUID id, Callback c) {
 		//Need to add the question we got into the recentVisit list
 		GetQuestionTask gqt = new GetQuestionTask(singletoncontext);
+		Question qnull = null;
 		if (c == null) {
 			//User wants a question from within a thread, or doesn't care about threading
-			gqt.setCallBack(null);
-			try { return gqt.execute(id).get();}
-				catch(Exception e){e.printStackTrace();}
+			//AsyncTasks cannot be nested as they run in one threadpool. Therefore, we must
+			//do something evil
+			return gqt.blockingRun(id);
 		}
 		gqt.setCallBack(new Callback() {
 			@Override
@@ -141,7 +143,7 @@ public class DataManager {
 		//Each caller of this method will have a callback that can grab the question.
 		//the activities will do stuff so that this method call doesn't block
 		//This method should not return anything. The callback should fetch it.
-		return null;
+		return qnull;
 		 
 	}
 	
@@ -162,12 +164,10 @@ public class DataManager {
 	public Answer getAnswer(UUID Aid, Callback c) {
 		//Add this answer to the recentVisit list
 		GetAnswerTask gat = new GetAnswerTask(singletoncontext);
+		Answer anull = null;
 		if (c == null) {
 			//User wants an answer within a thread, or doesn't care about blocking.
-			gat.setCallBack(null);
-			try {
-				return gat.execute(Aid).get();
-			} catch (Exception e) {e.printStackTrace();}
+			return gat.blockingRun(Aid);
 		}
 		gat.setCallBack(new Callback() {
 			@Override
@@ -180,7 +180,7 @@ public class DataManager {
 		//Now actually use the callback that the caller wanted
 		gat.setCallBack(c);
 		gat.execute(Aid);
-		return null; //Hopefully eclipse will warn users this method always returns null
+		return anull; //Hopefully eclipse will warn users this method always returns null
 	}
 
 	/**
@@ -203,10 +203,7 @@ public class DataManager {
 		GetQuestionCommentTask gqct = new GetQuestionCommentTask(singletoncontext);
 		if (c == null){
 			//User does not care about blocking
-			gqct.setCallBack(null);
-			Comment<Question> cq = null;
-			try {cq = gqct.execute(cid).get();} catch(Exception e){e.printStackTrace();}
-			return cq;
+			return gqct.blockingRun(cid);
 		}
 		//User cares about threading
 		//Add this questionComment to the recentVisit list
@@ -247,11 +244,7 @@ public class DataManager {
 		GetAnswerCommentTask gact = new GetAnswerCommentTask(singletoncontext);
 		if (c == null) {
 			//User doesn't care about threading and expects this to be blocking.
-			gact.setCallBack(null);
-			Comment<Answer> rca = null;
-			try{ gact.execute(Cid).get(); } 
-				catch (Exception e) { e.printStackTrace();}
-			return rca;
+			return gact.blockingRun(Cid);
 		}
 		//Need to add this to the recentVisit list.
 		gact.setCallBack(new Callback() {
@@ -295,12 +288,7 @@ public class DataManager {
 		GetCommentListAnsTask gclat = new GetCommentListAnsTask(singletoncontext);
 		if (c == null) {
 			//User doesn't care this is blocking
-			gclat.setCallBack(null);
-			List<Comment<Answer>> lca = null;
-			try{
-			lca = gclat.execute(a).get();
-			} catch (Exception e){ e.printStackTrace();}
-			return lca;
+			return gclat.blockingRun(a);
 		}
 		gclat.setCallBack(c);
 		gclat.execute(a);
@@ -313,11 +301,7 @@ public class DataManager {
 		GetCommentListQuesTask gclqt = new GetCommentListQuesTask(singletoncontext);
 		if (c == null) {
 			//User doesn't care this is blocking
-			gclqt.setCallBack(null);
-			List<Comment<Question>> lcq = null;
-			try { lcq = gclqt.execute(q).get(); }
-				catch (Exception e){ e.printStackTrace();}
-			return lcq;
+			return gclqt.blockingRun(q);
 		}
 		gclqt.setCallBack(c);
 		gclqt.execute(q);
@@ -329,11 +313,9 @@ public class DataManager {
 		GetAnswerListTask galt = new GetAnswerListTask(singletoncontext);
 		if (c == null) {
 			//User does not care this is blocking
-			galt.setCallBack(null);
-			List<Answer> la = null;
-			try { la = galt.execute(q).get(); }
-				catch (Exception e) {e.printStackTrace(); }
-			return la;
+			List<Answer> rlist = null;
+			rlist = galt.blockingRun(q);
+			return rlist;
 		}
 		galt.setCallBack(c);
 		galt.execute(q);
