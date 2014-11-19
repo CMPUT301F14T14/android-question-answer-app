@@ -19,6 +19,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionComme
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListAnsTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
@@ -285,12 +286,21 @@ public class DataManager {
 		return questionList;
 	}
 	
-	public List<Comment<Answer>> getCommentList(Answer a){
-		List<Comment<Answer>> comments = new ArrayList<Comment<Answer>>();
-		for(UUID c : a.getCommentList()){
-			comments.add(getAnswerComment(c));
+	public List<Comment<Answer>> getCommentList(Answer a, Callback c){
+		GetCommentListAnsTask gclat = new GetCommentListAnsTask(singletoncontext);
+		if (c == null) {
+			//User doesn't care this is blocking
+			gclat.setCallBack(null);
+			List<Comment<Answer>> lca = null;
+			try{
+			lca = gclat.execute(a).get();
+			} catch (Exception e){ e.printStackTrace();}
+			return lca;
 		}
-		return comments;
+		gclat.setCallBack(c);
+		gclat.execute(a);
+		//User should expect this to be null, since the result should be pulled out of the callback
+		return null;
 	}
 	
 	public List<Comment<Question>> getCommentList(Question q){
