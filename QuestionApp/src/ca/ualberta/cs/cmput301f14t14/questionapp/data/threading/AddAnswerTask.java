@@ -30,7 +30,7 @@ public class AddAnswerTask extends AbstractDataManagerTask<Answer, Void, Void>{
 		//Get the parent question
 		GetQuestionTask gqt = new GetQuestionTask(getContext());
 		gqt.setCallBack(null);
-		try { //It's okay to block this thread to get a question parent
+		try { //It's okay to block this thread to get a question parent, for simplicity
 			question = gqt.execute(ans.getParent()).get();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

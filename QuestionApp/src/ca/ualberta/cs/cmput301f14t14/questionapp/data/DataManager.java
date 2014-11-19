@@ -13,6 +13,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerPush
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionPushDelayedEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -134,18 +135,21 @@ public class DataManager {
 	 * @param Aid Answer ID
 	 * @return
 	 */
-	public Answer getAnswer(UUID Aid, Callback c) {
-		Answer answer;
-		if(remoteDataStore.hasAccess()){
-			answer = remoteDataStore.getAnswer(Aid);
-			recentVisit.add(Aid);
-			localDataStore.putAnswer(answer);
-		  	localDataStore.save();
-		}
-		else{
-			answer = localDataStore.getAnswer(Aid);
-		}
-		return answer;
+	public void getAnswer(UUID Aid, Callback c) {
+		//Add this answer to the recentVisit list
+		GetAnswerTask gat = new GetAnswerTask(singletoncontext);
+		gat.setCallBack(new Callback() {
+			@Override
+			public void run(Object o) {
+				Answer a = (Answer)o;
+				recentVisit.add(a.getId());
+			}
+		});
+		gat.execute(Aid);
+		//Now actually use the callback that the caller wanted
+		gat.setCallBack(c);
+		gat.execute(Aid);
+		
 	}
 
 	/**
