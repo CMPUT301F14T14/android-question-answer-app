@@ -53,7 +53,8 @@ public class QuestionActivity extends Activity {
 		if (qId != null) {
 			// we have a Question, grab it from dataManager
 			UUID id = UUID.fromString(qId);
-			question = dataManager.getQuestion(id);
+			//TODO: by passing null as a callback, getQuestion() blocks the UI thread!!!!!
+			question = dataManager.getQuestion(id, null);
 		}
 		else {
 			// no Question, toss er back to the main screen

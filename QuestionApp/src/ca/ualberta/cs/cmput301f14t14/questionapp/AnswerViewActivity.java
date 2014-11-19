@@ -48,7 +48,8 @@ public class AnswerViewActivity extends Activity {
 		if (qId != null || aId != null) {
 			UUID Qid = UUID.fromString(qId);
 			UUID Aid = UUID.fromString(aId);
-			answer = dataManager.getAnswer(Aid);
+			//TODO: callback is null. GetAnswer is blocking UI thread.
+			answer = dataManager.getAnswer(Aid, null);
 		}
 		else {
 			// no Question, toss er back to somewhere

@@ -100,9 +100,15 @@ public class DataManager {
 	 * @param id
 	 * @return
 	 */
-	public void getQuestion(UUID id, Callback c) {
+	public Question getQuestion(UUID id, Callback c) {
 		//Need to add the question we got into the recentVisit list
 		GetQuestionTask gqt = new GetQuestionTask(singletoncontext);
+		if (c == null) {
+			//User wants a question from within a thread, or doesn't care about threading
+			gqt.setCallBack(null);
+			try { return gqt.execute(id).get();}
+				catch(Exception e){e.printStackTrace();}
+		}
 		gqt.setCallBack(new Callback() {
 			@Override
 			public void run(Object o) {
@@ -117,7 +123,7 @@ public class DataManager {
 		//Each caller of this method will have a callback that can grab the question.
 		//the activities will do stuff so that this method call doesn't block
 		//This method should not return anything. The callback should fetch it.
-		
+		return null;
 		 
 	}
 	
@@ -135,9 +141,16 @@ public class DataManager {
 	 * @param Aid Answer ID
 	 * @return
 	 */
-	public void getAnswer(UUID Aid, Callback c) {
+	public Answer getAnswer(UUID Aid, Callback c) {
 		//Add this answer to the recentVisit list
 		GetAnswerTask gat = new GetAnswerTask(singletoncontext);
+		if (c == null) {
+			//User wants an answer within a thread, or doesn't care about blocking.
+			gat.setCallBack(null);
+			try {
+				return gat.execute(Aid).get();
+			} catch (Exception e) {e.printStackTrace();}
+		}
 		gat.setCallBack(new Callback() {
 			@Override
 			public void run(Object o) {
@@ -149,7 +162,7 @@ public class DataManager {
 		//Now actually use the callback that the caller wanted
 		gat.setCallBack(c);
 		gat.execute(Aid);
-		
+		return null; //Hopefully eclipse will warn users this method always returns null
 	}
 
 	/**
