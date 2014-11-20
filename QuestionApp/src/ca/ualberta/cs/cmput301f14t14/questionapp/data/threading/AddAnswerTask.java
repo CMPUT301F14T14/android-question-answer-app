@@ -45,12 +45,10 @@ public class AddAnswerTask extends AbstractDataManagerTask<Answer, Void, Void>{
 			remote.save();
 		}else{
 			//We are offline. Put the answer into local data store, and keep the task as incomplete
-			if (local.getAnswer(ans.getId()) != null){
-				//Don't save the same answer in the local store twice
-				local.putAnswer(ans);
-				local.putQuestion(question);
-				local.save();
-			}
+			local.putAnswer(ans);
+			local.putQuestion(question);
+			local.save();
+		
 			EventBus.getInstance().addEvent(new AnswerPushDelayedEvent(ans));
 		}
 

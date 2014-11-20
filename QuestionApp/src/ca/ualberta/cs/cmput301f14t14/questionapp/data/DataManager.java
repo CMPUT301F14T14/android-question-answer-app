@@ -153,7 +153,7 @@ public class DataManager {
 	 */
 	public void addAnswer(Answer A){
 		AddAnswerTask aat = new AddAnswerTask(singletoncontext);
-		aat.execute(A);
+		aat.blockingRun(A);
 	}
 
 	/**
@@ -313,9 +313,8 @@ public class DataManager {
 		GetAnswerListTask galt = new GetAnswerListTask(singletoncontext);
 		if (c == null) {
 			//User does not care this is blocking
-			List<Answer> rlist = null;
-			rlist = galt.blockingRun(q);
-			return rlist;
+			return galt.blockingRun(q);
+			
 		}
 		galt.setCallBack(c);
 		galt.execute(q);

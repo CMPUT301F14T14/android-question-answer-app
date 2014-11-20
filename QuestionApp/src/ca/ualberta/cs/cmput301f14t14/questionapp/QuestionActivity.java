@@ -227,6 +227,9 @@ public class QuestionActivity extends Activity {
 		cla.clear();
 		//TODO: null callbacks mean this will be blocking
 		for (Answer a : dm.getAnswerList(question, null)) {
+			if (a == null) {
+				continue;
+			}
 			ala.add(a);
 		}
 		//TODO: null callbacks mean this will be blocking

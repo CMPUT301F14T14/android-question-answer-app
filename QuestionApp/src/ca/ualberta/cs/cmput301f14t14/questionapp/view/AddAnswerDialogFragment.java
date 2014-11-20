@@ -43,18 +43,23 @@ implements IView{
 						public void onClick(DialogInterface dialog, int which) {
 							//Creates a new answer with data from dialog fragment
 							DataManager datamanager = DataManager.getInstance(context);
+							
 							UUID Qid = UUID.fromString(getArguments().getString( "Qid"));
 							EditText body = (EditText) text.findViewById(R.id.add_answer_body);
 							String bd = body.getText().toString();
+							
 							ClientData cd = new ClientData(context);
 							String username = cd.getUsername();
+							
 							Question Ques = datamanager.getQuestion(Qid, null);
+							
 							Image img = null;
+							
 							Answer Ans = new Answer(Ques.getId(),bd,username, img);
 							datamanager.addAnswer(Ans);
+							
 							QuestionActivity a = (QuestionActivity) getActivity();
-							Answer A = datamanager.getAnswer(Ans.getId(), null);
-							Ques = datamanager.getQuestion(Qid, null);
+							
 							a.updateQuestion(Ques);
 							
 						}
