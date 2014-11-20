@@ -7,14 +7,14 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionPu
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import android.content.Context;
 
-public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Boolean>{
+public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Void>{
 
 	public AddQuestionTask(Context c) {
 		super(c);
 	}
 
 	@Override
-	protected Boolean doInBackground(Question... qin) {
+	protected Void doInBackground(Question... qin) {
 		Question q = qin[0]; // Ignore other questions inputted
 		IDataStore remote = DataManager.getInstance(this.getContext())
 			.getRemoteDataStore();
@@ -22,7 +22,7 @@ public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Boo
 		if (remote.hasAccess()){
 			remote.putQuestion(q);
 			remote.save();
-			return true;
+			return null;
 		} else {
 			//Put into local data store and don't mark the task as complete
 			IDataStore local = DataManager.getInstance(getContext()).getLocalDataStore();
@@ -31,7 +31,7 @@ public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Boo
 				local.save();
 			
 			EventBus.getInstance().addEvent(new QuestionPushDelayedEvent(q));
-			return false;
+			return null;
 		}
 		
 	}

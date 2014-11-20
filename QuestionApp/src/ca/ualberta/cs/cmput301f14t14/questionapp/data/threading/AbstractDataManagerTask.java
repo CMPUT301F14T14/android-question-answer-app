@@ -17,9 +17,9 @@ public abstract class AbstractDataManagerTask<S,T,V> extends AsyncTask<S,T,V> {
 		return context;
 	}
 	
-	Callback callback = null;
+	Callback<V> callback = null;
 	
-	public void setCallBack(Callback c) {
+	public void setCallBack(Callback<V> c) {
 		callback = c;
 	}
 	/** Runs doInBackground in the current thread.
