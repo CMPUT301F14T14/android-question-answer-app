@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,6 +10,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import android.content.Context;
+import android.util.Log;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
@@ -38,7 +40,12 @@ public class QuestionDeserializer implements JsonDeserializer<Question> {
 			UUID qid = UUID.fromString(jsonObject.get("id").getAsString());
 			
 			// Get existing object if available
-			question = dm.getLocalDataStore().getQuestion(qid);
+			try {
+				question = dm.getLocalDataStore().getQuestion(qid);
+			} catch (IOException e) {
+				Log.e("QuestionDeserializer", "Failed to get question record");
+				question = null;
+			}
 			if (question == null)
 				question = new Question();
 			

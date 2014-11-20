@@ -1,5 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 
+import java.io.IOException;
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.IDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
@@ -21,7 +23,12 @@ public class UpvoteQuestionTask extends AbstractDataManagerTask<Question, Void, 
 		IDataStore localDataStore  = DataManager.getInstance(getContext()).getLocalDataStore();
 		
 		if(remoteDataStore.hasAccess()){
-			remoteDataStore.putQuestion(q);
+			try {
+				remoteDataStore.putQuestion(q);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		  	remoteDataStore.save();
 		}
 		else{
@@ -32,7 +39,12 @@ public class UpvoteQuestionTask extends AbstractDataManagerTask<Question, Void, 
 			EventBus.getInstance().addEvent(new QuestionPushDelayedEvent(q));
 		}  
 		//In both cases (online and not), update what we have locally
-		localDataStore.putQuestion(q);
+		try {
+			localDataStore.putQuestion(q);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		localDataStore.save();
 		return null;
 	}

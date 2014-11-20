@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
@@ -41,12 +42,22 @@ public class AddAnswerTask extends AbstractDataManagerTask<Answer, Void, Void>{
 		IDataStore local = DataManager.getInstance(getContext()).getLocalDataStore();
 		if(remote.hasAccess()){
 			remote.putAnswer(ans);
-			remote.putQuestion(question);
+			try {
+				remote.putQuestion(question);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			remote.save();
 		}else{
 			//We are offline. Put the answer into local data store, and keep the task as incomplete
 			local.putAnswer(ans);
-			local.putQuestion(question);
+			try {
+				local.putQuestion(question);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			local.save();
 		
 			EventBus.getInstance().addEvent(new AnswerPushDelayedEvent(ans));

@@ -1,8 +1,10 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import android.content.Context;
+import android.util.Log;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.IDataStore;
@@ -23,14 +25,21 @@ public class GetQuestionTask extends AbstractDataManagerTask<UUID, Void, Questio
 		IDataStore localDataStore = DataManager.getInstance(this.getContext())
 				.getLocalDataStore();
 		Question q = null;
-		if (remoteDataStore.hasAccess()){
+		try {
 			q = remoteDataStore.getQuestion(id);
-		} else {
+			// Cache visited question
+			localDataStore.putQuestion(q);
+			localDataStore.save();
+		} catch (IOException e) {
 			//We could not access the question online.
-			return localDataStore.getQuestion(id);
+			Log.d("GetQuestionTask", "Getting local record");
+			try {
+				return localDataStore.getQuestion(id);
+			} catch (IOException e1) {
+				Log.e("GetQuestionTask", "Failed to get question");
+				e1.printStackTrace();
+			}
 		}
-		localDataStore.putQuestion(q);
-	  	localDataStore.save();
 	  	return q;
 	}
 	
