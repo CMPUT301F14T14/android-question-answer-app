@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,9 +53,9 @@ public class RemoteDataStore implements IDataStore {
 		// Register serializers and deserializers
 		// Note: The comment stuff is ugly, but it should work
 		gb.registerTypeAdapter(Question.class, new QuestionSerializer());
-		gb.registerTypeAdapter(Question.class, new QuestionDeserializer());
+		gb.registerTypeAdapter(Question.class, new QuestionDeserializer(context));
 		gb.registerTypeAdapter(Answer.class, new AnswerSerializer());
-		gb.registerTypeAdapter(Answer.class, new AnswerDeserializer());
+		gb.registerTypeAdapter(Answer.class, new AnswerDeserializer(context));
 		gb.registerTypeAdapter(new TypeToken<Comment<Question>>() {}.getType(),
 				new CommentSerializer<Question>());
 		gb.registerTypeAdapter(new TypeToken<Comment<Question>>() {}.getType(),
@@ -66,6 +67,33 @@ public class RemoteDataStore implements IDataStore {
 		gson = gb.create();
 	}
 
+
+	@Override
+	public List<Question> getQuestionList() {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(ES_BASE_URL + QUESTION_PATH + "_search");
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpGet);
+			@SuppressWarnings("unchecked")
+			SearchResponse<Question> sr = (SearchResponse<Question>) parseESResponse(
+					response, new TypeToken<SearchResponse<Question>>() {
+					}.getType());
+			List<SearchHit<Question>> hits = sr.getHits().getHits();
+			List<Question> result = new ArrayList<Question>();
+			for (SearchHit<Question> hit: hits) {
+				result.add(hit.getSource());
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
 	@Override
 	public void putQuestion(Question question) {
 		HttpClient httpClient = new DefaultHttpClient();
@@ -132,8 +160,26 @@ public class RemoteDataStore implements IDataStore {
 	}
 
 	@Override
-	public List<Question> getQuestionList() {
-		// TODO Auto-generated method stub
+	public Answer getAnswer(UUID id) {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(ES_BASE_URL + ANSWER_PATH
+				+ "_search?q=id:" + id.toString());
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpGet);
+			@SuppressWarnings("unchecked")
+			SearchResponse<Answer> sr = (SearchResponse<Answer>) parseESResponse(
+					response, new TypeToken<SearchResponse<Answer>>() {
+					}.getType());
+			SearchHit<Answer> hit = sr.getHits().getHits().get(0);
+			return hit.getSource();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 
@@ -185,12 +231,6 @@ public class RemoteDataStore implements IDataStore {
 	}
 
 	@Override
-	public Answer getAnswer(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Comment<Question> getQComment(UUID id) {
 		// TODO Auto-generated method stub
 		return null;
@@ -215,12 +255,12 @@ public class RemoteDataStore implements IDataStore {
 	 * @param type
 	 * @return SearchHit object from ElasticSearch
 	 */
-	private SearchHit<?> parseESResponse(HttpResponse response, Type type) {
+	private Object parseESResponse(HttpResponse response, Type type) {
 
 		try {
 			String json = getEntityContent(response);
 
-			SearchHit<?> sr = gson.fromJson(json, type);
+			Object sr = gson.fromJson(json, type);
 			return sr;
 		} catch (IOException e) {
 			e.printStackTrace();

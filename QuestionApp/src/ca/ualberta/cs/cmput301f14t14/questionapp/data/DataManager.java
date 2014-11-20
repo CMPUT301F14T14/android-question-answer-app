@@ -33,10 +33,9 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
  * DataManager is a singleton that talks to local and remote data sources
  */
 public class DataManager {
-
+	
 	private static DataManager instance;
 
-	private ClientData clientData;
 	private IDataStore localDataStore;
 	private IDataStore remoteDataStore;
 	private List<UUID> favouriteQuestions;
@@ -51,15 +50,23 @@ public class DataManager {
 	private EventBus eventbus = EventBus.getInstance();
 
 	
-	private DataManager(Context context){
-		this.clientData = new ClientData(context);
-		this.localDataStore = new LocalDataStore(context);
-		this.remoteDataStore = new RemoteDataStore(context);
+	private DataManager(Context context) {
 		//Deprecated. Use the eventbus instead for events that need to happen
 		//upon future internet access
 		//this.pushOnline = new ArrayList<UUID>();
 		//this.upVoteOnline = new ArrayList<UUID>();
 		this.singletoncontext = context;
+	}
+
+	/**
+	 * Create data stores
+	 * 
+	 * This must be done after the constructor, because some data stores
+	 * refer back to DataManager, and cannot do so until it is constructed.
+	 */
+	private void initDataStores() {
+		this.localDataStore = new LocalDataStore(singletoncontext);
+		this.remoteDataStore = new RemoteDataStore(singletoncontext);
 	}
 
 	/**
@@ -70,6 +77,7 @@ public class DataManager {
 	public static DataManager getInstance(Context context){
 		if (instance == null){
 			instance = new DataManager(context.getApplicationContext());
+			instance.initDataStores();
 		}
 		
 		return instance;

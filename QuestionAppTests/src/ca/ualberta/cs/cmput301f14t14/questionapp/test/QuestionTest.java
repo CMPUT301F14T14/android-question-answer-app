@@ -111,7 +111,7 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 		Question q = new Question(title, body, author, image);
 		local.putQuestion(q);
 		UUID id = q.getId();
-		assertNotNull(manager.getQuestion(id));
+		assertNotNull(manager.getQuestion(id, null));
 		remote.putQuestion(q);
 		assertNotNull(remote.getQuestion(id));
 	}
