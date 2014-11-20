@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
 	private List<Question> qList = null;
 	
 	private ClientData cd = null;
-	private Callback listCallback = null;
+	private Callback<List<Question>> listCallback = null;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,13 +85,13 @@ public class MainActivity extends Activity {
 			}
 		});
         
-        listCallback = new Callback() {
+        listCallback = new Callback<List<Question>>() {
 
 			@Override
-			public void run(Object o) {
+			public void run(List<Question> list) {
 		        qList.clear();
-		        if (o != null) {
-		        	qList.addAll((List<Question>) o);
+		        if (list != null) {
+		        	qList.addAll(list);
 		        }
 		        qla.update();
 			}

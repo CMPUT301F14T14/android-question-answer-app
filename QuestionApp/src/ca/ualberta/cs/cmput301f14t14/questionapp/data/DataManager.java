@@ -119,8 +119,8 @@ public class DataManager {
 	}
 	
 	//View Interface Begins
-	public void addQuestion(Question validQ, Callback c) {
-		AddQuestionTask aqt = new AddQuestionTask(this.context);
+	public void addQuestion(Question validQ, Callback<Void> c) {
+		AddQuestionTask aqt = new AddQuestionTask(context);
 		aqt.setCallBack(c);
 		aqt.execute(validQ);
 	}
@@ -130,7 +130,7 @@ public class DataManager {
 	 * @param id
 	 * @return
 	 */
-	public Question getQuestion(UUID id, Callback c) {
+	public Question getQuestion(UUID id, Callback<Question> c) {
 		//Need to add the question we got into the recentVisit list
 		GetQuestionTask gqt = new GetQuestionTask(context);
 		Question qnull = null;
@@ -140,10 +140,9 @@ public class DataManager {
 			//do something evil
 			return gqt.blockingRun(new UUID[]{id});
 		}
-		gqt.setCallBack(new Callback() {
+		gqt.setCallBack(new Callback<Question>() {
 			@Override
-			public void run(Object o) {
-				Question q = (Question) o;
+			public void run(Question q) {
 				recentVisit.add(q.getId());
 			}
 		});
@@ -172,7 +171,7 @@ public class DataManager {
 	 * @param Aid Answer ID
 	 * @return
 	 */
-	public Answer getAnswer(UUID Aid, Callback c) {
+	public Answer getAnswer(UUID Aid, Callback<Answer> c) {
 		//Add this answer to the recentVisit list
 		GetAnswerTask gat = new GetAnswerTask(context);
 		Answer anull = null;
@@ -180,10 +179,9 @@ public class DataManager {
 			//User wants an answer within a thread, or doesn't care about blocking.
 			return gat.blockingRun(Aid);
 		}
-		gat.setCallBack(new Callback() {
+		gat.setCallBack(new Callback<Answer>() {
 			@Override
-			public void run(Object o) {
-				Answer a = (Answer)o;
+			public void run(Answer a) {
 				recentVisit.add(a.getId());
 			}
 		});
@@ -210,7 +208,7 @@ public class DataManager {
 	 */
 	//Wtf, when I added a Callback parameter, nothing broke... Is this 
 	//method actually called anywhere in the app?
-	public Comment<Question> getQuestionComment(UUID cid, Callback c) {
+	public Comment<Question> getQuestionComment(UUID cid, Callback<Comment<Question>> c) {
 		GetQuestionCommentTask gqct = new GetQuestionCommentTask(context);
 		if (c == null){
 			//User does not care about blocking
@@ -218,12 +216,10 @@ public class DataManager {
 		}
 		//User cares about threading
 		//Add this questionComment to the recentVisit list
-		gqct.setCallBack(new Callback() {
+		gqct.setCallBack(new Callback<Comment<Question>>() {
 			@Override
-			public void run(Object o) {
-				Comment<Question> cq = (Comment<Question>)o; //Yep, this is evil
+			public void run(Comment<Question> cq) {
 				readLater.add(cq.getId());
-				
 			}
 		});
 		gqct.execute(cid);
@@ -251,17 +247,16 @@ public class DataManager {
 	 */
 	//Another case where adding a callback to the function signature didn't break the app
 	//Are we using this?
-	public Comment<Answer> getAnswerComment(UUID Cid, Callback c){
+	public Comment<Answer> getAnswerComment(UUID Cid, Callback<Comment<Answer>> c){
 		GetAnswerCommentTask gact = new GetAnswerCommentTask(context);
 		if (c == null) {
 			//User doesn't care about threading and expects this to be blocking.
 			return gact.blockingRun(Cid);
 		}
 		//Need to add this to the recentVisit list.
-		gact.setCallBack(new Callback() {
+		gact.setCallBack(new Callback<Comment<Answer>>() {
 			@Override
-			public void run(Object o) {
-				Comment<Answer> ca = (Comment<Answer>)o; //Yep, more evil casting
+			public void run(Comment<Answer> ca) {
 				recentVisit.add(ca.getId());
 				
 			}
@@ -293,8 +288,13 @@ public class DataManager {
 		return null;
 	}
 
-	//Changing function signature didn't break things. Are we using this?
-	public List<Comment<Answer>> getCommentList(Answer a, Callback c){
+	/**
+	 * Get a list of comments from an answer asynchronously
+	 * @param a
+	 * @param c
+	 * @return
+	 */
+	public List<Comment<Answer>> getCommentList(Answer a, Callback<List<Comment<Answer>>> c){
 		GetCommentListAnsTask gclat = new GetCommentListAnsTask(context);
 		if (c == null) {
 			//User doesn't care this is blocking
@@ -306,8 +306,13 @@ public class DataManager {
 		return null;
 	}
 	
-	//Function signature change didn't break things. Are we using this?
-	public List<Comment<Question>> getCommentList(Question q, Callback c){
+	/**
+	 * Get a list of comments from a question asynchronously
+	 * @param q
+	 * @param c
+	 * @return
+	 */
+	public List<Comment<Question>> getCommentList(Question q, Callback<List<Comment<Question>>> c){
 		GetCommentListQuesTask gclqt = new GetCommentListQuesTask(context);
 		if (c == null) {
 			//User doesn't care this is blocking
@@ -319,7 +324,7 @@ public class DataManager {
 		return null;
 	}
 	
-	public List<Answer> getAnswerList(Question q, Callback c){
+	public List<Answer> getAnswerList(Question q, Callback<List<Answer>> c){
 		GetAnswerListTask galt = new GetAnswerListTask(context);
 		if (c == null) {
 			//User does not care this is blocking

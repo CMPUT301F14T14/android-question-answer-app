@@ -10,22 +10,20 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import android.content.Context;
 import android.util.Log;
 
-public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Boolean>{
+public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Void>{
 
 	public AddQuestionTask(Context c) {
 		super(c);
 	}
 
 	@Override
-	protected Boolean doInBackground(Question... qin) {
-		boolean remoteSuccess = false;
+	protected Void doInBackground(Question... qin) {
 		Question q = qin[0]; // Ignore other questions inputted
 		IDataStore remote = DataManager.getInstance(getContext()).getRemoteDataStore();
 		IDataStore local = DataManager.getInstance(getContext()).getLocalDataStore();
 		
 		try {
 			remote.putQuestion(q);
-			remoteSuccess = true;
 		} catch (IOException e) {
 			EventBus.getInstance().addEvent(new QuestionPushDelayedEvent(q));
 		}
@@ -36,15 +34,9 @@ public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Boo
 		} catch (IOException e) {
 			Log.e("AddQuestionTask", "Failed to create question.");
 		}
-		return remoteSuccess;
+		return null;
 	}
 	
-	@Override
-	protected void onPostExecute(Boolean finished) {
-		if (callback == null) {
-			return;
-		}
-		callback.run(finished);
-	}
+
 
 }

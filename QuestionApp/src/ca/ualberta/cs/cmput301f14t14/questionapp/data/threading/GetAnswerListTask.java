@@ -29,12 +29,6 @@ public class GetAnswerListTask extends AbstractDataManagerTask<Question, Void, L
 		return answers;
 	}
 	
-	@Override
-	protected void onPostExecute(List<Answer> la) {
-		if (callback == null){
-			return;
-		}
-		callback.run(la);
-	}
+
 
 }
