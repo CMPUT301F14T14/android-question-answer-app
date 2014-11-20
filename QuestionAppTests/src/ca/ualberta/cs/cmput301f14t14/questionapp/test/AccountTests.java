@@ -3,6 +3,7 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
@@ -23,8 +24,9 @@ public class AccountTests extends ActivityInstrumentationTestCase2<MainActivity>
 	}
 	
 	public void testAuthorship(){
-		manager.setUsername("Boris");
-		Question testQuestion = new Question("stuff title", "stuff", manager.getUsername(), null);
+		ClientData cd = new ClientData(getActivity().getApplicationContext());
+		cd.setUsername("Boris");
+		Question testQuestion = new Question("stuff title", "stuff", cd.getUsername(), null);
 		assertTrue("Question author is not Boris!", testQuestion.getAuthor().equals("Boris"));	
 
 	}

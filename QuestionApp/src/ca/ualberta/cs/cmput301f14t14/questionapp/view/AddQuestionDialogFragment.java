@@ -2,6 +2,7 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.view;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import android.app.AlertDialog;
@@ -32,6 +33,8 @@ implements IView{
 		final Context context = this.getActivity().getApplicationContext();
 		final View text = inflater.inflate(R.layout.addquestiondialogfragmentlayout , null);
 		
+		
+		
 		builder.setView(text)
 			.setPositiveButton(R.string.OK, 
 					new DialogInterface.OnClickListener() {
@@ -43,11 +46,12 @@ implements IView{
 							EditText body = (EditText) text.findViewById(R.id.add_question_body);
 							String bd = body.getText().toString();
 							String tle = title.getText().toString();
-							Question newQues = new Question(tle, bd, datamanager.getUsername(), null);
-							datamanager.addQuestion(newQues);
+							ClientData cd = new ClientData(context);
+							Question newQues = new Question(tle, bd, cd.getUsername(), null);
+							datamanager.addQuestion(newQues, null);
 							MainActivity a = (MainActivity) getActivity();
-							Question q = datamanager.getQuestion(newQues.getId());
-							a.updateList(q);
+							//Populate the list with what we have.
+							a.updateList(newQues);
 						}
 					}
 			).setNegativeButton(R.string.cancel,

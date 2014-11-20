@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -51,7 +53,8 @@ public class QuestionActivity extends Activity {
 		if (qId != null) {
 			// we have a Question, grab it from dataManager
 			UUID id = UUID.fromString(qId);
-			question = dataManager.getQuestion(id);
+			//TODO: by passing null as a callback, getQuestion() blocks the UI thread!!!!!
+			question = dataManager.getQuestion(id, null);
 		}
 		else {
 			// no Question, toss er back to the main screen
@@ -62,12 +65,14 @@ public class QuestionActivity extends Activity {
 		
 		// set arrayLists of relevant comments and answers
 		List<Answer> al = new ArrayList<Answer>();
-		for(Answer a: dataManager.getAnswerList(question)) {
+		//TODO: null callbacks mean this will be blocking
+		for(Answer a: dataManager.getAnswerList(question, null)) {
 			al.add(a);
 		}
 		
 		List<Comment<Question>> cl = new ArrayList<Comment<Question>>();
-		for(Comment<Question> c: dataManager.getCommentList(question)) {
+		//TODO: null callbacks mean this will be blocking
+		for(Comment<Question> c: dataManager.getCommentList(question, null)) {
 			cl.add(c);
 		}
 
@@ -145,7 +150,8 @@ public class QuestionActivity extends Activity {
 		super.onResume();
 		//Set the star on the favorite button to match the favorited state
 		//of the question.
-		if (DataManager.getInstance(this).getFavoritedQuestions().contains(this.question.getId())) {
+		ClientData cd = new ClientData(this);
+		if (cd.getFavoriteQuestions().contains(this.question.getId())) {
 			//Question is already favorited.
 			//Set the star to be highlighted on create.
 			ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
@@ -219,10 +225,12 @@ public class QuestionActivity extends Activity {
 		this.question = q;
 		ala.clear();
 		cla.clear();
-		for (Answer a : dm.getAnswerList(question)) {
+		//TODO: null callbacks mean this will be blocking
+		for (Answer a : dm.getAnswerList(question, null)) {
 			ala.add(a);
 		}
-		for (Comment<Question> c : dm.getCommentList(question)) {
+		//TODO: null callbacks mean this will be blocking
+		for (Comment<Question> c : dm.getCommentList(question, null)) {
 			cla.add(c);
 		}
 		ala.update();
@@ -253,15 +261,20 @@ public class QuestionActivity extends Activity {
 		
 		ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
 		Favbutton.setImageResource(R.drawable.ic_fav_highlighted);
-		
-		if (DataManager.getInstance(this).getFavoritedQuestions().contains(this.question.getId())) {
+		ClientData cd = new ClientData(this);
+		if (cd.getFavoriteQuestions().contains(this.question.getId())) {
 			//Question is already favorited.
-			DataManager.getInstance(this).unfavoriteQuestion(question.getId());
+			List<UUID> favq = cd.getFavoriteQuestions();
+			favq.remove(question.getId());
+			cd.saveFavoriteQuestions(favq);
 			Favbutton.setImageResource(R.drawable.ic_fav_reg);
 		} else {
-			DataManager.getInstance(this).favoriteQuestion(question.getId());
+			List<UUID> favq = cd.getFavoriteQuestions();
+			favq.add(question.getId());
+			cd.saveFavoriteQuestions(favq);
 			Favbutton.setImageResource(R.drawable.ic_fav_highlighted);
 		}
 
 	}
+ 
 }

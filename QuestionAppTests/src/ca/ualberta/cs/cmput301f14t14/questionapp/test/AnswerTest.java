@@ -112,14 +112,5 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		int newVotes = mAnswer.getUpvotes();
 		assertEquals(oldVotes + 1, newVotes);
 	}
-	
-	/**
-	 * U11 TC11.2 - Indicate read Answer later
-	 */
-	
-	public void testReadQuestionLater() {
-		manager.readAnswerLater(mAnswer);
-		UUID id = mAnswer.getId();
-		assertNotNull(local.getAnswer(id));
-	}
+
 }

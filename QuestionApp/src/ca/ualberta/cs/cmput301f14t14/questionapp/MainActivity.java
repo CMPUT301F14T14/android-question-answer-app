@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
@@ -23,16 +24,23 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.content.Context;
 
 public class MainActivity extends Activity {
 
 	private DataManager dataManager;
 	private QuestionListAdapter qla = null;
+	
+	private ClientData cd = null;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        	setContentView(R.layout.activity_main);
-       
+
+       	//Instantiate Client Data for username stuff
+       	cd = new ClientData(this);
+       	
         //Create a spinner adapter for sorting choices
         ArrayAdapter<CharSequence> sortAdapter = 
         		ArrayAdapter.createFromResource(
@@ -48,7 +56,7 @@ public class MainActivity extends Activity {
         dataManager = DataManager.getInstance(this);
         
         // if first time logging in, prompt user to set username
-        if(dataManager.getUsername() == null){
+        if(cd.getUsername() == null){
 
         	Intent intent = new Intent(this.getBaseContext(), WelcomeScreenActivity.class);
         	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -78,11 +86,13 @@ public class MainActivity extends Activity {
     public OnNavigationListener changeSort() {
     	//This is the callback that is called when the user chooses 
     	//a sorting order from the spinner in the action bar.
+    	final Context activitycontext = this;
     	return new OnNavigationListener() {
 			@Override
 			public boolean onNavigationItemSelected(int itemposition, long itemid) {
 				// change way of sorting based on way selected
-				List<Question> sortedList = MainActivity.sortList(itemposition, dataManager);
+				ClientData cd = new ClientData(activitycontext);
+				List<Question> sortedList = MainActivity.sortList(itemposition, dataManager, cd);
 				qla.clear();
 				qla.addAll(sortedList);
 				qla.update();
@@ -93,7 +103,7 @@ public class MainActivity extends Activity {
     }
 
 
-    protected static List<Question> sortList(int itemposition, final DataManager dm) {
+    protected static List<Question> sortList(int itemposition, final DataManager dm, final ClientData cd) {
 		// sort the list based on way selected
     	List<Question> qlist = dm.load();
 
@@ -127,11 +137,12 @@ public class MainActivity extends Activity {
 			break;
 			}
 		case 3:{
-			final List<UUID> favQ = dm.getFavoritedQuestions();
+			final List<UUID> favQ = cd.getFavoriteQuestions();
 			for (UUID q : favQ){
 				if(!qlist.contains(dm.getQuestion(q))){
 					qlist.add(dm.getQuestion(q));
 				}
+				qlist.add(dm.getQuestion(q));
 			}
 			Collections.sort(qlist,new Comparator<Question>(){
 
@@ -153,15 +164,18 @@ public class MainActivity extends Activity {
 			break;
 		}
 		case 4:{
+			
 			// Sort by current user posts
 			Collections.sort(qlist, new Comparator<Question>(){
-
+				
 				@Override
 				public int compare(Question q1, Question q2) {
-					if(q1.getAuthor().equals(dm.getUsername()) == q2.getAuthor().equals(dm.getUsername())){
+					//Instantiate ClientData here
+					
+					if(q1.getAuthor().equals(cd.getUsername()) == q2.getAuthor().equals(cd.getUsername())){
 						return q1.getDate().compareTo(q2.getDate());
 					}
-					else if(q1.getAuthor().equals(dm.getUsername()) && !q2.getAuthor().equals(dm.getUsername()))
+					else if(q1.getAuthor().equals(cd.getUsername()) && !q2.getAuthor().equals(cd.getUsername()))
 						return -1;
 					else{
 						return 1;

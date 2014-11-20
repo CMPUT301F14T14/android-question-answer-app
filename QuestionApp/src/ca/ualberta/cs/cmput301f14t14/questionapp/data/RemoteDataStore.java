@@ -168,7 +168,7 @@ public class RemoteDataStore implements IDataStore {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL
 					+ ANSWER_COMMENT_PATH + comment.getId()
 					+ "?parent=" + comment.getParent()
-					+ "&routing=" + dm.getAnswer(comment.getParent()).getParent());
+					+ "&routing=" + dm.getAnswer(comment.getParent(), null).getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(comment,
 					new TypeToken<Comment<Answer>>(){}.getType()));
