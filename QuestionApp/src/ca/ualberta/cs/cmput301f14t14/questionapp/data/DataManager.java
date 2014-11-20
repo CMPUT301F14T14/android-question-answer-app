@@ -44,7 +44,7 @@ public class DataManager {
 	private List<UUID> readLater;
 	//private List<UUID> pushOnline;
 	//private List<UUID> upVoteOnline;
-	private Context singletoncontext; //Needed for Threading instantiations
+	private Context context; //Needed for Threading instantiations
 	String Username;
 	
 	private EventBus eventbus = EventBus.getInstance();
@@ -55,7 +55,7 @@ public class DataManager {
 		//upon future internet access
 		//this.pushOnline = new ArrayList<UUID>();
 		//this.upVoteOnline = new ArrayList<UUID>();
-		this.singletoncontext = context;
+		this.context = context;
 	}
 
 	/**
@@ -65,8 +65,8 @@ public class DataManager {
 	 * refer back to DataManager, and cannot do so until it is constructed.
 	 */
 	private void initDataStores() {
-		this.localDataStore = new LocalDataStore(singletoncontext);
-		this.remoteDataStore = new RemoteDataStore(singletoncontext);
+		this.localDataStore = new LocalDataStore(context);
+		this.remoteDataStore = new RemoteDataStore(context);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class DataManager {
 	
 	//View Interface Begins
 	public void addQuestion(Question validQ, Callback c) {
-		AddQuestionTask aqt = new AddQuestionTask(this.singletoncontext);
+		AddQuestionTask aqt = new AddQuestionTask(this.context);
 		aqt.setCallBack(c);
 		aqt.execute(validQ);
 	}
@@ -129,7 +129,7 @@ public class DataManager {
 	 */
 	public Question getQuestion(UUID id, Callback c) {
 		//Need to add the question we got into the recentVisit list
-		GetQuestionTask gqt = new GetQuestionTask(singletoncontext);
+		GetQuestionTask gqt = new GetQuestionTask(context);
 		Question qnull = null;
 		if (c == null) {
 			//User wants a question from within a thread, or doesn't care about threading
@@ -160,7 +160,7 @@ public class DataManager {
 	 * @param A Answer to add
 	 */
 	public void addAnswer(Answer A){
-		AddAnswerTask aat = new AddAnswerTask(singletoncontext);
+		AddAnswerTask aat = new AddAnswerTask(context);
 		aat.blockingRun(A);
 	}
 
@@ -171,7 +171,7 @@ public class DataManager {
 	 */
 	public Answer getAnswer(UUID Aid, Callback c) {
 		//Add this answer to the recentVisit list
-		GetAnswerTask gat = new GetAnswerTask(singletoncontext);
+		GetAnswerTask gat = new GetAnswerTask(context);
 		Answer anull = null;
 		if (c == null) {
 			//User wants an answer within a thread, or doesn't care about blocking.
@@ -196,7 +196,7 @@ public class DataManager {
 	 * @param C
 	 */
 	public void addQuestionComment(Comment<Question> C){
-		AddQuestionCommentTask aqct = new AddQuestionCommentTask(singletoncontext);
+		AddQuestionCommentTask aqct = new AddQuestionCommentTask(context);
 		aqct.execute(C); //May have a problem here. Look here first if crashing.
 	}
 
@@ -208,7 +208,7 @@ public class DataManager {
 	//Wtf, when I added a Callback parameter, nothing broke... Is this 
 	//method actually called anywhere in the app?
 	public Comment<Question> getQuestionComment(UUID cid, Callback c) {
-		GetQuestionCommentTask gqct = new GetQuestionCommentTask(singletoncontext);
+		GetQuestionCommentTask gqct = new GetQuestionCommentTask(context);
 		if (c == null){
 			//User does not care about blocking
 			return gqct.blockingRun(cid);
@@ -237,7 +237,7 @@ public class DataManager {
 	 * @param C
 	 */
 	public void addAnswerComment(Comment<Answer> C){
-		AddAnswerCommentTask aact = new AddAnswerCommentTask(singletoncontext);
+		AddAnswerCommentTask aact = new AddAnswerCommentTask(context);
 		aact.execute(C);  //Possibly trouble here.
 	}
 
@@ -249,7 +249,7 @@ public class DataManager {
 	//Another case where adding a callback to the function signature didn't break the app
 	//Are we using this?
 	public Comment<Answer> getAnswerComment(UUID Cid, Callback c){
-		GetAnswerCommentTask gact = new GetAnswerCommentTask(singletoncontext);
+		GetAnswerCommentTask gact = new GetAnswerCommentTask(context);
 		if (c == null) {
 			//User doesn't care about threading and expects this to be blocking.
 			return gact.blockingRun(Cid);
@@ -282,18 +282,24 @@ public class DataManager {
 		
 		//TO DELETE AFTER 
 		//getQuestionList is done.
-		List<Question> questionList;
-		if(remoteDataStore.hasAccess()){
+		List<Question> questionList = null;
+		try {
 			questionList = remoteDataStore.getQuestionList();
+		} catch (IOException e) {
+			Log.e("DataManager", "Failed to get data from network");
 		}
-		else{
-			questionList = localDataStore.getQuestionList();	
+		if (questionList == null) {
+			try {
+				questionList = localDataStore.getQuestionList();
+			} catch (IOException e) {
+				Log.e("DataManager", "Failed to get any question list");
+			}
 		}
 		return questionList;
 	}
 	//Changing function signature didn't break things. Are we using this?
 	public List<Comment<Answer>> getCommentList(Answer a, Callback c){
-		GetCommentListAnsTask gclat = new GetCommentListAnsTask(singletoncontext);
+		GetCommentListAnsTask gclat = new GetCommentListAnsTask(context);
 		if (c == null) {
 			//User doesn't care this is blocking
 			return gclat.blockingRun(a);
@@ -306,7 +312,7 @@ public class DataManager {
 	
 	//Function signature change didn't break things. Are we using this?
 	public List<Comment<Question>> getCommentList(Question q, Callback c){
-		GetCommentListQuesTask gclqt = new GetCommentListQuesTask(singletoncontext);
+		GetCommentListQuesTask gclqt = new GetCommentListQuesTask(context);
 		if (c == null) {
 			//User doesn't care this is blocking
 			return gclqt.blockingRun(q);
@@ -318,7 +324,7 @@ public class DataManager {
 	}
 	
 	public List<Answer> getAnswerList(Question q, Callback c){
-		GetAnswerListTask galt = new GetAnswerListTask(singletoncontext);
+		GetAnswerListTask galt = new GetAnswerListTask(context);
 		if (c == null) {
 			//User does not care this is blocking
 			return galt.blockingRun(q);
@@ -331,7 +337,7 @@ public class DataManager {
 	}
 	
 	public void upvoteQuestion(Question q){
-		UpvoteQuestionTask uqt = new UpvoteQuestionTask(singletoncontext);
+		UpvoteQuestionTask uqt = new UpvoteQuestionTask(context);
 		uqt.execute(q);
 		
 	}
