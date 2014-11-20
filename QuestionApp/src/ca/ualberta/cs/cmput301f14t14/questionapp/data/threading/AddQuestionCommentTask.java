@@ -1,5 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 
+import java.io.IOException;
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.IDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
@@ -34,14 +36,24 @@ public class AddQuestionCommentTask extends AbstractDataManagerTask<Comment<Ques
 		
 		if(remoteDataStore.hasAccess()){
 			remoteDataStore.putQComment(C);
-			remoteDataStore.putQuestion(question);
+			try {
+				remoteDataStore.putQuestion(question);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			remoteDataStore.save();
 		} else {
 			//We are offline. Add failure to push onto eventbus.
 			//Store into local datastore for now.
 			//Can't have duplicate keys in a map, so we don't have to worry about doing this twice.
 			localDataStore.putQComment(C);
-			localDataStore.putQuestion(question);
+			try {
+				localDataStore.putQuestion(question);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			localDataStore.save();
 			//Push to event bus
 			EventBus.getInstance().addEvent(new QuestionCommentPushDelayedEvent(C));

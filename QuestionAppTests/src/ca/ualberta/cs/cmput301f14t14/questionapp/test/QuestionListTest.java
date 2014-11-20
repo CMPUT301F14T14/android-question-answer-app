@@ -1,5 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
@@ -58,7 +60,12 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActiv
 
 	/** UC1 TC1.2 */
 	public void testViewRemotelyStoredItems() {
-		mRemoteStore.putQuestion(mQuestion);
+		try {
+			mRemoteStore.putQuestion(mQuestion);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/*
 		 * Need to create a list adapter, list view, then use
 		 * AtivityInstrumentationTestCase2 to get Views by Id

@@ -36,7 +36,7 @@ public class SearchActivity extends Activity {
         String[] words = query.split(" ");
 		//build a question list from this query
         
-        List<Question> qList = dataManager.load();
+        List<Question> qList = dataManager.getQuestionList(null);
         List<Question> qSearchList = new ArrayList<Question>();
         Iterator<Question> list = qList.iterator();
 		while(list.hasNext()){

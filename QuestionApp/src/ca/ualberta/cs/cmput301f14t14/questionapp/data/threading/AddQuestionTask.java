@@ -1,11 +1,14 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 
+import java.io.IOException;
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.IDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionPushDelayedEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import android.content.Context;
+import android.util.Log;
 
 public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Boolean>{
 
@@ -15,25 +18,25 @@ public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Boo
 
 	@Override
 	protected Boolean doInBackground(Question... qin) {
+		boolean remoteSuccess = false;
 		Question q = qin[0]; // Ignore other questions inputted
-		IDataStore remote = DataManager.getInstance(this.getContext())
-			.getRemoteDataStore();
+		IDataStore remote = DataManager.getInstance(getContext()).getRemoteDataStore();
+		IDataStore local = DataManager.getInstance(getContext()).getLocalDataStore();
 		
-		if (remote.hasAccess()){
+		try {
 			remote.putQuestion(q);
-			remote.save();
-			return true;
-		} else {
-			//Put into local data store and don't mark the task as complete
-			IDataStore local = DataManager.getInstance(getContext()).getLocalDataStore();
-				//No need to worry about adding to LDS twice, it's a map.
-				local.putQuestion(q);
-				local.save();
-			
+			remoteSuccess = true;
+		} catch (IOException e) {
 			EventBus.getInstance().addEvent(new QuestionPushDelayedEvent(q));
-			return false;
 		}
-		
+		try {
+			// All questions created by the user should be saved locally
+			local.putQuestion(q);
+			local.save();
+		} catch (IOException e) {
+			Log.e("AddQuestionTask", "Failed to create question.");
+		}
+		return remoteSuccess;
 	}
 	
 	@Override

@@ -1,11 +1,13 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import android.content.Context;
+import android.util.Log;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AbstractEvent;
@@ -23,6 +25,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListAnsTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListQuesTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionCommentTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionListTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.UpvoteQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
@@ -278,25 +281,18 @@ public class DataManager {
 	 * This list is not returned with any particular order.
 	 * @return
 	 */
-	public List<Question> load(){
-		
-		//TO DELETE AFTER 
-		//getQuestionList is done.
-		List<Question> questionList = null;
-		try {
-			questionList = remoteDataStore.getQuestionList();
-		} catch (IOException e) {
-			Log.e("DataManager", "Failed to get data from network");
+	public List<Question> getQuestionList(Callback callback) {
+		GetQuestionListTask task = new GetQuestionListTask(context);
+		if (callback == null) {
+			//User doesn't care this is blocking
+			return task.blockingRun();
 		}
-		if (questionList == null) {
-			try {
-				questionList = localDataStore.getQuestionList();
-			} catch (IOException e) {
-				Log.e("DataManager", "Failed to get any question list");
-			}
-		}
-		return questionList;
+		task.setCallBack(callback);
+		task.execute();
+		//User should expect this to be null, since the result should be pulled out of the callback
+		return null;
 	}
+
 	//Changing function signature didn't break things. Are we using this?
 	public List<Comment<Answer>> getCommentList(Answer a, Callback c){
 		GetCommentListAnsTask gclat = new GetCommentListAnsTask(context);

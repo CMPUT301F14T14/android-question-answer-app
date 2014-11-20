@@ -1,10 +1,12 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -63,24 +65,33 @@ public class MainActivity extends Activity {
         	startActivity(intent);
         }
         
-        //create the list of questions
-        List<Question> qList = dataManager.load();
-        qla = new QuestionListAdapter(this, R.layout.list_question, qList);  
-        ListView questionView = (ListView) findViewById(R.id.question_list);
-        questionView.setAdapter(qla);
-        questionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        List<Question> qList = new ArrayList<Question>();
+        qla = new QuestionListAdapter(this, R.layout.list_question, qList);
+        
+        Callback listCallback = new Callback() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// run off to the question view if you tap an item
-				final Question question = qla.getItem(position);
-				UUID qId = question.getId();
-				Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-				intent.putExtra("QUESTION_UUID", qId.toString());
-				startActivity(intent);
+			public void run(Object o) {
+		        ListView questionView = (ListView) findViewById(R.id.question_list);
+		        questionView.setAdapter(qla);
+		        questionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						// run off to the question view if you tap an item
+						final Question question = qla.getItem(position);
+						UUID qId = question.getId();
+						Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+						intent.putExtra("QUESTION_UUID", qId.toString());
+						startActivity(intent);
+					}
+				});
 			}
-		});
+        };
+        
+        //create the list of questions
+        dataManager.getQuestionList(listCallback);
     }
     
     public OnNavigationListener changeSort() {
@@ -105,7 +116,7 @@ public class MainActivity extends Activity {
 
     protected static List<Question> sortList(int itemposition, final DataManager dm, final ClientData cd) {
 		// sort the list based on way selected
-    	List<Question> qlist = dm.load();
+    	List<Question> qlist = dm.getQuestionList(null);
 
 		switch (itemposition){
 		case 1:{

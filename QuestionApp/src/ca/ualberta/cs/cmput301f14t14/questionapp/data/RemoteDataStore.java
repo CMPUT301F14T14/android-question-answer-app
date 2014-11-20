@@ -69,7 +69,7 @@ public class RemoteDataStore implements IDataStore {
 
 
 	@Override
-	public List<Question> getQuestionList() {
+	public List<Question> getQuestionList() throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(ES_BASE_URL + QUESTION_PATH + "_search");
 
@@ -87,6 +87,8 @@ public class RemoteDataStore implements IDataStore {
 				result.add(hit.getSource());
 			}
 			return result;
+		} catch (IOException e) {
+			throw new IOException("Error getting question list.", e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -95,7 +97,7 @@ public class RemoteDataStore implements IDataStore {
 	}
 	
 	@Override
-	public void putQuestion(Question question) {
+	public void putQuestion(Question question) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 
 		try {
@@ -109,7 +111,8 @@ public class RemoteDataStore implements IDataStore {
 			HttpResponse response = httpClient.execute(addRequest);
 			String status = response.getStatusLine().toString();
 			Log.i(TAG, status);
-
+		} catch (IOException e) {
+			throw new IOException("Failed to upload question", e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
