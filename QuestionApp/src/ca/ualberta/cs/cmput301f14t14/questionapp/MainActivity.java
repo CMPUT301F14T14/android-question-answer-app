@@ -32,8 +32,10 @@ public class MainActivity extends Activity {
 
 	private DataManager dataManager;
 	private QuestionListAdapter qla = null;
+	private List<Question> qList = null;
 	
 	private ClientData cd = null;
+	private Callback listCallback = null;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,28 +67,33 @@ public class MainActivity extends Activity {
         	startActivity(intent);
         }
         
-        List<Question> qList = new ArrayList<Question>();
+        qList = new ArrayList<Question>();
         qla = new QuestionListAdapter(this, R.layout.list_question, qList);
+        ListView questionView = (ListView) findViewById(R.id.question_list);
+        questionView.setAdapter(qla);
+        questionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// run off to the question view if you tap an item
+				final Question question = qla.getItem(position);
+				UUID qId = question.getId();
+				Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+				intent.putExtra("QUESTION_UUID", qId.toString());
+				startActivity(intent);
+			}
+		});
         
-        Callback listCallback = new Callback() {
+        listCallback = new Callback() {
 
 			@Override
 			public void run(Object o) {
-		        ListView questionView = (ListView) findViewById(R.id.question_list);
-		        questionView.setAdapter(qla);
-		        questionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						// run off to the question view if you tap an item
-						final Question question = qla.getItem(position);
-						UUID qId = question.getId();
-						Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
-						intent.putExtra("QUESTION_UUID", qId.toString());
-						startActivity(intent);
-					}
-				});
+		        qList.clear();
+		        if (o != null) {
+		        	qList.addAll((List<Question>) o);
+		        }
+		        qla.update();
 			}
         };
         
@@ -103,7 +110,7 @@ public class MainActivity extends Activity {
 			public boolean onNavigationItemSelected(int itemposition, long itemid) {
 				// change way of sorting based on way selected
 				ClientData cd = new ClientData(activitycontext);
-				List<Question> sortedList = MainActivity.sortList(itemposition, dataManager, cd);
+				List<Question> sortedList = sortList(itemposition, dataManager, cd);
 				qla.clear();
 				qla.addAll(sortedList);
 				qla.update();
@@ -114,14 +121,12 @@ public class MainActivity extends Activity {
     }
 
 
-    protected static List<Question> sortList(int itemposition, final DataManager dm, final ClientData cd) {
-		// sort the list based on way selected
-    	List<Question> qlist = dm.getQuestionList(null);
+    protected List<Question> sortList(int itemposition, final DataManager dm, final ClientData cd) {
 
 		switch (itemposition){
 		case 1:{
 			// Sort by date
-			Collections.sort(qlist, new Comparator<Question>(){
+			Collections.sort(qList, new Comparator<Question>(){
 			
 				@Override
 				public int compare(Question q1, Question q2) {
@@ -135,7 +140,7 @@ public class MainActivity extends Activity {
 		}	
 		case 2:{
 			// Sort by most upvoted
-			Collections.sort(qlist, new Comparator<Question>(){
+			Collections.sort(qList, new Comparator<Question>(){
 
 				@Override
 				public int compare(Question q1, Question q2) {
@@ -149,10 +154,7 @@ public class MainActivity extends Activity {
 			}
 		case 3:{
 			final List<UUID> favQ = cd.getFavoriteQuestions();
-			for (UUID q : favQ){
-				qlist.add(dm.getQuestion(q, null));
-			}
-			Collections.sort(qlist,new Comparator<Question>(){
+			Collections.sort(qList, new Comparator<Question>(){
 
 				@Override
 				public int compare(Question arg0, Question arg1) {
@@ -174,7 +176,7 @@ public class MainActivity extends Activity {
 		case 4:{
 			
 			// Sort by current user posts
-			Collections.sort(qlist, new Comparator<Question>(){
+			Collections.sort(qList, new Comparator<Question>(){
 				
 				@Override
 				public int compare(Question q1, Question q2) {
@@ -194,7 +196,7 @@ public class MainActivity extends Activity {
 			break;
 		}
 		}
-		return qlist;
+		return qList;
     }
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
