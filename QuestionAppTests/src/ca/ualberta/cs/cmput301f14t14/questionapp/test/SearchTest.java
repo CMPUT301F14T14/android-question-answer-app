@@ -68,10 +68,10 @@ public class SearchTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		List<Answer> resultAnswers = new ArrayList<Answer>();
 		List<Question> resultQuestions = new ArrayList<Question>();
 		for (UUID i : results) {
-			if (manager.getAnswer(i) != null) {
-				resultAnswers.add(manager.getAnswer(i));
+			if (manager.getAnswer(i, null) != null) {
+				resultAnswers.add(manager.getAnswer(i, null));
 			} else {
-				resultQuestions.add(manager.getQuestion(i));
+				resultQuestions.add(manager.getQuestion(i, null));
 			}
 		}
 		assertTrue(resultQuestions.size() > 0 || resultAnswers.size() > 0);

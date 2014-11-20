@@ -74,12 +74,12 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	 */
 	
 	public void testLocalAnswerCreate() {
-		manager.addQuestion(mQuestion);
+		manager.addQuestion(mQuestion, null);
 		UUID qId = mQuestion.getId();
 		mQuestion.addAnswer(mAnswer.getId());
 		manager.addAnswer(mAnswer);
 		UUID aId = mAnswer.getId();
-		assertNotNull(manager.getAnswer(aId));
+		assertNotNull(manager.getAnswer(aId, null));
 		
 		remote.putAnswer(mAnswer);
 		remote.putQuestion(mQuestion);
