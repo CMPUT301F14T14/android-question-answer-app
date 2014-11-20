@@ -34,13 +34,7 @@ public class GetQuestionTask extends AbstractDataManagerTask<UUID, Void, Questio
 	  	return q;
 	}
 	
-	@Override
-	protected void onPostExecute(Question question) {
-		if (callback == null) {
-			return;
-		}
-		callback.run(question);
-	}
+
 	
 
 }

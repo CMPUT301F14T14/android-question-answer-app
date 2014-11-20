@@ -37,12 +37,6 @@ public class GetQuestionCommentTask extends AbstractDataManagerTask<UUID, Void, 
 
 		
 	}
-	@Override
-	protected void onPostExecute(Comment<Question> cq) {
-		if (callback == null){
-			return;
-		}
-		callback.run(cq);
-	}
+
 }
 

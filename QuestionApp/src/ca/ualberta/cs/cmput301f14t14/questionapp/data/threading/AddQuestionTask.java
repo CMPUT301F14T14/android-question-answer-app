@@ -36,12 +36,6 @@ public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Boo
 		
 	}
 	
-	@Override
-	protected void onPostExecute(Boolean finished) {
-		if (callback == null) {
-			return;
-		}
-		callback.run(finished);
-	}
+
 
 }
