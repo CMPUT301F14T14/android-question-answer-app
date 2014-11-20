@@ -34,11 +34,15 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 		qAuthor.setText(q.getAuthor());
 		qDate.setText(q.getDate().toString());
 		
-		  
-					
 		final ImageButton readLaterbutton = (ImageButton)convertView.findViewById(R.id.list_question_read_later);
 		readLaterbutton.setTag(q);
-		readLaterbutton.setImageResource(R.drawable.ic_action_readlater);
+		if(DataManager.getInstance(getContext()).getReadLaterList().contains(q.getId())){
+			readLaterbutton.setImageResource(R.drawable.ic_read_later_set);
+		}
+		else{
+			readLaterbutton.setImageResource(R.drawable.ic_action_readlater);
+		}
+		
 		readLaterbutton.setFocusable(false);
 		readLaterbutton.setOnClickListener(new ImageButton.OnClickListener(){
 
