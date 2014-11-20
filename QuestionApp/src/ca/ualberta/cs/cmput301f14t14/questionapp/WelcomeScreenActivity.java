@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.IView;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.UsernameFragment;
@@ -52,7 +53,8 @@ public class WelcomeScreenActivity extends Activity implements IView {
 		if (username.length() > 0) {
 			// return to main activity
 			DataManager dm = DataManager.getInstance(this);
-			dm.setUsername(username);
+			ClientData cd = new ClientData(this);
+			cd.setUsername(username);
 			Toast.makeText(this, "Welcome " + username + " to Qasper", Toast.LENGTH_SHORT).show();
 			Intent intent = new Intent(this, MainActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

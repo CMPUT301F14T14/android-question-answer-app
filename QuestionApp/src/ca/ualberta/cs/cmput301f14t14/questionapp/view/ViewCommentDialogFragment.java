@@ -40,9 +40,9 @@ public class ViewCommentDialogFragment extends DialogFragment  {
 		
 		Comment<?> comment = null;
 		if(answerId != null){
-			 comment = datamanager.getAnswerComment(commentId);
+			 comment = datamanager.getAnswerComment(commentId, null);
 		}else{
-			 comment = datamanager.getQuestionComment(commentId);
+			 comment = datamanager.getQuestionComment(commentId, null);
 		}
 		 
 		builder.setTitle(R.string.viewing_comments);
