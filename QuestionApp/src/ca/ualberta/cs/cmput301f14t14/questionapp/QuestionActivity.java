@@ -34,10 +34,15 @@ public class QuestionActivity extends Activity {
 	static final String TAB_ANSWERS = "answer";
 	static final String TAB_COMMENTS = "comment";
 	
-	private AnswerListAdapter ala = null;
-	private CommentListAdapter<Question> cla = null;
+	private AnswerListAdapter aListAdapter = null;
+	private CommentListAdapter<Question> cListAdapter = null;
+	private UUID questionId = null;
 	private Question question;
 	private TabHost tabs;
+	private DataManager dataManager;
+	
+	private List<Comment<Question>> commentList;
+	private List<Answer> answerList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +53,12 @@ public class QuestionActivity extends Activity {
 		tabs.setup();
 		
 		Intent intent = getIntent();
-		DataManager dataManager = DataManager.getInstance(getApplicationContext());
+		dataManager = DataManager.getInstance(getApplicationContext());
 		String qId = intent.getStringExtra("QUESTION_UUID");
+		
 		if (qId != null) {
 			// we have a Question, grab it from dataManager
-			UUID id = UUID.fromString(qId);
-			//TODO: by passing null as a callback, getQuestion() blocks the UI thread!!!!!
-			question = dataManager.getQuestion(id, null);
+			questionId = UUID.fromString(qId);
 		}
 		else {
 			// no Question, toss er back to the main screen
@@ -62,33 +66,22 @@ public class QuestionActivity extends Activity {
 			finish();
 		}
 
-		
-		// set arrayLists of relevant comments and answers
-		List<Answer> al = new ArrayList<Answer>();
-		//TODO: null callbacks mean this will be blocking
-		for(Answer a: dataManager.getAnswerList(question, null)) {
-			al.add(a);
-		}
-		
-		List<Comment<Question>> cl = new ArrayList<Comment<Question>>();
-		//TODO: null callbacks mean this will be blocking
-		for(Comment<Question> c: dataManager.getCommentList(question, null)) {
-			cl.add(c);
-		}
+		// Set up lists and adapters
+		answerList = new ArrayList<Answer>();
+		commentList = new ArrayList<Comment<Question>>();
+		aListAdapter = new AnswerListAdapter(this, R.layout.list_answer, answerList);
+		cListAdapter = new CommentListAdapter<Question>(this, R.layout.list_comment, commentList);
 
-		// create the array adapters to show information
-		ala = new AnswerListAdapter(this, R.layout.list_answer, al);
+		// Set up list views
 		ListView answerView = (ListView) findViewById(R.id.answerSummaryList);
-		answerView.setAdapter(ala);
-
-		cla = new CommentListAdapter<Question>(this, R.layout.list_comment, cl);
+		answerView.setAdapter(aListAdapter);
 		ListView commentView = (ListView) findViewById(R.id.commentList);
-		commentView.setAdapter(cla);
+		commentView.setAdapter(cListAdapter);
 
 		TabHost.TabSpec aTab = tabs.newTabSpec(TAB_ANSWERS);
 		aTab.setContent(R.id.answerSummaryList);
 		aTab.setIndicator(String.format("%s (%d)",
-				getString(R.string.tab_answers), ala.getCount()));
+				getString(R.string.tab_answers), aListAdapter.getCount()));
 		tabs.addTab(aTab);
 
 		TabHost.TabSpec cTab = tabs.newTabSpec(TAB_COMMENTS);
@@ -96,24 +89,12 @@ public class QuestionActivity extends Activity {
 		cTab.setIndicator(getString(R.string.tab_comments));
 		tabs.addTab(cTab);
 
-		// set text on view with relevant data from question
-		TextView qTitle = (TextView) findViewById(R.id.questionTitle);
-		qTitle.setText(question.getTitle());
-		TextView qBody = (TextView) findViewById(R.id.questionBody);
-		qBody.setText(question.getBody());
-		TextView qUser = (TextView) findViewById(R.id.questionUser);
-		qUser.setText(question.getAuthor());
-		TextView upvotes = (TextView) findViewById(R.id.upvotes);
-		upvotes.setText(question.getUpvotes().toString());
-		TextView date = (TextView) findViewById(R.id.questionDate);
-		date.setText(question.getDate().toString());
-
 		// when clicking an answer item, view the answer in a separate activity
 		answerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				final Answer a = ala.getItem(position);
+				final Answer a = aListAdapter.getItem(position);
 				UUID qId = question.getId();
 				Intent intent = new Intent(getBaseContext(), AnswerViewActivity.class);
 				intent.putExtra("QUESTION_UUID", qId.toString());
@@ -126,7 +107,7 @@ public class QuestionActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-				final Comment<Question> c = cla.getItem(position);
+				final Comment<Question> c = cListAdapter.getItem(position);
 				//Need questionId, commentId
 				UUID qId = question.getId();
 				UUID cId = c.getId();
@@ -137,7 +118,6 @@ public class QuestionActivity extends Activity {
 				argbundle.putString("commentId", cId.toString());
 				vcdf.setArguments(argbundle);
 				vcdf.show(getFragmentManager(), "QuestionActivityViewCommentDF");
-				
 			}
 		});
 		
@@ -148,19 +128,8 @@ public class QuestionActivity extends Activity {
 	@Override 
 	public void onResume(){
 		super.onResume();
-		//Set the star on the favorite button to match the favorited state
-		//of the question.
-		ClientData cd = new ClientData(this);
-		if (cd.getFavoriteQuestions().contains(this.question.getId())) {
-			//Question is already favorited.
-			//Set the star to be highlighted on create.
-			ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
-			Favbutton.setImageResource(R.drawable.ic_fav_highlighted);	
-		} else {
-			//Question is not favorited.
-			ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
-			Favbutton.setImageResource(R.drawable.ic_fav_reg);
-		}		
+		// Get question data
+		dataManager.getQuestion(questionId, new QuestionUpdateCallback());
 	}
 
 	@Override
@@ -223,24 +192,24 @@ public class QuestionActivity extends Activity {
 		 */
 		DataManager dm = DataManager.getInstance(this);
 		this.question = q;
-		ala.clear();
-		cla.clear();
+		aListAdapter.clear();
+		cListAdapter.clear();
 		//TODO: null callbacks mean this will be blocking
 		for (Answer a : dm.getAnswerList(question, null)) {
-			ala.add(a);
+			aListAdapter.add(a);
 		}
 		//TODO: null callbacks mean this will be blocking
 		for (Comment<Question> c : dm.getCommentList(question, null)) {
-			cla.add(c);
+			cListAdapter.add(c);
 		}
-		ala.update();
-		cla.update();
+		aListAdapter.update();
+		cListAdapter.update();
 
 		// Update count on answer tab
 		TextView aTabLabel = (TextView) tabs.getTabWidget().getChildAt(0)
 				.findViewById(android.R.id.title);
 		aTabLabel.setText(String.format("%s (%d)",
-				getString(R.string.tab_answers), ala.getCount()));
+				getString(R.string.tab_answers), aListAdapter.getCount()));
 
 		Toast.makeText(getApplicationContext(), "Item successfully added",
 				Toast.LENGTH_LONG).show();
@@ -275,6 +244,50 @@ public class QuestionActivity extends Activity {
 			Favbutton.setImageResource(R.drawable.ic_fav_highlighted);
 		}
 
+	}
+	
+	private class QuestionUpdateCallback implements Callback<Question> {
+
+		@Override
+		public void run(Question q) {
+			question = q;
+			TextView qTitle = (TextView) findViewById(R.id.questionTitle);
+			qTitle.setText(question.getTitle());
+			TextView qBody = (TextView) findViewById(R.id.questionBody);
+			qBody.setText(question.getBody());
+			TextView qUser = (TextView) findViewById(R.id.questionUser);
+			qUser.setText(question.getAuthor());
+			TextView upvotes = (TextView) findViewById(R.id.upvotes);
+			upvotes.setText(question.getUpvotes().toString());
+			TextView date = (TextView) findViewById(R.id.questionDate);
+			date.setText(question.getDate().toString());
+			
+			// TODO: Callbacks needed once remote stuff is implemented
+			answerList = dataManager.getAnswerList(question, null);
+			commentList = dataManager.getCommentList(question, null);
+			aListAdapter.update();
+			cListAdapter.update();
+			
+			// Update count on answer tab
+			TextView aTabLabel = (TextView) tabs.getTabWidget().getChildAt(0)
+					.findViewById(android.R.id.title);
+			aTabLabel.setText(String.format("%s (%d)",
+					getString(R.string.tab_answers), aListAdapter.getCount()));
+			
+			// Set status of favorite button
+			ClientData cd = new ClientData(getApplicationContext());
+			if (cd.getFavoriteQuestions().contains(question.getId())) {
+				//Question is already favorited.
+				//Set the star to be highlighted on create.
+				ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
+				Favbutton.setImageResource(R.drawable.ic_fav_highlighted);	
+			} else {
+				//Question is not favorited.
+				ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
+				Favbutton.setImageResource(R.drawable.ic_fav_reg);
+			}		
+		}
+		
 	}
  
 }

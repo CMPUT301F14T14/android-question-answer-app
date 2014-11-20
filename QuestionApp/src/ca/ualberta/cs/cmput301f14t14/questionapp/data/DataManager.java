@@ -1,13 +1,9 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import android.content.Context;
-import android.util.Log;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AbstractEvent;
@@ -131,29 +127,13 @@ public class DataManager {
 	 * @return
 	 */
 	public Question getQuestion(UUID id, Callback<Question> c) {
-		//Need to add the question we got into the recentVisit list
-		GetQuestionTask gqt = new GetQuestionTask(context);
-		Question qnull = null;
+		GetQuestionTask task = new GetQuestionTask(context);
 		if (c == null) {
-			//User wants a question from within a thread, or doesn't care about threading
-			//AsyncTasks cannot be nested as they run in one threadpool. Therefore, we must
-			//do something evil
-			return gqt.blockingRun(new UUID[]{id});
+			return task.blockingRun(id);
 		}
-		gqt.setCallBack(new Callback<Question>() {
-			@Override
-			public void run(Question q) {
-				recentVisit.add(q.getId());
-			}
-		});
-		gqt.execute(id);
-		//Now need to call the gqt with the callback the user actually wanted.
-		gqt.setCallBack(c);
-		gqt.execute(id);
-		//Each caller of this method will have a callback that can grab the question.
-		//the activities will do stuff so that this method call doesn't block
-		//This method should not return anything. The callback should fetch it.
-		return qnull;
+		task.setCallBack(c);
+		task.execute(id);
+		return null;
 		 
 	}
 	
