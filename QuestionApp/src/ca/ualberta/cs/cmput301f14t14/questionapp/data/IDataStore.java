@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ public interface IDataStore {
 	 * Stores a question record and its children in the data store.
 	 * @param question
 	 */
-	public void putQuestion(Question question);
+	public void putQuestion(Question question) throws IOException;
 
 	/**
 	 * Get a question record from the data store. Its children will
@@ -24,7 +25,7 @@ public interface IDataStore {
 	 * @param id
 	 * @return Question with the given ID, or null.
 	 */
-	public Question getQuestion(UUID id);
+	public Question getQuestion(UUID id) throws IOException;
 
 	/**
 	 * Stores an answer record and its children in the data store.
@@ -72,7 +73,7 @@ public interface IDataStore {
 	 * The result is not ordered, and must be sorted prior to use.
 	 * @return Question list
 	 */
-	public List<Question> getQuestionList();
+	public List<Question> getQuestionList() throws IOException;
 
 	/**
 	 * Persist the state of the data store.

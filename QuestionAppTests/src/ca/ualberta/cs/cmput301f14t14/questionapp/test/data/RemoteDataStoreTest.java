@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test.data;
 
+import java.io.IOException;
 import java.util.List;
 
 import android.test.ActivityInstrumentationTestCase2;
@@ -36,7 +37,12 @@ public class RemoteDataStoreTest extends
 	public void testPutQuestion() {
 		Question q = MockData.questions.get(0);
 		localStore.putQuestion(q);
-		remoteStore.putQuestion(q);
+		try {
+			remoteStore.putQuestion(q);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Question retrievedQuestion = remoteStore.getQuestion(q.getId());
 		assertEquals(q, retrievedQuestion);
 	}
@@ -45,10 +51,20 @@ public class RemoteDataStoreTest extends
 	 * Verify that a question list can be fetched from ElasticSearch
 	 */
 	public void testGetQuestionList() {
+		List<Question> ql = null;
 		Question q = MockData.questions.get(1);
 		localStore.putQuestion(q);
-		remoteStore.putQuestion(q);
-		List<Question> ql = remoteStore.getQuestionList();
+		try {
+			remoteStore.putQuestion(q);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			ql = remoteStore.getQuestionList();
+		} catch (IOException e) {
+			fail();
+		}
 		assertTrue(ql.size() != 0);
 		assertTrue(ql.contains(q));
 	}

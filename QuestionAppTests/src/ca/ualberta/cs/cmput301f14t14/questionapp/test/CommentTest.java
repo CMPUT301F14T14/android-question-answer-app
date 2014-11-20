@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import android.test.ActivityInstrumentationTestCase2;
@@ -90,7 +91,12 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		UUID id = mComment.getId();
 		assertNotNull(mQuestion.hasComment(mComment.getId()));
 		remote.putQComment(mComment);
-		remote.putQuestion(mQuestion);
+		try {
+			remote.putQuestion(mQuestion);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertTrue(mQuestion.hasComment(mComment.getId()));
 		
 		// adding to answer
