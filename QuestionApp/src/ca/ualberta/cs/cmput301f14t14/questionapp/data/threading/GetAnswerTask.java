@@ -36,12 +36,6 @@ public class GetAnswerTask extends AbstractDataManagerTask<UUID, Void, Answer> {
 	  	return answer;
 	}
 	
-	@Override
-	protected void onPostExecute(Answer a) {
-		if (callback == null) {
-			return;
-		}
-		callback.run(a);
-	}
+
 
 }

@@ -30,11 +30,4 @@ public class GetCommentListAnsTask extends AbstractDataManagerTask<Answer, Void,
 		return comments;
 	}
 
-	@Override
-	protected void onPostExecute(List<Comment<Answer>> lca) {
-		if (callback == null){
-			return;
-		}
-		callback.run(lca);
-	}
 }

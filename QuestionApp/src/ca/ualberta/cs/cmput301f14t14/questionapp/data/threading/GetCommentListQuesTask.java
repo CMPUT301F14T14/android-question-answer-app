@@ -29,12 +29,5 @@ public class GetCommentListQuesTask extends AbstractDataManagerTask<Question, Vo
 		return comments;
 	}
 	
-	@Override
-	protected void onPostExecute(List<Comment<Question>> lcq) {
-		if (callback == null){
-			return;
-		}
-		callback.run(lcq);
-	}
 
 }
