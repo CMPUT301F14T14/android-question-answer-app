@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class QuestionListAdapter extends ArrayAdapter<Question> implements IView {
@@ -21,8 +23,14 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 		if (convertView == null) {
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_question, parent, false);
 		}
-		
-		Question q = getItem(position); 
+		ClientData cd = new ClientData(getContext());
+		Question q = getItem(position);
+		if(!cd.getFavoriteQuestions().contains(q.getId())){
+			((ImageView)convertView.findViewById(R.id.question_favourite)).setVisibility(View.INVISIBLE);
+		}
+		else{
+			((ImageView)convertView.findViewById(R.id.question_favourite)).setVisibility(View.VISIBLE);
+		}
 		TextView qTitle = (TextView) convertView.findViewById(R.id.question_title); 
 		TextView qText = (TextView) convertView.findViewById(R.id.question_body);
 		TextView qAuthor = (TextView) convertView.findViewById(R.id.question_username);
