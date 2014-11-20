@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import android.content.Context;
@@ -31,8 +32,13 @@ public class GetAnswerTask extends AbstractDataManagerTask<UUID, Void, Answer> {
 			return localDataStore.getAnswer(Aid);
 		} 
 		//Got the answer online, save to local for reading earlier.
-		localDataStore.putAnswer(answer);
-	  	localDataStore.save();
+		try {
+			localDataStore.putAnswer(answer);
+			localDataStore.save();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	  	return answer;
 	}
 	

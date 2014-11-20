@@ -106,7 +106,12 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		UUID secId = mComment.getId();
 		assertNotNull(manager.getAnswerComment(secId, null));
 		remote.putAComment(secComment);
-		remote.putAnswer(mAnswer);
+		try {
+			remote.putAnswer(mAnswer);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertTrue(mQuestion.hasComment(mComment.getId()));
 	}
 	

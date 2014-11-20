@@ -74,8 +74,12 @@ public class RemoteDataStoreTest extends
 	 */
 	public void testPutAnswer() {
 		Answer a = MockData.answers.get(0);
-		localStore.putAnswer(a);
-		remoteStore.putAnswer(a);
+		try {
+			localStore.putAnswer(a);
+			remoteStore.putAnswer(a);
+		} catch (IOException e) {
+			
+		}
 		Answer retrievedAnswer = remoteStore.getAnswer(a.getId());
 		assertEquals(a, retrievedAnswer);
 	}

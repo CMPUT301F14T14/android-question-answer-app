@@ -67,7 +67,12 @@ public class RemoteDataStore implements IDataStore {
 		gson = gb.create();
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This implementation fetches questions from an ElasticSearch
+	 * server using its search interface.
+	 */
 	@Override
 	public List<Question> getQuestionList() throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
@@ -89,6 +94,43 @@ public class RemoteDataStore implements IDataStore {
 			return result;
 		} catch (IOException e) {
 			throw new IOException("Error getting question list.", e);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This implementation gets all answer children of a question from
+	 * an ElasticSearch server.
+	 */
+	public List<Answer> getAnswerList(Question question) throws IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(ES_BASE_URL + ANSWER_PATH + "_search");
+		
+		httpPost.setEntity(new StringEntity(
+				"{\"query\": {\"has_parent\": {\"type\": \"question\", \"query\": {" +
+				"\"match\": {\"id\": \"" + question.getId() + "\"}}}}}"));
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpPost);
+			@SuppressWarnings("unchecked")
+			SearchResponse<Answer> sr = (SearchResponse<Answer>) parseESResponse(
+					response, new TypeToken<SearchResponse<Answer>>() {
+					}.getType());
+			List<SearchHit<Answer>> hits = sr.getHits().getHits();
+			List<Answer> result = new ArrayList<Answer>();
+			for (SearchHit<Answer> hit: hits) {
+				result.add(hit.getSource());
+			}
+			return result;
+		} catch (IOException e) {
+			throw new IOException("Error getting answer list.", e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -142,7 +184,7 @@ public class RemoteDataStore implements IDataStore {
 	}
 
 	@Override
-	public void putAnswer(Answer answer) {
+	public void putAnswer(Answer answer) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 
 		try {
@@ -156,7 +198,8 @@ public class RemoteDataStore implements IDataStore {
 			HttpResponse response = httpClient.execute(addRequest);
 			String status = response.getStatusLine().toString();
 			Log.i(TAG, status);
-
+		} catch (IOException e) {
+			throw new IOException("Failed to upload answer", e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
