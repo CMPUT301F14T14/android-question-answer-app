@@ -139,10 +139,9 @@ public class MainActivity extends Activity {
 		case 3:{
 			final List<UUID> favQ = cd.getFavoriteQuestions();
 			for (UUID q : favQ){
-				if(!qlist.contains(dm.getQuestion(q))){
-					qlist.add(dm.getQuestion(q));
+				if(!qlist.contains(dm.getQuestion(q, null))){
+					qlist.add(dm.getQuestion(q, null));
 				}
-				qlist.add(dm.getQuestion(q));
 			}
 			Collections.sort(qlist,new Comparator<Question>(){
 
@@ -153,10 +152,10 @@ public class MainActivity extends Activity {
 						return arg0.getDate().compareTo(arg1.getDate());
 					}
 					else if(favQ.contains(arg0.getId()) && !favQ.contains(arg1.getId())){
-						return 1;
+						return -1;
 					}
 					else{
-						return -1;
+						return 1;
 					}
 				}
 				
