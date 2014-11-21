@@ -71,6 +71,12 @@ public class ClientData {
 		appendlist.add(u);
 		saveItems(appendlist, readlaterfilename);
 	}
+	
+	public void unmarkQuestionReadLater(UUID u){
+		List<UUID> list = getItems(readlaterfilename);
+		list.remove(u);
+		saveItems(list,readlaterfilename);
+	}
 	public boolean isQuestionReadLater(UUID id) {
 		/** Call this to see if your desired question is
 		 *  marked as read later. After that, the user will
