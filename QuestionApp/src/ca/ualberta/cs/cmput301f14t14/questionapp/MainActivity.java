@@ -92,9 +92,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void run(List<Question> list) {
 		        qList.clear();
-		        while(list.contains(null)){
-		        	list.remove(null);
-		        }
+
 		        if (list != null) {
 		        	qList.addAll(list);
 		        }
@@ -115,9 +113,7 @@ public class MainActivity extends Activity {
 			public boolean onNavigationItemSelected(int itemposition, long itemid) {
 				// change way of sorting based on way selected
 				ClientData cd = new ClientData(activitycontext);
-				List<Question> sortedList = sortList(itemposition, dataManager, cd);
-				qla.clear();
-				qla.addAll(sortedList);
+				sortList(itemposition, dataManager, cd);
 				qla.update();
 				return true;
 				
@@ -126,7 +122,7 @@ public class MainActivity extends Activity {
     }
 
 
-    protected List<Question> sortList(int itemposition, final DataManager dm, final ClientData cd) {
+    protected void sortList(int itemposition, final DataManager dm, final ClientData cd) {
 		switch (itemposition){
 		case 1:{
 			// Sort by date
@@ -171,7 +167,7 @@ public class MainActivity extends Activity {
 			};
 
 			for(UUID q: favQ){
-				dm.getQuestion(q, favouriteQuestionCallback);
+				dataManager.getQuestion(q, favouriteQuestionCallback);
 			}
 			Collections.sort(qList, new Comparator<Question>(){
 
@@ -215,7 +211,7 @@ public class MainActivity extends Activity {
 			break;
 		}
 		}
-		return qList;
+	
     }
     
 	@Override
