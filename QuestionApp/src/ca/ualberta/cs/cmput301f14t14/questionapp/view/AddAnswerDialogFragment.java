@@ -21,6 +21,8 @@ import android.widget.EditText;
 
 public class AddAnswerDialogFragment extends DialogFragment implements IView {
 
+	public static final String ARG_QUESTION_ID = "Qid";
+
 	@Override
 	public void update() {
 
@@ -46,7 +48,7 @@ public class AddAnswerDialogFragment extends DialogFragment implements IView {
 										.getInstance(context);
 
 								UUID Qid = UUID.fromString(getArguments()
-										.getString("Qid"));
+										.getString(ARG_QUESTION_ID));
 								EditText body = (EditText) text
 										.findViewById(R.id.add_answer_body);
 								String bd = body.getText().toString();

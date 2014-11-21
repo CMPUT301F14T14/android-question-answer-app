@@ -159,17 +159,23 @@ public class QuestionActivity extends Activity {
 
 		return super.onOptionsItemSelected(item);
 	}
-	
-	// method for the add answer button, to given question
-    public void addAnswer(View view){
-    	FragmentManager fm = getFragmentManager();
-    	Bundle QuesBox = new Bundle();
-    	QuesBox.putString( "Qid", question.getId().toString());
-    	AddAnswerDialogFragment aA = new AddAnswerDialogFragment();
-    	aA.setArguments(QuesBox);
-    	aA.show(fm, "addanswerdialogfragmentlayout");
-    }
-    
+
+	/**
+	 * Handler for the add answer button
+	 *
+	 * Opens a new dialog in which to create an answer
+	 *
+	 * @param view
+	 */
+	public void addAnswer(View view) {
+		FragmentManager fm = getFragmentManager();
+		Bundle args = new Bundle();
+		args.putString(AddAnswerDialogFragment.ARG_QUESTION_ID, question.getId().toString());
+		AddAnswerDialogFragment dialogFragment = new AddAnswerDialogFragment();
+		dialogFragment.setArguments(args);
+		dialogFragment.show(fm, "addanswerdialogfragmentlayout");
+	}
+
     // after adding comment or answer, reset and update the lists
     // associated with the question
     public void addComment(View view) {
