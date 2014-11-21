@@ -49,13 +49,8 @@ public class ClientData {
 		e.clear();
 		e.apply();
 	}
-
-	public List<UUID> getFavoriteAnswers() {
-		// TODO Auto-generated method stub
-		ArrayList<UUID> list = new ArrayList<UUID>();
-		return list;
-	}
 	
+
 	public void saveFavoriteQuestions(List<UUID> list){
 		saveItems(list, "favqlist");
 	}
@@ -68,6 +63,7 @@ public class ClientData {
 	String readlaterfilename = "readlaterlist";
 	
 	public void markQuestionReadLater(UUID u) {
+
 		
 		List<UUID> appendlist = getItems(readlaterfilename);
 		appendlist.add(u);
@@ -84,6 +80,7 @@ public class ClientData {
 		} else {
 			return false;
 		}
+
 	}
 	
 	
@@ -92,6 +89,7 @@ public class ClientData {
 		//We can then add to this list
 		//Pull a list of favorited questions from SharedPrefs		
 		Set<String> favset = prefs.getStringSet(filename, null);
+
 		if (favset == null ){ //Only on first run of the app this will be null
 			return new ArrayList<UUID>();
 		}
@@ -122,9 +120,4 @@ public class ClientData {
 		e.commit();
 	}
 
-	public List<UUID> getReadLater() {
-		// TODO Auto-generated method stub
-		ArrayList<UUID> list = new ArrayList<UUID>();
-		return list;
-	}
 }

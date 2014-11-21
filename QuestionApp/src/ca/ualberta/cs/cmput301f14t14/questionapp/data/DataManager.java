@@ -46,8 +46,10 @@ public class DataManager {
 	//private List<UUID> upVoteOnline;
 	private Context singletoncontext; //Needed for Threading instantiations
 	String Username;
+
 	
 	private EventBus eventbus = EventBus.getInstance();
+
 
 	
 	private DataManager(Context context) {
@@ -286,12 +288,14 @@ public class DataManager {
 		}
 		return questionList;
 	}
+
 	//Changing function signature didn't break things. Are we using this?
 	public List<Comment<Answer>> getCommentList(Answer a, Callback<List<Comment<Answer>>> c){
 		GetCommentListAnsTask gclat = new GetCommentListAnsTask(singletoncontext);
 		if (c == null) {
 			//User doesn't care this is blocking
 			return gclat.blockingRun(a);
+
 		}
 		gclat.setCallBack(c);
 		gclat.execute(a);
@@ -331,12 +335,14 @@ public class DataManager {
 		
 	}
 
+
 	public IDataStore getLocalDataStore() {
 		return localDataStore;
 	}
 
 	public IDataStore getRemoteDataStore() {
 		return remoteDataStore;
+
 	}
 
 }

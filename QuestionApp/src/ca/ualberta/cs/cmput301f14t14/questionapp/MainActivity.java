@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.content.Context;
@@ -228,4 +229,5 @@ public class MainActivity extends Activity {
 		intent.putExtra("QUERY_STRING", q);
 		startActivity(intent);
     }
+    
 }
