@@ -178,13 +178,19 @@ public class QuestionActivity extends Activity {
 	
 	public void addAnswerCallback(String body, Image img) {
 		ClientData cd = new ClientData(this);
-		final Answer answer = new Answer(question.getId(), body, cd.getUsername(), img);
+		Answer answer = null;
+		try {
+			answer = new Answer(question.getId(), body, cd.getUsername(), img);
+		} catch (IllegalArgumentException e) {
+			Toast.makeText(getApplicationContext(), R.string.add_answer_err_invalid, Toast.LENGTH_SHORT).show();
+		}
+		final UUID answerId = answer.getId();
 		AddAnswerTask aTask = new AddAnswerTask(this);
 		aTask.setCallBack(new Callback<Void>(){
 
 			@Override
 			public void run(Void o) {
-				question.addAnswer(answer.getId());
+				question.addAnswer(answerId);
 				AddQuestionTask qTask = new AddQuestionTask(getApplicationContext());
 				qTask.execute(question);
 				updateQuestion(question);
