@@ -9,6 +9,7 @@ import java.util.UUID;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.QuestionListAdapter;
@@ -36,6 +37,7 @@ public class MainActivity extends Activity {
 	
 	private ClientData cd = null;
 	private Callback<List<Question>> listCallback = null;
+	private Callback<Question> favouriteQuestionCallback = null;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,9 @@ public class MainActivity extends Activity {
 			@Override
 			public void run(List<Question> list) {
 		        qList.clear();
+		        while(list.contains(null)){
+		        	list.remove(null);
+		        }
 		        if (list != null) {
 		        	qList.addAll(list);
 		        }
@@ -122,7 +127,6 @@ public class MainActivity extends Activity {
 
 
     protected List<Question> sortList(int itemposition, final DataManager dm, final ClientData cd) {
-
 		switch (itemposition){
 		case 1:{
 			// Sort by date
@@ -154,12 +158,21 @@ public class MainActivity extends Activity {
 			}
 		case 3:{
 			final List<UUID> favQ = cd.getFavoriteQuestions();
-			for (UUID q : favQ){
-				if(!qList.contains(dm.getQuestion(q, null))){
-					qList.add(dm.getQuestion(q, null));
-				}
-			}
+			favouriteQuestionCallback = new Callback<Question>(){
 
+				@Override
+				public void run(Question o) {
+					if(!qList.contains(o)){
+						qList.add(o);
+						
+					}
+				}
+				
+			};
+
+			for(UUID q: favQ){
+				dm.getQuestion(q, favouriteQuestionCallback);
+			}
 			Collections.sort(qList, new Comparator<Question>(){
 
 				@Override
