@@ -45,8 +45,16 @@ public class DataManager {
 	//private List<UUID> upVoteOnline;
 	private Context context; //Needed for Threading instantiations
 	String Username;
+	static final String favQ = "fav_Que";
+	static final String favA = "fav_Ans";
+	static final String recV = "rec_Vis";
+	static final String redL = "red_Lat";
+	static final String pusO = "pus_Onl";
+	static final String upvO = "upv_Onl";
+
 	
 	private EventBus eventbus = EventBus.getInstance();
+
 
 	
 	private DataManager(Context context) {
@@ -279,6 +287,8 @@ public class DataManager {
 		if (c == null) {
 			//User doesn't care this is blocking
 			return gclat.blockingRun(a);
+
+
 		}
 		gclat.setCallBack(c);
 		gclat.execute(a);
@@ -323,12 +333,16 @@ public class DataManager {
 		
 	}
 
+
+
 	public IDataStore getLocalDataStore() {
 		return localDataStore;
 	}
 
 	public IDataStore getRemoteDataStore() {
 		return remoteDataStore;
+
+
 	}
 
 }

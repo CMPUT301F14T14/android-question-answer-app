@@ -7,8 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class QuestionListAdapter extends ArrayAdapter<Question> implements IView {
@@ -32,7 +35,43 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 		qAuthor.setText(q.getAuthor());
 		qDate.setText(q.getDate().toString());
 		
+		final ImageButton readLaterbutton = (ImageButton)convertView.findViewById(R.id.list_question_read_later);
+		readLaterbutton.setTag(q);
+		String readlaterfilename = "readlaterlist";
+		ClientData clientData = new ClientData(getContext());
+		if(clientData.getItems(readlaterfilename).contains(q.getId())){
+			readLaterbutton.setImageResource(R.drawable.ic_read_later_set);
+		}
+		else{
+			readLaterbutton.setImageResource(R.drawable.ic_action_readlater);
+		}
+		
+		readLaterbutton.setFocusable(false);
+		readLaterbutton.setOnClickListener(new ImageButton.OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				Question question = (Question) readLaterbutton.getTag();
+				ClientData clientData = new ClientData(getContext());
+				String readlaterfilename = "readlaterlist";
+				DataManager dataManager = DataManager.getInstance(readLaterbutton.getContext());
+				if (clientData.getItems(readlaterfilename).contains(question.getId())) {
+					//Question is already flagged read later.
+					clientData.unmarkQuestionReadLater(question.getId());
+					readLaterbutton.setImageResource(R.drawable.ic_action_readlater);
+				} else {
+					clientData.markQuestionReadLater(question.getId());
+					readLaterbutton.setImageResource(R.drawable.ic_read_later_set);
+				}
+			}
+			
+		});
 		return convertView;
+		
+				
+				
+		
+		
 	}
 
 	@Override
