@@ -33,6 +33,7 @@
     <!-- Add Answer Dialog Fragment -->
     <string name="add_answer_body_hint">Add a body to your answer</string>
     <string name="add_answer_image">Add an image to your answer</string>
+    <string name="add_answer_err_invalid">The answer you created was invalid.</string>
 
     <!-- Answer View -->
     <string name="answer_view_upvote_answer">Upvote Answer</string>

@@ -6,6 +6,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.QuestionActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.NullCallback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddAnswerDialogFragment extends DialogFragment implements IView {
 
@@ -36,41 +38,38 @@ public class AddAnswerDialogFragment extends DialogFragment implements IView {
 		final Context context = this.getActivity().getApplicationContext();
 		final View text = inflater.inflate(
 				R.layout.addanswerdialogfragmentlayout, null);
+		
+		DialogInterface.OnClickListener confirmListener =
+				new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// Creates a new answer with data from dialog fragment
+				Answer ans = null;
+				Image img = null;
+				DataManager datamanager = DataManager.getInstance(context);
+
+				UUID Qid = UUID.fromString(getArguments().getString(ARG_QUESTION_ID));
+				EditText body = (EditText) text.findViewById(R.id.add_answer_body);
+
+				ClientData cd = new ClientData(context);
+
+				Question question = datamanager.getQuestion(Qid, new NullCallback<Question>());
+
+				try {
+					ans = new Answer(question.getId(), body.getText().toString(), cd.getUsername(), img);
+				} catch (IllegalArgumentException e) {
+					Toast.makeText(getActivity(),
+							R.string.add_answer_err_invalid, Toast.LENGTH_SHORT).show();
+					return;
+				}
+				datamanager.addAnswer(ans);
+
+				((QuestionActivity) getActivity()).updateQuestion(question);
+			}
+		};
+		
 		builder.setView(text)
-				.setPositiveButton(R.string.OK,
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// Creates a new answer with data from dialog
-								// fragment
-								DataManager datamanager = DataManager
-										.getInstance(context);
-
-								UUID Qid = UUID.fromString(getArguments()
-										.getString(ARG_QUESTION_ID));
-								EditText body = (EditText) text
-										.findViewById(R.id.add_answer_body);
-								String bd = body.getText().toString();
-
-								ClientData cd = new ClientData(context);
-								String username = cd.getUsername();
-
-								Question Ques = datamanager.getQuestion(Qid,
-										null);
-
-								Image img = null;
-
-								Answer Ans = new Answer(Ques.getId(), bd,
-										username, img);
-								datamanager.addAnswer(Ans);
-
-								QuestionActivity a = (QuestionActivity) getActivity();
-
-								a.updateQuestion(Ques);
-
-							}
-						})
+				.setPositiveButton(R.string.OK, confirmListener)
 				.setNegativeButton(R.string.cancel,
 						new DialogInterface.OnClickListener() {
 							@Override
