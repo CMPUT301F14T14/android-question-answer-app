@@ -7,8 +7,11 @@ import java.util.UUID;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddAnswerDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddCommentDialogFragment;
@@ -31,6 +34,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuestionActivity extends Activity {
+	public static final String ARG_QUESTION_ID = "QUESTION_UUID";
+
 	static final String TAB_ANSWERS = "answer";
 	static final String TAB_COMMENTS = "comment";
 	
@@ -54,7 +59,7 @@ public class QuestionActivity extends Activity {
 		
 		Intent intent = getIntent();
 		dataManager = DataManager.getInstance(getApplicationContext());
-		String qId = intent.getStringExtra("QUESTION_UUID");
+		String qId = intent.getStringExtra(ARG_QUESTION_ID);
 		
 		if (qId != null) {
 			// we have a Question, grab it from dataManager
@@ -97,7 +102,7 @@ public class QuestionActivity extends Activity {
 				final Answer a = aListAdapter.getItem(position);
 				UUID qId = question.getId();
 				Intent intent = new Intent(getBaseContext(), AnswerViewActivity.class);
-				intent.putExtra("QUESTION_UUID", qId.toString());
+				intent.putExtra(ARG_QUESTION_ID, qId.toString());
 				intent.putExtra("ANSWER_UUID", a.getId().toString());
 				startActivity(intent);
 			}
@@ -120,8 +125,6 @@ public class QuestionActivity extends Activity {
 				vcdf.show(getFragmentManager(), "QuestionActivityViewCommentDF");
 			}
 		});
-		
-		
 		
 	}
 	
@@ -169,11 +172,26 @@ public class QuestionActivity extends Activity {
 	 */
 	public void addAnswer(View view) {
 		FragmentManager fm = getFragmentManager();
-		Bundle args = new Bundle();
-		args.putString(AddAnswerDialogFragment.ARG_QUESTION_ID, question.getId().toString());
 		AddAnswerDialogFragment dialogFragment = new AddAnswerDialogFragment();
-		dialogFragment.setArguments(args);
 		dialogFragment.show(fm, "addanswerdialogfragmentlayout");
+	}
+	
+	public void addAnswerCallback(String body, Image img) {
+		ClientData cd = new ClientData(this);
+		final Answer answer = new Answer(question.getId(), body, cd.getUsername(), img);
+		AddAnswerTask aTask = new AddAnswerTask(this);
+		aTask.setCallBack(new Callback<Void>(){
+
+			@Override
+			public void run(Void o) {
+				question.addAnswer(answer.getId());
+				AddQuestionTask qTask = new AddQuestionTask(getApplicationContext());
+				qTask.execute(question);
+				updateQuestion(question);
+			}
+			
+		});
+		aTask.execute(answer);
 	}
 
     // after adding comment or answer, reset and update the lists
@@ -192,33 +210,7 @@ public class QuestionActivity extends Activity {
 	}
 
 	public void updateQuestion(Question q) {
-		/*
-		 * Adds all aspects of a new question to the adapters and updates the
-		 * lists with the new Question
-		 */
-		DataManager dm = DataManager.getInstance(this);
-		this.question = q;
-		aListAdapter.clear();
-		cListAdapter.clear();
-		//TODO: null callbacks mean this will be blocking
-		for (Answer a : dm.getAnswerList(question, null)) {
-			aListAdapter.add(a);
-		}
-		//TODO: null callbacks mean this will be blocking
-		for (Comment<Question> c : dm.getCommentList(question, null)) {
-			cListAdapter.add(c);
-		}
-		aListAdapter.update();
-		cListAdapter.update();
-
-		// Update count on answer tab
-		TextView aTabLabel = (TextView) tabs.getTabWidget().getChildAt(0)
-				.findViewById(android.R.id.title);
-		aTabLabel.setText(String.format("%s (%d)",
-				getString(R.string.tab_answers), aListAdapter.getCount()));
-
-		Toast.makeText(getApplicationContext(), "Item successfully added",
-				Toast.LENGTH_LONG).show();
+		new QuestionUpdateCallback().run(q);
 	}
 
 	public void upvoteQuestion(View v) {
@@ -267,19 +259,10 @@ public class QuestionActivity extends Activity {
 			upvotes.setText(question.getUpvotes().toString());
 			TextView date = (TextView) findViewById(R.id.questionDate);
 			date.setText(question.getDate().toString());
-			
-			// TODO: Callbacks needed once remote stuff is implemented
-			answerList = dataManager.getAnswerList(question, null);
-			commentList = dataManager.getCommentList(question, null);
-			aListAdapter.update();
-			cListAdapter.update();
-			
-			// Update count on answer tab
-			TextView aTabLabel = (TextView) tabs.getTabWidget().getChildAt(0)
-					.findViewById(android.R.id.title);
-			aTabLabel.setText(String.format("%s (%d)",
-					getString(R.string.tab_answers), aListAdapter.getCount()));
-			
+
+			dataManager.getAnswerList(question, new AnswerListUpdateCallback());
+			dataManager.getCommentList(question, new CommentListUpdateCallback());
+
 			// Set status of favorite button
 			ClientData cd = new ClientData(getApplicationContext());
 			if (cd.getFavoriteQuestions().contains(question.getId())) {
@@ -292,6 +275,33 @@ public class QuestionActivity extends Activity {
 				ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
 				Favbutton.setImageResource(R.drawable.ic_fav_reg);
 			}		
+		}
+	}
+	
+	private class AnswerListUpdateCallback implements Callback<List<Answer>> {
+
+		@Override
+		public void run(List<Answer> list) {
+			answerList.clear();
+			answerList.addAll(list);
+			aListAdapter.update();
+			
+			// Update count on answer tab
+			TextView aTabLabel = (TextView) tabs.getTabWidget().getChildAt(0)
+					.findViewById(android.R.id.title);
+			aTabLabel.setText(String.format("%s (%d)",
+					getString(R.string.tab_answers), aListAdapter.getCount()));
+		}
+		
+	}
+	
+	private class CommentListUpdateCallback implements Callback<List<Comment<Question>>> {
+
+		@Override
+		public void run(List<Comment<Question>> list) {
+			commentList.clear();
+			commentList.addAll(list);
+			cListAdapter.update();
 		}
 		
 	}

@@ -3,6 +3,7 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 import java.io.IOException;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.IDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
@@ -17,9 +18,12 @@ import android.util.Log;
  */
 public class AddAnswerTask extends AbstractDataManagerTask<Answer, Void, Void>{
 
-	
 	public AddAnswerTask(Context c) {
 		super(c);
+	}
+	
+	public AddAnswerTask(Context c, Callback<Void> callback) {
+		super(c, callback);
 	}
 
 	@Override
@@ -32,6 +36,7 @@ public class AddAnswerTask extends AbstractDataManagerTask<Answer, Void, Void>{
 		try {
 			remote.putAnswer(ans);
 		} catch (IOException e) {
+			Log.d("AddAnswerTask", "Failed to push answer remotely");
 			EventBus.getInstance().addEvent(new AnswerPushDelayedEvent(ans));
 		}
 		try {

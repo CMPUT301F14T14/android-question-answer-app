@@ -144,7 +144,7 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL + QUESTION_PATH
-					+ question.getId());
+					+ question.getId() + "?refresh=true");
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(question));
 			addRequest.setEntity(stringEntity);
@@ -189,7 +189,7 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL + ANSWER_PATH
-					+ answer.getId() + "?parent=" + answer.getParent());
+					+ answer.getId() + "?refresh=true&parent=" + answer.getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(answer));
 			addRequest.setEntity(stringEntity);
@@ -198,6 +198,7 @@ public class RemoteDataStore implements IDataStore {
 			HttpResponse response = httpClient.execute(addRequest);
 			String status = response.getStatusLine().toString();
 			Log.i(TAG, status);
+			Log.i(TAG, getEntityContent(response));
 		} catch (IOException e) {
 			throw new IOException("Failed to upload answer", e);
 		} catch (Exception e) {
@@ -235,7 +236,7 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL
-					+ QUESTION_COMMENT_PATH + comment.getId() + "?parent=" + comment.getParent());
+					+ QUESTION_COMMENT_PATH + comment.getId() + "?refresh=true&parent=" + comment.getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(comment,
 					new TypeToken<Comment<Question>>(){}.getType()));
@@ -259,7 +260,7 @@ public class RemoteDataStore implements IDataStore {
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL
 					+ ANSWER_COMMENT_PATH + comment.getId()
-					+ "?parent=" + comment.getParent()
+					+ "?refresh=true&parent=" + comment.getParent()
 					+ "&routing=" + dm.getAnswer(comment.getParent(), null).getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(comment,
