@@ -67,7 +67,12 @@ public class RemoteDataStore implements IDataStore {
 		gson = gb.create();
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This implementation fetches questions from an ElasticSearch
+	 * server using its search interface.
+	 */
 	@Override
 	public List<Question> getQuestionList() throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
@@ -96,13 +101,50 @@ public class RemoteDataStore implements IDataStore {
 		return null;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This implementation gets all answer children of a question from
+	 * an ElasticSearch server.
+	 */
+	public List<Answer> getAnswerList(Question question) throws IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(ES_BASE_URL + ANSWER_PATH + "_search");
+		
+		httpPost.setEntity(new StringEntity(
+				"{\"query\": {\"has_parent\": {\"type\": \"question\", \"query\": {" +
+				"\"match\": {\"id\": \"" + question.getId() + "\"}}}}}"));
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpPost);
+			@SuppressWarnings("unchecked")
+			SearchResponse<Answer> sr = (SearchResponse<Answer>) parseESResponse(
+					response, new TypeToken<SearchResponse<Answer>>() {
+					}.getType());
+			List<SearchHit<Answer>> hits = sr.getHits().getHits();
+			List<Answer> result = new ArrayList<Answer>();
+			for (SearchHit<Answer> hit: hits) {
+				result.add(hit.getSource());
+			}
+			return result;
+		} catch (IOException e) {
+			throw new IOException("Error getting answer list.", e);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
 	@Override
 	public void putQuestion(Question question) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL + QUESTION_PATH
-					+ question.getId());
+					+ question.getId() + "?refresh=true");
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(question));
 			addRequest.setEntity(stringEntity);
@@ -142,12 +184,12 @@ public class RemoteDataStore implements IDataStore {
 	}
 
 	@Override
-	public void putAnswer(Answer answer) {
+	public void putAnswer(Answer answer) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL + ANSWER_PATH
-					+ answer.getId() + "?parent=" + answer.getParent());
+					+ answer.getId() + "?refresh=true&parent=" + answer.getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(answer));
 			addRequest.setEntity(stringEntity);
@@ -156,7 +198,9 @@ public class RemoteDataStore implements IDataStore {
 			HttpResponse response = httpClient.execute(addRequest);
 			String status = response.getStatusLine().toString();
 			Log.i(TAG, status);
-
+			Log.i(TAG, getEntityContent(response));
+		} catch (IOException e) {
+			throw new IOException("Failed to upload answer", e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -192,7 +236,7 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL
-					+ QUESTION_COMMENT_PATH + comment.getId() + "?parent=" + comment.getParent());
+					+ QUESTION_COMMENT_PATH + comment.getId() + "?refresh=true&parent=" + comment.getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(comment,
 					new TypeToken<Comment<Question>>(){}.getType()));
@@ -216,7 +260,7 @@ public class RemoteDataStore implements IDataStore {
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL
 					+ ANSWER_COMMENT_PATH + comment.getId()
-					+ "?parent=" + comment.getParent()
+					+ "?refresh=true&parent=" + comment.getParent()
 					+ "&routing=" + dm.getAnswer(comment.getParent(), null).getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(comment,

@@ -44,6 +44,23 @@ public class LocalDataStore implements IDataStore {
 	public List<Question> getQuestionList(){
 		return new ArrayList<Question>(questions.values());
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This implementation will return all answers available locally.
+	 * If they are not available locally, they will not be included.
+	 */
+	public List<Answer> getAnswerList(Question question) {
+		List<Answer> list = new ArrayList<Answer>();
+		for (UUID aId: question.getAnswerList()) {
+			Answer a = getAnswer(aId);
+			if (a != null) {
+				list.add(a);
+			}
+		}
+		return list;
+	}
 	
 	public void save() {
 		saveObject(questions, QUESTION_SAVE_FILE);

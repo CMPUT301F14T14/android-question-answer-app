@@ -16,6 +16,7 @@ public interface IDataStore {
 	/**
 	 * Stores a question record and its children in the data store.
 	 * @param question
+	 * @throws IOException
 	 */
 	public void putQuestion(Question question) throws IOException;
 
@@ -24,14 +25,16 @@ public interface IDataStore {
 	 * also be fetched.
 	 * @param id
 	 * @return Question with the given ID, or null.
+	 * @throws IOException
 	 */
 	public Question getQuestion(UUID id) throws IOException;
 
 	/**
 	 * Stores an answer record and its children in the data store.
 	 * @param answer
+	 * @throws IOException 
 	 */
-	public void putAnswer(Answer answer);
+	public void putAnswer(Answer answer) throws IOException;
 
 	/**
 	 * Get an answer record from the data store. Its children will
@@ -74,6 +77,15 @@ public interface IDataStore {
 	 * @return Question list
 	 */
 	public List<Question> getQuestionList() throws IOException;
+
+	/**
+	 * Get a list of all answer children of a question.
+	 *
+	 * @param q Parent question
+	 * @return
+	 * @throws IOException
+	 */
+	public List<Answer> getAnswerList(Question q) throws IOException;
 
 	/**
 	 * Persist the state of the data store.

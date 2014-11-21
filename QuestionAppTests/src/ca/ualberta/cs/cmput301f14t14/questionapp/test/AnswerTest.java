@@ -82,8 +82,8 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		UUID aId = mAnswer.getId();
 		assertNotNull(manager.getAnswer(aId, null));
 		
-		remote.putAnswer(mAnswer);
 		try {
+			remote.putAnswer(mAnswer);
 			remote.putQuestion(mQuestion);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
