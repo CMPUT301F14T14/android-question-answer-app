@@ -9,6 +9,7 @@ import java.util.UUID;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.QuestionListAdapter;
@@ -37,6 +38,7 @@ public class MainActivity extends Activity {
 	
 	private ClientData cd = null;
 	private Callback<List<Question>> listCallback = null;
+	private Callback<Question> favouriteQuestionCallback = null;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +93,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void run(List<Question> list) {
 		        qList.clear();
+
 		        if (list != null) {
 		        	qList.addAll(list);
 		        }
@@ -111,9 +114,7 @@ public class MainActivity extends Activity {
 			public boolean onNavigationItemSelected(int itemposition, long itemid) {
 				// change way of sorting based on way selected
 				ClientData cd = new ClientData(activitycontext);
-				List<Question> sortedList = sortList(itemposition, dataManager, cd);
-				qla.clear();
-				qla.addAll(sortedList);
+				sortList(itemposition, dataManager, cd);
 				qla.update();
 				return true;
 				
@@ -122,8 +123,7 @@ public class MainActivity extends Activity {
     }
 
 
-    protected List<Question> sortList(int itemposition, final DataManager dm, final ClientData cd) {
-
+    protected void sortList(int itemposition, final DataManager dm, final ClientData cd) {
 		switch (itemposition){
 		case 1:{
 			// Sort by date
@@ -155,6 +155,21 @@ public class MainActivity extends Activity {
 			}
 		case 3:{
 			final List<UUID> favQ = cd.getFavoriteQuestions();
+			favouriteQuestionCallback = new Callback<Question>(){
+
+				@Override
+				public void run(Question o) {
+					if(!qList.contains(o)){
+						qList.add(o);
+						
+					}
+				}
+				
+			};
+
+			for(UUID q: favQ){
+				dataManager.getQuestion(q, favouriteQuestionCallback);
+			}
 			Collections.sort(qList, new Comparator<Question>(){
 
 				@Override
@@ -164,10 +179,10 @@ public class MainActivity extends Activity {
 						return arg0.getDate().compareTo(arg1.getDate());
 					}
 					else if(favQ.contains(arg0.getId()) && !favQ.contains(arg1.getId())){
-						return 1;
+						return -1;
 					}
 					else{
-						return -1;
+						return 1;
 					}
 				}
 				
@@ -197,8 +212,9 @@ public class MainActivity extends Activity {
 			break;
 		}
 		}
-		return qList;
+	
     }
+    
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
