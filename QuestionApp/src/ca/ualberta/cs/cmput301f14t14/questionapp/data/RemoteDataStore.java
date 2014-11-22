@@ -355,13 +355,49 @@ public class RemoteDataStore implements IDataStore {
 
 	@Override
 	public Comment<Question> getQComment(UUID id) {
-		// TODO Auto-generated method stub
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(ES_BASE_URL + QUESTION_COMMENT_PATH
+				+ "_search?q=id:" + id.toString());
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpGet);
+			@SuppressWarnings("unchecked")
+			SearchResponse<Comment<Question>> sr = (SearchResponse<Comment<Question>>) parseESResponse(
+					response, new TypeToken<SearchResponse<Comment<Question>>>() {
+					}.getType());
+			SearchHit<Comment<Question>> hit = sr.getHits().getHits().get(0);
+			return hit.getSource();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 
 	@Override
 	public Comment<Answer> getAComment(UUID id) {
-		// TODO Auto-generated method stub
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(ES_BASE_URL + ANSWER_COMMENT_PATH
+				+ "_search?q=id:" + id.toString());
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpGet);
+			@SuppressWarnings("unchecked")
+			SearchResponse<Comment<Answer>> sr = (SearchResponse<Comment<Answer>>) parseESResponse(
+					response, new TypeToken<SearchResponse<Comment<Answer>>>() {
+					}.getType());
+			SearchHit<Comment<Answer>> hit = sr.getHits().getHits().get(0);
+			return hit.getSource();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 

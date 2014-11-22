@@ -56,7 +56,7 @@ public interface IDataStore {
 	 * Stores an answer comment record in the data store.
 	 * @param comment
 	 */
-	public void putAComment(Comment<Answer> comment);
+	public void putAComment(Comment<Answer> comment) throws IOException;
 
 	/**
 	 * Get a question comment record from the data store.

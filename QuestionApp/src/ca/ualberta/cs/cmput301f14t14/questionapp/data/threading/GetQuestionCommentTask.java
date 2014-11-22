@@ -14,34 +14,26 @@ public class GetQuestionCommentTask extends AbstractDataManagerTask<UUID, Void, 
 
 	public GetQuestionCommentTask(Context c) {
 		super(c);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected Comment<Question> doInBackground(UUID... arg0) {
 		UUID cid = arg0[0];
-		IDataStore remoteDataStore = DataManager.getInstance(this.getContext())
+		IDataStore remoteDataStore = DataManager.getInstance(getContext())
 				.getRemoteDataStore();
-		IDataStore localDataStore = DataManager.getInstance(this.getContext())
+		IDataStore localDataStore = DataManager.getInstance(getContext())
 				.getLocalDataStore();
 		
-		Comment<Question> comment;
-		if(remoteDataStore.hasAccess()){
+		Comment<Question> comment = null;
+		try {
 			comment = remoteDataStore.getQComment(cid);
-			try {
-				localDataStore.putQComment(comment);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		  	localDataStore.save();
-		}
-		else{
+			// Cache visited comment locally
+			localDataStore.putQComment(comment);
+			localDataStore.save();
+		} catch (IOException e) {
 			comment = localDataStore.getQComment(cid);
 		}
 		return comment;
-
-		
 	}
 
 }
