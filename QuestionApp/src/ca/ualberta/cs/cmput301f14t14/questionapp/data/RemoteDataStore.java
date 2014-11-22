@@ -137,6 +137,43 @@ public class RemoteDataStore implements IDataStore {
 
 		return null;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * This implementation gets all comment children of a question from
+	 * an ElasticSearch server.
+	 */
+	public List<Comment<Question>> getQCommentList(Question question) throws IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(ES_BASE_URL + QUESTION_COMMENT_PATH + "_search");
+		
+		httpPost.setEntity(new StringEntity(
+				"{\"query\": {\"has_parent\": {\"type\": \"question\", \"query\": {" +
+				"\"match\": {\"id\": \"" + question.getId() + "\"}}}}}"));
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpPost);
+			@SuppressWarnings("unchecked")
+			SearchResponse<Comment<Question>> sr = (SearchResponse<Comment<Question>>) parseESResponse(
+					response, new TypeToken<SearchResponse<Comment<Question>>>() {
+					}.getType());
+			List<SearchHit<Comment<Question>>> hits = sr.getHits().getHits();
+			List<Comment<Question>> result = new ArrayList<Comment<Question>>();
+			for (SearchHit<Comment<Question>> hit: hits) {
+				result.add(hit.getSource());
+			}
+			return result;
+		} catch (IOException e) {
+			throw new IOException("Error getting answer list.", e);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 	
 	@Override
 	public void putQuestion(Question question) throws IOException {
@@ -231,7 +268,7 @@ public class RemoteDataStore implements IDataStore {
 	}
 
 	@Override
-	public void putQComment(Comment<Question> comment) {
+	public void putQComment(Comment<Question> comment) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 
 		try {
@@ -247,6 +284,8 @@ public class RemoteDataStore implements IDataStore {
 			String status = response.getStatusLine().toString();
 			Log.i(TAG, status);
 
+		} catch (IOException e) {
+			throw new IOException("Failed to save question comment", e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

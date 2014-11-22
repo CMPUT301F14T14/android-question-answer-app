@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import android.content.Context;
@@ -27,7 +28,12 @@ public class GetQuestionCommentTask extends AbstractDataManagerTask<UUID, Void, 
 		Comment<Question> comment;
 		if(remoteDataStore.hasAccess()){
 			comment = remoteDataStore.getQComment(cid);
-			localDataStore.putQComment(comment);
+			try {
+				localDataStore.putQComment(comment);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		  	localDataStore.save();
 		}
 		else{
