@@ -82,10 +82,8 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpGet);
-			@SuppressWarnings("unchecked")
-			SearchResponse<Question> sr = (SearchResponse<Question>) parseESResponse(
-					response, new TypeToken<SearchResponse<Question>>() {
-					}.getType());
+			SearchResponse<Question> sr = parseESResponse(response,
+					new TypeToken<SearchResponse<Question>>() {}.getType());
 			List<SearchHit<Question>> hits = sr.getHits().getHits();
 			List<Question> result = new ArrayList<Question>();
 			for (SearchHit<Question> hit: hits) {
@@ -119,10 +117,8 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpPost);
-			@SuppressWarnings("unchecked")
-			SearchResponse<Answer> sr = (SearchResponse<Answer>) parseESResponse(
-					response, new TypeToken<SearchResponse<Answer>>() {
-					}.getType());
+			SearchResponse<Answer> sr = parseESResponse(response,
+					new TypeToken<SearchResponse<Answer>>() {}.getType());
 			List<SearchHit<Answer>> hits = sr.getHits().getHits();
 			List<Answer> result = new ArrayList<Answer>();
 			for (SearchHit<Answer> hit: hits) {
@@ -156,10 +152,8 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpPost);
-			@SuppressWarnings("unchecked")
-			SearchResponse<Comment<Question>> sr = (SearchResponse<Comment<Question>>) parseESResponse(
-					response, new TypeToken<SearchResponse<Comment<Question>>>() {
-					}.getType());
+			SearchResponse<Comment<Question>> sr = parseESResponse(response,
+					new TypeToken<SearchResponse<Comment<Question>>>() {}.getType());
 			List<SearchHit<Comment<Question>>> hits = sr.getHits().getHits();
 			List<Comment<Question>> result = new ArrayList<Comment<Question>>();
 			for (SearchHit<Comment<Question>> hit: hits) {
@@ -193,10 +187,8 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpPost);
-			@SuppressWarnings("unchecked")
-			SearchResponse<Comment<Answer>> sr = (SearchResponse<Comment<Answer>>) parseESResponse(
-					response, new TypeToken<SearchResponse<Comment<Answer>>>() {
-					}.getType());
+			SearchResponse<Comment<Answer>> sr = parseESResponse(response,
+					new TypeToken<SearchResponse<Comment<Answer>>>() {}.getType());
 			List<SearchHit<Comment<Answer>>> hits = sr.getHits().getHits();
 			List<Comment<Answer>> result = new ArrayList<Comment<Answer>>();
 			for (SearchHit<Comment<Answer>> hit: hits) {
@@ -244,10 +236,8 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpGet);
-			@SuppressWarnings("unchecked")
-			SearchHit<Question> sr = (SearchHit<Question>) parseESResponse(
-					response, new TypeToken<SearchHit<Question>>() {
-					}.getType());
+			SearchHit<Question> sr = parseESResponse(response,
+					new TypeToken<SearchHit<Question>>() {}.getType());
 			return sr.getSource();
 
 		} catch (Exception e) {
@@ -290,10 +280,8 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpGet);
-			@SuppressWarnings("unchecked")
-			SearchResponse<Answer> sr = (SearchResponse<Answer>) parseESResponse(
-					response, new TypeToken<SearchResponse<Answer>>() {
-					}.getType());
+			SearchResponse<Answer> sr = parseESResponse(response,
+					new TypeToken<SearchResponse<Answer>>() {}.getType());
 			SearchHit<Answer> hit = sr.getHits().getHits().get(0);
 			return hit.getSource();
 
@@ -363,10 +351,8 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpGet);
-			@SuppressWarnings("unchecked")
-			SearchResponse<Comment<Question>> sr = (SearchResponse<Comment<Question>>) parseESResponse(
-					response, new TypeToken<SearchResponse<Comment<Question>>>() {
-					}.getType());
+			SearchResponse<Comment<Question>> sr = parseESResponse(response,
+					new TypeToken<SearchResponse<Comment<Question>>>() {}.getType());
 			SearchHit<Comment<Question>> hit = sr.getHits().getHits().get(0);
 			return hit.getSource();
 
@@ -387,10 +373,8 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpGet);
-			@SuppressWarnings("unchecked")
-			SearchResponse<Comment<Answer>> sr = (SearchResponse<Comment<Answer>>) parseESResponse(
-					response, new TypeToken<SearchResponse<Comment<Answer>>>() {
-					}.getType());
+			SearchResponse<Comment<Answer>> sr = parseESResponse(response,
+					new TypeToken<SearchResponse<Comment<Answer>>>() {}.getType());
 			SearchHit<Comment<Answer>> hit = sr.getHits().getHits().get(0);
 			return hit.getSource();
 
@@ -414,12 +398,12 @@ public class RemoteDataStore implements IDataStore {
 	 * @param type
 	 * @return SearchHit object from ElasticSearch
 	 */
-	private Object parseESResponse(HttpResponse response, Type type) {
+	private <T> T parseESResponse(HttpResponse response, Type type) {
 
 		try {
 			String json = getEntityContent(response);
 
-			Object sr = gson.fromJson(json, type);
+			T sr = gson.fromJson(json, type);
 			return sr;
 		} catch (IOException e) {
 			e.printStackTrace();
