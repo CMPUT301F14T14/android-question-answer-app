@@ -179,22 +179,12 @@ public class DataManager {
 	 */
 	//Wtf, when I added a Callback parameter, nothing broke... Is this 
 	//method actually called anywhere in the app?
-	public Comment<Question> getQuestionComment(UUID cid, Callback<Comment<Question>> c) {
+	public Comment<Question> getQuestionComment(UUID cid, Callback<Comment<? extends ICommentable>> c) {
 		GetQuestionCommentTask gqct = new GetQuestionCommentTask(context);
 		if (c == null){
 			//User does not care about blocking
-			return gqct.blockingRun(cid);
+			return (Comment<Question>) gqct.blockingRun(cid);
 		}
-		//User cares about threading
-		//Add this questionComment to the recentVisit list
-		gqct.setCallBack(new Callback<Comment<Question>>() {
-			@Override
-			public void run(Comment<Question> cq) {
-				readLater.add(cq.getId());
-			}
-		});
-		gqct.execute(cid);
-		//Now run with the callback the user wanted
 		gqct.setCallBack(c);
 		gqct.execute(cid);
 		//If the user is using threading, they will care to extract their result from the callback
@@ -218,22 +208,12 @@ public class DataManager {
 	 */
 	//Another case where adding a callback to the function signature didn't break the app
 	//Are we using this?
-	public Comment<Answer> getAnswerComment(UUID Cid, Callback<Comment<Answer>> c){
+	public Comment<Answer> getAnswerComment(UUID Cid, Callback<Comment<? extends ICommentable>> c){
 		GetAnswerCommentTask gact = new GetAnswerCommentTask(context);
 		if (c == null) {
 			//User doesn't care about threading and expects this to be blocking.
-			return gact.blockingRun(Cid);
+			return (Comment<Answer>) gact.blockingRun(Cid);
 		}
-		//Need to add this to the recentVisit list.
-		gact.setCallBack(new Callback<Comment<Answer>>() {
-			@Override
-			public void run(Comment<Answer> ca) {
-				recentVisit.add(ca.getId());
-				
-			}
-		});
-		gact.execute(Cid);
-		//Now run with the callback the user actually wanted
 		gact.setCallBack(c);
 		gact.execute(Cid);
 		//The user, by not setting a null callback, should know to fetch the result 

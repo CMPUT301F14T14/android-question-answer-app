@@ -6,11 +6,12 @@ import java.util.UUID;
 import android.content.Context;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.IDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 
-public class GetAnswerCommentTask extends AbstractDataManagerTask<UUID, Void, Comment<Answer>> {
+public class GetAnswerCommentTask extends AbstractDataManagerTask<UUID, Void, Comment<? extends ICommentable>> {
 
 	public GetAnswerCommentTask(Context c) {
 		super(c);
