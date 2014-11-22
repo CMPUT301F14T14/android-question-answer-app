@@ -3,9 +3,11 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 import java.io.IOException;
 
 import android.content.Context;
+import android.util.Log;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.IDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerCommentPushDelayedEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerPushDelayedEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -31,22 +33,22 @@ public class AddAnswerCommentTask extends AbstractDataManagerTask<Comment<Answer
 		
 		answer.addComment(C.getId());
 		
-//		try {
+		try {
 			remoteDataStore.putAComment(C);
-//		} catch (IOException e) {
-//			EventBus.getInstance().addEvent(new AnswerCommentPushDelayedEvent(C));
-//		}
+		} catch (IOException e) {
+			EventBus.getInstance().addEvent(new AnswerCommentPushDelayedEvent(C));
+		}
 		try {
 			remoteDataStore.putAnswer(answer);
 		} catch (IOException e) {
 			EventBus.getInstance().addEvent(new AnswerPushDelayedEvent(answer));
 		}
-		//try {
+		try {
 			localDataStore.putAComment(C);
 			localDataStore.save();
-		//} catch (IOException e) {
-		//	Log.e("AddAnswerCommentTask", "Failed to save comment record");
-		//}
+		} catch (IOException e) {
+			Log.e("AddAnswerCommentTask", "Failed to save comment record");
+		}
 
 		return null;
 	}

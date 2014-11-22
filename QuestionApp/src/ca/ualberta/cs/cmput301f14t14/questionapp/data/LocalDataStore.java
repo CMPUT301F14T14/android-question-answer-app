@@ -61,6 +61,40 @@ public class LocalDataStore implements IDataStore {
 		}
 		return list;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This implementation will return all comments available locally.
+	 * If they are not available locally, they will not be included.
+	 */
+	public List<Comment<Question>> getCommentList(Question question) {
+		List<Comment<Question>> list = new ArrayList<Comment<Question>>();
+		for (UUID cId: question.getCommentList()) {
+			Comment<Question> c = getQComment(cId);
+			if (c != null) {
+				list.add(c);
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This implementation will return all comments available locally.
+	 * If they are not available locally, they will not be included.
+	 */
+	public List<Comment<Answer>> getCommentList(Answer answer) {
+		List<Comment<Answer>> list = new ArrayList<Comment<Answer>>();
+		for (UUID cId: answer.getCommentList()) {
+			Comment<Answer> c = getAComment(cId);
+			if (c != null) {
+				list.add(c);
+			}
+		}
+		return list;
+	}
 	
 	public void save() {
 		saveObject(questions, QUESTION_SAVE_FILE);

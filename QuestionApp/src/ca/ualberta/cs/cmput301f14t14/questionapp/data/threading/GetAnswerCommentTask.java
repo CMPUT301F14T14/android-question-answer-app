@@ -1,45 +1,41 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import android.content.Context;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.IDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 
-public class GetAnswerCommentTask extends AbstractDataManagerTask<UUID, Void, Comment<Answer>> {
+public class GetAnswerCommentTask extends AbstractDataManagerTask<UUID, Void, Comment<? extends ICommentable>> {
 
 	public GetAnswerCommentTask(Context c) {
 		super(c);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected Comment<Answer> doInBackground(UUID... arg0) {
-		UUID Cid = arg0[0];
-		IDataStore remoteDataStore = DataManager.getInstance(this.getContext())
+		UUID cid = arg0[0];
+		IDataStore remoteDataStore = DataManager.getInstance(getContext())
 				.getRemoteDataStore();
-		IDataStore localDataStore = DataManager.getInstance(this.getContext())
+		IDataStore localDataStore = DataManager.getInstance(getContext())
 				.getLocalDataStore();
-	
-		Comment<Answer> comment;
-		if(remoteDataStore.hasAccess()){
-			comment = remoteDataStore.getAComment(Cid);
+		
+		Comment<Answer> comment = null;
+		try {
+			comment = remoteDataStore.getAComment(cid);
+			// Cache visited comment locally
 			localDataStore.putAComment(comment);
-		  	localDataStore.save();
-		}
-		else{
-			comment = localDataStore.getAComment(Cid);
+			localDataStore.save();
+		} catch (IOException e) {
+			comment = localDataStore.getAComment(cid);
 		}
 		return comment;
-	
-	
-	
 	}
-	
-
 
 }
 

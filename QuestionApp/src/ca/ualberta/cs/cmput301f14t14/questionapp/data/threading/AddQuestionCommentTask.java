@@ -9,6 +9,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionCo
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import android.content.Context;
+import android.util.Log;
 
 public class AddQuestionCommentTask extends AbstractDataManagerTask<Comment<Question>, Void, Void> {
 
@@ -19,44 +20,27 @@ public class AddQuestionCommentTask extends AbstractDataManagerTask<Comment<Ques
 
 	@Override
 	protected Void doInBackground(Comment<Question>... arg0) {
-		Comment<Question> C = arg0[0];
+		Comment<Question> comment = arg0[0];
 		IDataStore remoteDataStore = DataManager.getInstance(this.getContext())
 				.getRemoteDataStore();
 		IDataStore localDataStore = DataManager.getInstance(this.getContext())
 				.getLocalDataStore();
 		
-		//Need to fetch the question.
-		//Its okay to block a non-UI thread.
-		
-		
-		GetQuestionTask gqt = new GetQuestionTask(getContext());
-		Question question = gqt.blockingRun(C.getParent());
-		
-		question.addComment(C.getId());
-		
-		if(remoteDataStore.hasAccess()){
-			remoteDataStore.putQComment(C);
-			try {
-				remoteDataStore.putQuestion(question);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			remoteDataStore.save();
-		} else {
-			//We are offline. Add failure to push onto eventbus.
-			//Store into local datastore for now.
-			//Can't have duplicate keys in a map, so we don't have to worry about doing this twice.
-			localDataStore.putQComment(C);
-			try {
-				localDataStore.putQuestion(question);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			localDataStore.save();
+		// Push comment to remote server
+		try {
+			remoteDataStore.putQComment(comment);
+		} catch (IOException e) {
+			Log.e("AddQuestionCommentTask", "Failed to upload question comment");
 			//Push to event bus
-			EventBus.getInstance().addEvent(new QuestionCommentPushDelayedEvent(C));
+			EventBus.getInstance().addEvent(new QuestionCommentPushDelayedEvent(comment));
+		}
+		// Push comment to local store
+		try {
+			localDataStore.putQComment(comment);
+			localDataStore.save();
+		} catch (IOException e) {
+			e.printStackTrace();
+			Log.e("AddQuestionCommentTask", "Failed to save question comment locally");
 		}
 		return null;
 	}

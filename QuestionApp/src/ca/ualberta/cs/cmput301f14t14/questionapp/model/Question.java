@@ -6,8 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
 
-public class Question extends Model implements Serializable {
+
+public class Question extends Model implements Serializable, ICommentable {
 	
 	private static final long serialVersionUID = -8123919371607337418L;
 

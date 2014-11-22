@@ -7,8 +7,6 @@ import java.util.UUID;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerTask;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
@@ -19,10 +17,8 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.view.AnswerListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.ViewCommentDialogFragment;
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +29,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class QuestionActivity extends Activity {
+public class QuestionActivity extends Activity
+implements AddCommentDialogFragment.AddCommentDialogCallback {
 	public static final String ARG_QUESTION_ID = "QUESTION_UUID";
 
 	static final String TAB_ANSWERS = "answer";
@@ -171,9 +168,8 @@ public class QuestionActivity extends Activity {
 	 * @param view
 	 */
 	public void addAnswer(View view) {
-		FragmentManager fm = getFragmentManager();
 		AddAnswerDialogFragment dialogFragment = new AddAnswerDialogFragment();
-		dialogFragment.show(fm, "addanswerdialogfragmentlayout");
+		dialogFragment.show(getFragmentManager(), "addanswerdialogfragmentlayout");
 	}
 	
 	public void addAnswerCallback(String body, Image img) {
@@ -184,36 +180,38 @@ public class QuestionActivity extends Activity {
 		} catch (IllegalArgumentException e) {
 			Toast.makeText(getApplicationContext(), R.string.add_answer_err_invalid, Toast.LENGTH_SHORT).show();
 		}
-		final UUID answerId = answer.getId();
-		AddAnswerTask aTask = new AddAnswerTask(this);
-		aTask.setCallBack(new Callback<Void>(){
-
-			@Override
-			public void run(Void o) {
-				question.addAnswer(answerId);
-				AddQuestionTask qTask = new AddQuestionTask(getApplicationContext());
-				qTask.execute(question);
-				updateQuestion(question);
-			}
-			
-		});
-		aTask.execute(answer);
+		dataManager.addAnswer(answer);
+		question.addAnswer(answer.getId());
+		dataManager.addQuestion(question, null);
+		updateQuestion(question);
 	}
 
-    // after adding comment or answer, reset and update the lists
-    // associated with the question
+    /**
+     * Handler for the add comment button
+     * 
+     * Opens a new dialog in which to create a comment
+     * 
+     * @param view
+     */
     public void addComment(View view) {
-    	/* Add a comment to this question */
-		AddCommentDialogFragment acdf = new AddCommentDialogFragment();
-		Bundle argbundle = new Bundle();
-		try{
-			argbundle.putString("questionId", question.getId().toString());
-		} catch (NullPointerException e) {
-			Log.d("QuestionActivity Add Comment", "NPE on addcomment. Question object null");
-		}
-		acdf.setArguments(argbundle);
-		acdf.show(getFragmentManager(), "AVAaddcommentDF");
+		AddCommentDialogFragment dialogFragment = new AddCommentDialogFragment();
+		dialogFragment.show(getFragmentManager(), "AVAaddcommentDF");
 	}
+
+    @Override
+	public void addCommentCallback(String text) {
+		ClientData cd = new ClientData(this);
+		Comment<Question> comment = null;
+		try {
+			comment = new Comment<Question>(question.getId(), text, cd.getUsername());
+		} catch (IllegalArgumentException e) {
+			Toast.makeText(getApplicationContext(), R.string.add_comment_err_invalid, Toast.LENGTH_SHORT).show();
+		}
+		dataManager.addQuestionComment(comment);
+		question.addComment(comment.getId());
+		dataManager.addQuestion(question, null);
+		updateQuestion(question);
+    }
 
 	public void updateQuestion(Question q) {
 		new QuestionUpdateCallback().run(q);

@@ -41,20 +41,22 @@ public interface IDataStore {
 	 * also be fetched.
 	 * @param id
 	 * @return Answer record, or null
+	 * @throws IOException
 	 */
-	public Answer getAnswer(UUID id);
+	public Answer getAnswer(UUID id) throws IOException;
 
 	/**
 	 * Stores a question comment record in the data store.
 	 * @param comment
+	 * @throws IOException
 	 */
-	public void putQComment(Comment<Question> comment);
+	public void putQComment(Comment<Question> comment) throws IOException;
 
 	/**
 	 * Stores an answer comment record in the data store.
 	 * @param comment
 	 */
-	public void putAComment(Comment<Answer> comment);
+	public void putAComment(Comment<Answer> comment) throws IOException;
 
 	/**
 	 * Get a question comment record from the data store.
@@ -86,6 +88,24 @@ public interface IDataStore {
 	 * @throws IOException
 	 */
 	public List<Answer> getAnswerList(Question q) throws IOException;
+
+	/**
+	 * Get a list of all comment children of a question.
+	 *
+	 * @param q Parent question
+	 * @return
+	 * @throws IOException
+	 */
+	public List<Comment<Question>> getCommentList(Question q) throws IOException;
+	
+	/**
+	 * Get a list of all comment children of an answer.
+	 *
+	 * @param q Parent answer
+	 * @return
+	 * @throws IOException
+	 */
+	public List<Comment<Answer>> getCommentList(Answer q) throws IOException;
 
 	/**
 	 * Persist the state of the data store.

@@ -18,8 +18,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerListTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerTask;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListAnsTask;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListQuesTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionListTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
@@ -37,13 +36,9 @@ public class DataManager {
 
 	private IDataStore localDataStore;
 	private IDataStore remoteDataStore;
-	private List<UUID> favouriteQuestions;
-	private List<UUID> favouriteAnswers;
 	private List<UUID> recentVisit;
 	private List<UUID> readLater;
-	//private List<UUID> pushOnline;
-	//private List<UUID> upVoteOnline;
-	private Context context; //Needed for Threading instantiations
+	private Context context;
 	String Username;
 	static final String favQ = "fav_Que";
 	static final String favA = "fav_Ans";
@@ -58,10 +53,6 @@ public class DataManager {
 
 	
 	private DataManager(Context context) {
-		//Deprecated. Use the eventbus instead for events that need to happen
-		//upon future internet access
-		//this.pushOnline = new ArrayList<UUID>();
-		//this.upVoteOnline = new ArrayList<UUID>();
 		this.context = context;
 	}
 
@@ -167,14 +158,6 @@ public class DataManager {
 			//User wants an answer within a thread, or doesn't care about blocking.
 			return gat.blockingRun(Aid);
 		}
-		gat.setCallBack(new Callback<Answer>() {
-			@Override
-			public void run(Answer a) {
-				recentVisit.add(a.getId());
-			}
-		});
-		gat.execute(Aid);
-		//Now actually use the callback that the caller wanted
 		gat.setCallBack(c);
 		gat.execute(Aid);
 		return anull; //Hopefully eclipse will warn users this method always returns null
@@ -196,22 +179,12 @@ public class DataManager {
 	 */
 	//Wtf, when I added a Callback parameter, nothing broke... Is this 
 	//method actually called anywhere in the app?
-	public Comment<Question> getQuestionComment(UUID cid, Callback<Comment<Question>> c) {
+	public Comment<Question> getQuestionComment(UUID cid, Callback<Comment<? extends ICommentable>> c) {
 		GetQuestionCommentTask gqct = new GetQuestionCommentTask(context);
 		if (c == null){
 			//User does not care about blocking
-			return gqct.blockingRun(cid);
+			return (Comment<Question>) gqct.blockingRun(cid);
 		}
-		//User cares about threading
-		//Add this questionComment to the recentVisit list
-		gqct.setCallBack(new Callback<Comment<Question>>() {
-			@Override
-			public void run(Comment<Question> cq) {
-				readLater.add(cq.getId());
-			}
-		});
-		gqct.execute(cid);
-		//Now run with the callback the user wanted
 		gqct.setCallBack(c);
 		gqct.execute(cid);
 		//If the user is using threading, they will care to extract their result from the callback
@@ -235,22 +208,12 @@ public class DataManager {
 	 */
 	//Another case where adding a callback to the function signature didn't break the app
 	//Are we using this?
-	public Comment<Answer> getAnswerComment(UUID Cid, Callback<Comment<Answer>> c){
+	public Comment<Answer> getAnswerComment(UUID Cid, Callback<Comment<? extends ICommentable>> c){
 		GetAnswerCommentTask gact = new GetAnswerCommentTask(context);
 		if (c == null) {
 			//User doesn't care about threading and expects this to be blocking.
-			return gact.blockingRun(Cid);
+			return (Comment<Answer>) gact.blockingRun(Cid);
 		}
-		//Need to add this to the recentVisit list.
-		gact.setCallBack(new Callback<Comment<Answer>>() {
-			@Override
-			public void run(Comment<Answer> ca) {
-				recentVisit.add(ca.getId());
-				
-			}
-		});
-		gact.execute(Cid);
-		//Now run with the callback the user actually wanted
 		gact.setCallBack(c);
 		gact.execute(Cid);
 		//The user, by not setting a null callback, should know to fetch the result 
@@ -283,7 +246,7 @@ public class DataManager {
 	 * @return
 	 */
 	public List<Comment<Answer>> getCommentList(Answer a, Callback<List<Comment<Answer>>> c){
-		GetCommentListAnsTask gclat = new GetCommentListAnsTask(context);
+		GetCommentListTask<Answer> gclat = new GetCommentListTask<Answer>(context);
 		if (c == null) {
 			//User doesn't care this is blocking
 			return gclat.blockingRun(a);
@@ -303,7 +266,7 @@ public class DataManager {
 	 * @return
 	 */
 	public List<Comment<Question>> getCommentList(Question q, Callback<List<Comment<Question>>> c){
-		GetCommentListQuesTask gclqt = new GetCommentListQuesTask(context);
+		GetCommentListTask<Question> gclqt = new GetCommentListTask<Question>(context);
 		if (c == null) {
 			//User doesn't care this is blocking
 			return gclqt.blockingRun(q);

@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class Comment<T extends Model> implements Serializable {
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
+
+public class Comment<T extends ICommentable> implements Serializable {
 	
 	private static final long serialVersionUID = 2455600018596168474L;
 
