@@ -41,8 +41,9 @@ public interface IDataStore {
 	 * also be fetched.
 	 * @param id
 	 * @return Answer record, or null
+	 * @throws IOException
 	 */
-	public Answer getAnswer(UUID id);
+	public Answer getAnswer(UUID id) throws IOException;
 
 	/**
 	 * Stores a question comment record in the data store.

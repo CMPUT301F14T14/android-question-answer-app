@@ -90,8 +90,8 @@ public class CommentTest extends ActivityInstrumentationTestCase2<MainActivity> 
 		mQuestion.addComment(mComment.getId());
 		UUID id = mComment.getId();
 		assertNotNull(mQuestion.hasComment(mComment.getId()));
-		remote.putQComment(mComment);
 		try {
+			remote.putQComment(mComment);
 			remote.putQuestion(mQuestion);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

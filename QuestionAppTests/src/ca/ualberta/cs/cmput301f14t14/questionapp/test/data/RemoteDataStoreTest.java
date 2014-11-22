@@ -99,7 +99,12 @@ public class RemoteDataStoreTest extends
 	 */
 	public void testPutQuestionComment() {
 		Comment<Question> c = MockData.qcomments.get(0);
-		remoteStore.putQComment(c);
+		try {
+			remoteStore.putQComment(c);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Comment<Question> retrievedComment = remoteStore.getQComment(c.getId());
 		assertEquals(c, retrievedComment);
 	}
