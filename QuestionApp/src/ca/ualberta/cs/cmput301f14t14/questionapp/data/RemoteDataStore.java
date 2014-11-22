@@ -82,14 +82,7 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpGet);
-			SearchResponse<Question> sr = parseESResponse(response,
-					new TypeToken<SearchResponse<Question>>() {}.getType());
-			List<SearchHit<Question>> hits = sr.getHits().getHits();
-			List<Question> result = new ArrayList<Question>();
-			for (SearchHit<Question> hit: hits) {
-				result.add(hit.getSource());
-			}
-			return result;
+			return getResultList(response, new TypeToken<SearchResponse<Question>>() {}.getType());
 		} catch (IOException e) {
 			throw new IOException("Error getting question list.", e);
 		} catch (Exception e) {
@@ -117,14 +110,7 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpPost);
-			SearchResponse<Answer> sr = parseESResponse(response,
-					new TypeToken<SearchResponse<Answer>>() {}.getType());
-			List<SearchHit<Answer>> hits = sr.getHits().getHits();
-			List<Answer> result = new ArrayList<Answer>();
-			for (SearchHit<Answer> hit: hits) {
-				result.add(hit.getSource());
-			}
-			return result;
+			return getResultList(response, new TypeToken<SearchResponse<Answer>>() {}.getType());
 		} catch (IOException e) {
 			throw new IOException("Error getting answer list.", e);
 		} catch (Exception e) {
@@ -152,14 +138,7 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpPost);
-			SearchResponse<Comment<Question>> sr = parseESResponse(response,
-					new TypeToken<SearchResponse<Comment<Question>>>() {}.getType());
-			List<SearchHit<Comment<Question>>> hits = sr.getHits().getHits();
-			List<Comment<Question>> result = new ArrayList<Comment<Question>>();
-			for (SearchHit<Comment<Question>> hit: hits) {
-				result.add(hit.getSource());
-			}
-			return result;
+			return getResultList(response, new TypeToken<SearchResponse<Comment<Question>>>() {}.getType());
 		} catch (IOException e) {
 			throw new IOException("Error getting comment list.", e);
 		} catch (Exception e) {
@@ -187,14 +166,7 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpPost);
-			SearchResponse<Comment<Answer>> sr = parseESResponse(response,
-					new TypeToken<SearchResponse<Comment<Answer>>>() {}.getType());
-			List<SearchHit<Comment<Answer>>> hits = sr.getHits().getHits();
-			List<Comment<Answer>> result = new ArrayList<Comment<Answer>>();
-			for (SearchHit<Comment<Answer>> hit: hits) {
-				result.add(hit.getSource());
-			}
-			return result;
+			return getResultList(response, new TypeToken<SearchResponse<Comment<Answer>>>() {}.getType());
 		} catch (IOException e) {
 			throw new IOException("Error getting comment list.", e);
 		} catch (Exception e) {
@@ -395,7 +367,7 @@ public class RemoteDataStore implements IDataStore {
 	 * object
 	 * 
 	 * @param response
-	 * @param type
+	 * @param type Type of deserialized object
 	 * @return SearchHit object from ElasticSearch
 	 */
 	private <T> T parseESResponse(HttpResponse response, Type type) {
@@ -410,6 +382,22 @@ public class RemoteDataStore implements IDataStore {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Extract a result list from an http response
+	 * @param response
+	 * @param type Expected type of deserialized http response body
+	 * @return
+	 */
+	private <T> List<T> getResultList(HttpResponse response, Type type) {
+		SearchResponse<T> sr = parseESResponse(response, type);
+		List<SearchHit<T>> hits = sr.getHits().getHits();
+		List<T> result = new ArrayList<T>();
+		for (SearchHit<T> hit: hits) {
+			result.add(hit.getSource());
+		}
+		return result;
 	}
 
 	/**
