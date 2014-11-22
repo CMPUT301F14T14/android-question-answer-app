@@ -6,8 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.UUID;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.Model;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -18,7 +18,7 @@ import com.google.gson.JsonParseException;
 /**
  * Class used by GSON to deserialize Answer objects
  */
-public class CommentDeserializer<T extends Model> implements JsonDeserializer<Comment<T>> {
+public class CommentDeserializer<T extends ICommentable> implements JsonDeserializer<Comment<T>> {
 
 	public Comment<T> deserialize(final JsonElement json, final Type type,
 			final JsonDeserializationContext context) throws JsonParseException {

@@ -18,8 +18,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerListTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetAnswerTask;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListAnsTask;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListQuesTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionListTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
@@ -159,14 +158,6 @@ public class DataManager {
 			//User wants an answer within a thread, or doesn't care about blocking.
 			return gat.blockingRun(Aid);
 		}
-		gat.setCallBack(new Callback<Answer>() {
-			@Override
-			public void run(Answer a) {
-				recentVisit.add(a.getId());
-			}
-		});
-		gat.execute(Aid);
-		//Now actually use the callback that the caller wanted
 		gat.setCallBack(c);
 		gat.execute(Aid);
 		return anull; //Hopefully eclipse will warn users this method always returns null
@@ -275,7 +266,7 @@ public class DataManager {
 	 * @return
 	 */
 	public List<Comment<Answer>> getCommentList(Answer a, Callback<List<Comment<Answer>>> c){
-		GetCommentListAnsTask gclat = new GetCommentListAnsTask(context);
+		GetCommentListTask<Answer> gclat = new GetCommentListTask<Answer>(context);
 		if (c == null) {
 			//User doesn't care this is blocking
 			return gclat.blockingRun(a);
@@ -295,7 +286,7 @@ public class DataManager {
 	 * @return
 	 */
 	public List<Comment<Question>> getCommentList(Question q, Callback<List<Comment<Question>>> c){
-		GetCommentListQuesTask gclqt = new GetCommentListQuesTask(context);
+		GetCommentListTask<Question> gclqt = new GetCommentListTask<Question>(context);
 		if (c == null) {
 			//User doesn't care this is blocking
 			return gclqt.blockingRun(q);

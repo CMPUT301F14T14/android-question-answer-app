@@ -95,7 +95,16 @@ public interface IDataStore {
 	 * @return
 	 * @throws IOException
 	 */
-	public List<Comment<Question>> getQCommentList(Question q) throws IOException;
+	public List<Comment<Question>> getCommentList(Question q) throws IOException;
+	
+	/**
+	 * Get a list of all comment children of an answer.
+	 *
+	 * @param q Parent answer
+	 * @return
+	 * @throws IOException
+	 */
+	public List<Comment<Answer>> getCommentList(Answer q) throws IOException;
 
 	/**
 	 * Persist the state of the data store.

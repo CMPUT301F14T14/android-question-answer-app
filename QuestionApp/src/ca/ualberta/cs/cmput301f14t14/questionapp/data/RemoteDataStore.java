@@ -144,7 +144,7 @@ public class RemoteDataStore implements IDataStore {
 	 * This implementation gets all comment children of a question from
 	 * an ElasticSearch server.
 	 */
-	public List<Comment<Question>> getQCommentList(Question question) throws IOException {
+	public List<Comment<Question>> getCommentList(Question question) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(ES_BASE_URL + QUESTION_COMMENT_PATH + "_search");
 		
@@ -167,7 +167,44 @@ public class RemoteDataStore implements IDataStore {
 			}
 			return result;
 		} catch (IOException e) {
-			throw new IOException("Error getting answer list.", e);
+			throw new IOException("Error getting comment list.", e);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * This implementation gets all comment children of a question from
+	 * an ElasticSearch server.
+	 */
+	public List<Comment<Answer>> getCommentList(Answer answer) throws IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(ES_BASE_URL + ANSWER_COMMENT_PATH + "_search");
+		
+		httpPost.setEntity(new StringEntity(
+				"{\"query\": {\"has_parent\": {\"type\": \"answer\", \"query\": {" +
+				"\"match\": {\"id\": \"" + answer.getId() + "\"}}}}}"));
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpPost);
+			@SuppressWarnings("unchecked")
+			SearchResponse<Comment<Answer>> sr = (SearchResponse<Comment<Answer>>) parseESResponse(
+					response, new TypeToken<SearchResponse<Comment<Answer>>>() {
+					}.getType());
+			List<SearchHit<Comment<Answer>>> hits = sr.getHits().getHits();
+			List<Comment<Answer>> result = new ArrayList<Comment<Answer>>();
+			for (SearchHit<Comment<Answer>> hit: hits) {
+				result.add(hit.getSource());
+			}
+			return result;
+		} catch (IOException e) {
+			throw new IOException("Error getting comment list.", e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
