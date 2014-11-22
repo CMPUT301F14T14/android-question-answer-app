@@ -37,13 +37,9 @@ public class DataManager {
 
 	private IDataStore localDataStore;
 	private IDataStore remoteDataStore;
-	private List<UUID> favouriteQuestions;
-	private List<UUID> favouriteAnswers;
 	private List<UUID> recentVisit;
 	private List<UUID> readLater;
-	//private List<UUID> pushOnline;
-	//private List<UUID> upVoteOnline;
-	private Context context; //Needed for Threading instantiations
+	private Context context;
 	String Username;
 	static final String favQ = "fav_Que";
 	static final String favA = "fav_Ans";
@@ -58,10 +54,6 @@ public class DataManager {
 
 	
 	private DataManager(Context context) {
-		//Deprecated. Use the eventbus instead for events that need to happen
-		//upon future internet access
-		//this.pushOnline = new ArrayList<UUID>();
-		//this.upVoteOnline = new ArrayList<UUID>();
 		this.context = context;
 	}
 

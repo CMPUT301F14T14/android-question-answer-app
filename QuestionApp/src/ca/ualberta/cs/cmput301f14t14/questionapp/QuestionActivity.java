@@ -7,9 +7,6 @@ import java.util.UUID;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerTask;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionCommentTask;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
@@ -183,20 +180,10 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		} catch (IllegalArgumentException e) {
 			Toast.makeText(getApplicationContext(), R.string.add_answer_err_invalid, Toast.LENGTH_SHORT).show();
 		}
-		final UUID answerId = answer.getId();
-		AddAnswerTask aTask = new AddAnswerTask(this);
-		aTask.setCallBack(new Callback<Void>(){
-
-			@Override
-			public void run(Void o) {
-				question.addAnswer(answerId);
-				AddQuestionTask qTask = new AddQuestionTask(getApplicationContext());
-				qTask.execute(question);
-				updateQuestion(question);
-			}
-			
-		});
-		aTask.execute(answer);
+		dataManager.addAnswer(answer);
+		question.addAnswer(answer.getId());
+		dataManager.addQuestion(question, null);
+		updateQuestion(question);
 	}
 
     /**
@@ -211,7 +198,8 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		dialogFragment.show(getFragmentManager(), "AVAaddcommentDF");
 	}
 
-    public void addCommentCallback(String text) {
+    @Override
+	public void addCommentCallback(String text) {
 		ClientData cd = new ClientData(this);
 		Comment<Question> comment = null;
 		try {
@@ -219,20 +207,10 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		} catch (IllegalArgumentException e) {
 			Toast.makeText(getApplicationContext(), R.string.add_comment_err_invalid, Toast.LENGTH_SHORT).show();
 		}
-		final UUID commentId = comment.getId();
-		AddQuestionCommentTask cTask = new AddQuestionCommentTask(this);
-		cTask.setCallBack(new Callback<Void>(){
-
-			@Override
-			public void run(Void o) {
-				question.addComment(commentId);
-				AddQuestionTask qTask = new AddQuestionTask(getApplicationContext());
-				qTask.execute(question);
-				updateQuestion(question);
-			}
-			
-		});
-		cTask.execute(comment);
+		dataManager.addQuestionComment(comment);
+		question.addComment(comment.getId());
+		dataManager.addQuestion(question, null);
+		updateQuestion(question);
     }
 
 	public void updateQuestion(Question q) {
