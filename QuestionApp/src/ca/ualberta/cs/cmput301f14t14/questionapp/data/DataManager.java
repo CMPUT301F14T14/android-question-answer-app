@@ -142,7 +142,7 @@ public class DataManager {
 	 */
 	public void addAnswer(Answer A){
 		AddAnswerTask aat = new AddAnswerTask(context);
-		aat.blockingRun(A);
+		aat.execute(A);
 	}
 
 	/**
