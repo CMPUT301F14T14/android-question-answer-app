@@ -1,6 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
 import java.util.Date;
+import java.util.UUID;
 
 import android.location.Location;
 
@@ -8,12 +9,21 @@ import android.location.Location;
  * Value object to keep track of a generic search result
  */
 public class GenericSearchItem {
+	private UUID id;
 	private String title;
 	private String body;
 	private Date date;
 	private Location location;
 	private String type;
 	
+	public UUID getId() {
+		return id;
+	}
+	
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
 	public String getTitle() {
 		return title;
 	}
