@@ -35,14 +35,16 @@ public class SearchActivity extends Activity {
 
         if(dataManager.getRemoteDataStore().hasAccess()){
         	ESSearch eSSearch = new ESSearch(this);
+        	List<GenericSearchItem> result = null;
         	try {
-				List<GenericSearchItem> result = eSSearch.search(query);
-	        	gla = new GenericSearchItemAdapter(this, R.layout.list_question, result);  
+				result = eSSearch.search(query);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        	
+        	if(result == null){
+        		return;
+        	}
+        	gla = new GenericSearchItemAdapter(this, R.layout.list_question, result);  
         	ListView questionView = (ListView) findViewById(R.id.question_list);
         	questionView.setAdapter(gla);
         	questionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
