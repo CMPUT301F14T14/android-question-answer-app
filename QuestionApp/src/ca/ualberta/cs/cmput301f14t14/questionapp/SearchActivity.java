@@ -44,7 +44,7 @@ public class SearchActivity extends Activity {
         	if(result == null){
         		return;
         	}
-        	gla = new GenericSearchItemAdapter(this, R.layout.list_question, result);  
+        	gla = new GenericSearchItemAdapter(this, R.layout.list_generic, result);  
         	ListView questionView = (ListView) findViewById(R.id.question_list);
         	questionView.setAdapter(gla);
         	questionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
