@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import android.location.Location;
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
 
 
@@ -22,6 +24,7 @@ public class Question extends Model implements Serializable, ICommentable {
 	private List<UUID> commentList;
 	private Date date;
 	private int upVotes;
+	private Location location;
 
 	public Question() {
 		id = new UUID(0L, 0L);
@@ -174,6 +177,14 @@ public class Question extends Model implements Serializable, ICommentable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 }

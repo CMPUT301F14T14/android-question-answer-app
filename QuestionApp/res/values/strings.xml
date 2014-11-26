@@ -53,5 +53,9 @@
     <string name="answerlist_author_placeholder">Natasha</string>
     <string name="title_activity_search">Search Results</string>
     <string name="enter_search_query">Please enter a search phrase</string>
+    <string name="date">Date</string>
+    <string name="location">Location</string>
+    <string name="generic_body">Generic Body</string>
+    <string name="type">Type</string>
 
 </resources>

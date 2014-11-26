@@ -145,6 +145,9 @@ public class MainActivity extends Activity {
 
 				@Override
 				public int compare(Question q1, Question q2) {
+					if(q1.getUpvotes() == q2.getUpvotes()){
+						return q1.getDate().compareTo(q2.getDate());
+					}
 					
 					return q2.getUpvotes() - q1.getUpvotes();
 				}

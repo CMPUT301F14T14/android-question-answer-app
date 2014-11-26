@@ -15,6 +15,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.ESSearchTask;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
