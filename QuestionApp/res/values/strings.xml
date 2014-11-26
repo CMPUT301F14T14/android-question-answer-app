@@ -13,6 +13,7 @@
     <string name="cancel">Cancel</string>
     <string name="question_list_add_question">Add Question</string>
     <string name="list_question_read_later">Read Later</string>
+    <string name="list_answer_read_later">Read Later</string>
     <string name="add_comment_body_hint">Add your comment</string>
     <string name="welcome_to_qasper">Welcome to Qasper</string>
     <string name="use_google_account_email">Use Google Account email</string>
