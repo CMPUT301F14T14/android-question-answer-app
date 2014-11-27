@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ESSearch;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.GenericSearchItem;
 
