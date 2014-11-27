@@ -136,7 +136,7 @@ public class MainActivity extends Activity {
 				@Override
 				public int compare(Question q1, Question q2) {
 					
-					return q2.getDate().compareTo(q1.getDate());
+					return q1.getDate().compareTo(q2.getDate());
 				}
 			
 			
@@ -150,7 +150,7 @@ public class MainActivity extends Activity {
 				@Override
 				public int compare(Question q1, Question q2) {
 					if(q1.getUpvotes() == q2.getUpvotes()){
-						return q2.getDate().compareTo(q1.getDate());
+						return q1.getDate().compareTo(q2.getDate());
 					}
 					
 					return q2.getUpvotes() - q1.getUpvotes();
@@ -183,7 +183,7 @@ public class MainActivity extends Activity {
 				public int compare(Question arg0, Question arg1) {
 					if(favQ.contains(arg0.getId()) == favQ.contains(arg1.getId())){
 						//Sort by date if both in or not in favourites
-						return arg1.getDate().compareTo(arg0.getDate());
+						return arg0.getDate().compareTo(arg1.getDate());
 					}
 					else if(favQ.contains(arg0.getId()) && !favQ.contains(arg1.getId())){
 						return -1;
@@ -206,7 +206,7 @@ public class MainActivity extends Activity {
 					//Instantiate ClientData here
 					
 					if(q1.getAuthor().equals(cd.getUsername()) == q2.getAuthor().equals(cd.getUsername())){
-						return q2.getDate().compareTo(q1.getDate());
+						return q1.getDate().compareTo(q2.getDate());
 					}
 					else if(q1.getAuthor().equals(cd.getUsername()) && !q2.getAuthor().equals(cd.getUsername()))
 						return -1;
@@ -226,7 +226,7 @@ public class MainActivity extends Activity {
 				@Override
 				public int compare(Question q1, Question q2) {
 					if(q2.getAnswerList().size() == q1.getAnswerList().size()){
-						return q2.getDate().compareTo(q1.getDate());
+						return q1.getDate().compareTo(q2.getDate());
 					}
 
 					return q2.getAnswerList().size() - q1.getAnswerList().size();
@@ -244,7 +244,7 @@ public class MainActivity extends Activity {
 				@Override
 				public int compare(Question q1, Question q2) {
 					if(q1.getCommentList().size() == q2.getCommentList().size()){
-						return q2.getDate().compareTo(q1.getDate());
+						return q1.getDate().compareTo(q2.getDate());
 					}
 					return q2.getCommentList().size() - q1.getCommentList().size();
 					
@@ -262,7 +262,7 @@ public class MainActivity extends Activity {
 				public int compare(Question q1, Question q2) {
 					if ((q1.getImage() != null && q2.getImage() != null) || (q1.getImage() == null && q2.getImage() == null)){
 						// Both same, sort by date for consistency
-						return q2.getDate().compareTo(q1.getDate());
+						return q1.getDate().compareTo(q2.getDate());
 					}
 					return (q1.getImage() != null) ? -1: 1;
 				}
