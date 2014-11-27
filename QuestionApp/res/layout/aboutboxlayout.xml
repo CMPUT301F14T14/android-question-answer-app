@@ -11,6 +11,8 @@
         android:layout_gravity="center"
         android:src="@drawable/ic_qasper_logo_white" 
         android:contentDescription="Logo"/>
+    
+    
 
     <TextView
         android:id="@+id/aboutbox_appname"
@@ -22,12 +24,24 @@
         android:textSize="32sp"
         android:typeface="sans" />
 
+    
+    <TextView
+        android:id="@+id/aboutbox_tagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/aboutbox_tagline"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="14sp"
+        android:typeface="sans" />
+    
     <TextView
         android:id="@+id/aboutbox_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/aboutbox_version"
         android:layout_gravity="center_horizontal"
+        android:textSize="8sp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
