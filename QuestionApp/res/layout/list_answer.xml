@@ -30,5 +30,20 @@
         android:scrollHorizontally="false"
         android:text="@string/answerlist_author_placeholder"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:gravity="right" >
+        <ImageButton
+            android:id="@+id/list_answer_read_later"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/list_answer_read_later" 
+            android:src="@drawable/ic_action_readlater"
+            android:focusable="false"
+        />
+    </LinearLayout>
 
 </LinearLayout>

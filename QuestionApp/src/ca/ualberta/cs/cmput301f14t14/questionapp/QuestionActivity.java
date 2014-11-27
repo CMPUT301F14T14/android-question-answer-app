@@ -130,6 +130,7 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		super.onResume();
 		// Get question data
 		dataManager.getQuestion(questionId, new QuestionUpdateCallback());
+		aListAdapter.update();
 	}
 
 	@Override
