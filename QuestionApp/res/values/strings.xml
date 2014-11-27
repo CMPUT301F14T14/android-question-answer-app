@@ -12,6 +12,7 @@
     <string name="OK">OK</string>
     <string name="cancel">Cancel</string>
     <string name="question_list_add_question">Add Question</string>
+    <string name="list_question_read_later">Read Later</string>
     <string name="add_comment_body_hint">Add your comment</string>
     <string name="welcome_to_qasper">Welcome to Qasper</string>
     <string name="use_google_account_email">Use Google Account email</string>
@@ -33,7 +34,11 @@
     <!-- Add Answer Dialog Fragment -->
     <string name="add_answer_body_hint">Add a body to your answer</string>
     <string name="add_answer_image">Add an image to your answer</string>
+    <string name="add_answer_err_invalid">The answer you created was invalid.</string>
 
+    <!-- Add Comment Dialog -->
+    <string name="add_comment_err_invalid">The comment you created was invalid.</string>
+    
     <!-- Answer View -->
     <string name="answer_view_upvote_answer">Upvote Answer</string>
     <string name="answer_view_dummy_username">Username</string>
@@ -48,5 +53,9 @@
     <string name="answerlist_author_placeholder">Natasha</string>
     <string name="title_activity_search">Search Results</string>
     <string name="enter_search_query">Please enter a search phrase</string>
+    <string name="date">Date</string>
+    <string name="location">Location</string>
+    <string name="generic_body">Generic Body</string>
+    <string name="type">Type</string>
 
 </resources>

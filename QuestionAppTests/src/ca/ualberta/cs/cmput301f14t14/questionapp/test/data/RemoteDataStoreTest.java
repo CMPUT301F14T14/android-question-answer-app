@@ -1,7 +1,12 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test.data;
 
+import java.io.IOException;
+import java.util.List;
+
 import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.LocalDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.RemoteDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -11,6 +16,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.test.mock.MockData;
 public class RemoteDataStoreTest extends
 		ActivityInstrumentationTestCase2<MainActivity> {
 
+	private LocalDataStore localStore;
 	private RemoteDataStore remoteStore;
 
 	public RemoteDataStoreTest() {
@@ -19,7 +25,9 @@ public class RemoteDataStoreTest extends
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		remoteStore = new RemoteDataStore(getInstrumentation().getTargetContext().getApplicationContext());
+		DataManager dm = DataManager.getInstance(getInstrumentation().getTargetContext().getApplicationContext());
+		localStore = (LocalDataStore) dm.getLocalDataStore();
+		remoteStore = (RemoteDataStore) dm.getRemoteDataStore();
 		MockData.initMockData();
 	}
 
@@ -28,9 +36,37 @@ public class RemoteDataStoreTest extends
 	 */
 	public void testPutQuestion() {
 		Question q = MockData.questions.get(0);
-		remoteStore.putQuestion(q);
+		localStore.putQuestion(q);
+		try {
+			remoteStore.putQuestion(q);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Question retrievedQuestion = remoteStore.getQuestion(q.getId());
 		assertEquals(q, retrievedQuestion);
+	}
+	
+	/**
+	 * Verify that a question list can be fetched from ElasticSearch
+	 */
+	public void testGetQuestionList() {
+		List<Question> ql = null;
+		Question q = MockData.questions.get(1);
+		localStore.putQuestion(q);
+		try {
+			remoteStore.putQuestion(q);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			ql = remoteStore.getQuestionList();
+		} catch (IOException e) {
+			fail();
+		}
+		assertTrue(ql.size() != 0);
+		assertTrue(ql.contains(q));
 	}
 
 	/**
@@ -38,7 +74,12 @@ public class RemoteDataStoreTest extends
 	 */
 	public void testPutAnswer() {
 		Answer a = MockData.answers.get(0);
-		remoteStore.putAnswer(a);
+		try {
+			localStore.putAnswer(a);
+			remoteStore.putAnswer(a);
+		} catch (IOException e) {
+			
+		}
 		Answer retrievedAnswer = remoteStore.getAnswer(a.getId());
 		assertEquals(a, retrievedAnswer);
 	}
@@ -58,7 +99,12 @@ public class RemoteDataStoreTest extends
 	 */
 	public void testPutQuestionComment() {
 		Comment<Question> c = MockData.qcomments.get(0);
-		remoteStore.putQComment(c);
+		try {
+			remoteStore.putQComment(c);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Comment<Question> retrievedComment = remoteStore.getQComment(c.getId());
 		assertEquals(c, retrievedComment);
 	}

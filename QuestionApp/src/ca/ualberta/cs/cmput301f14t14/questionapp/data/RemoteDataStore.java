@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,9 +53,9 @@ public class RemoteDataStore implements IDataStore {
 		// Register serializers and deserializers
 		// Note: The comment stuff is ugly, but it should work
 		gb.registerTypeAdapter(Question.class, new QuestionSerializer());
-		gb.registerTypeAdapter(Question.class, new QuestionDeserializer());
+		gb.registerTypeAdapter(Question.class, new QuestionDeserializer(context));
 		gb.registerTypeAdapter(Answer.class, new AnswerSerializer());
-		gb.registerTypeAdapter(Answer.class, new AnswerDeserializer());
+		gb.registerTypeAdapter(Answer.class, new AnswerDeserializer(context));
 		gb.registerTypeAdapter(new TypeToken<Comment<Question>>() {}.getType(),
 				new CommentSerializer<Question>());
 		gb.registerTypeAdapter(new TypeToken<Comment<Question>>() {}.getType(),
@@ -66,13 +67,122 @@ public class RemoteDataStore implements IDataStore {
 		gson = gb.create();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This implementation fetches questions from an ElasticSearch
+	 * server using its search interface.
+	 */
 	@Override
-	public void putQuestion(Question question) {
+	public List<Question> getQuestionList() throws IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(ES_BASE_URL + QUESTION_PATH + "_search");
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpGet);
+			return getResultList(response, new TypeToken<SearchResponse<Question>>() {}.getType());
+		} catch (IOException e) {
+			throw new IOException("Error getting question list.", e);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This implementation gets all answer children of a question from
+	 * an ElasticSearch server.
+	 */
+	public List<Answer> getAnswerList(Question question) throws IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(ES_BASE_URL + ANSWER_PATH + "_search");
+		
+		httpPost.setEntity(new StringEntity(
+				"{\"query\": {\"has_parent\": {\"type\": \"question\", \"query\": {" +
+				"\"match\": {\"id\": \"" + question.getId() + "\"}}}}}"));
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpPost);
+			return getResultList(response, new TypeToken<SearchResponse<Answer>>() {}.getType());
+		} catch (IOException e) {
+			throw new IOException("Error getting answer list.", e);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * This implementation gets all comment children of a question from
+	 * an ElasticSearch server.
+	 */
+	public List<Comment<Question>> getCommentList(Question question) throws IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(ES_BASE_URL + QUESTION_COMMENT_PATH + "_search");
+		
+		httpPost.setEntity(new StringEntity(
+				"{\"query\": {\"has_parent\": {\"type\": \"question\", \"query\": {" +
+				"\"match\": {\"id\": \"" + question.getId() + "\"}}}}}"));
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpPost);
+			return getResultList(response, new TypeToken<SearchResponse<Comment<Question>>>() {}.getType());
+		} catch (IOException e) {
+			throw new IOException("Error getting comment list.", e);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * This implementation gets all comment children of a question from
+	 * an ElasticSearch server.
+	 */
+	public List<Comment<Answer>> getCommentList(Answer answer) throws IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(ES_BASE_URL + ANSWER_COMMENT_PATH + "_search");
+		
+		httpPost.setEntity(new StringEntity(
+				"{\"query\": {\"has_parent\": {\"type\": \"answer\", \"query\": {" +
+				"\"match\": {\"id\": \"" + answer.getId() + "\"}}}}}"));
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpPost);
+			return getResultList(response, new TypeToken<SearchResponse<Comment<Answer>>>() {}.getType());
+		} catch (IOException e) {
+			throw new IOException("Error getting comment list.", e);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	@Override
+	public void putQuestion(Question question) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL + QUESTION_PATH
-					+ question.getId());
+					+ question.getId() + "?refresh=true");
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(question));
 			addRequest.setEntity(stringEntity);
@@ -81,7 +191,8 @@ public class RemoteDataStore implements IDataStore {
 			HttpResponse response = httpClient.execute(addRequest);
 			String status = response.getStatusLine().toString();
 			Log.i(TAG, status);
-
+		} catch (IOException e) {
+			throw new IOException("Failed to upload question", e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,10 +208,8 @@ public class RemoteDataStore implements IDataStore {
 
 		try {
 			response = httpClient.execute(httpGet);
-			@SuppressWarnings("unchecked")
-			SearchHit<Question> sr = (SearchHit<Question>) parseESResponse(
-					response, new TypeToken<SearchHit<Question>>() {
-					}.getType());
+			SearchHit<Question> sr = parseESResponse(response,
+					new TypeToken<SearchHit<Question>>() {}.getType());
 			return sr.getSource();
 
 		} catch (Exception e) {
@@ -111,12 +220,12 @@ public class RemoteDataStore implements IDataStore {
 	}
 
 	@Override
-	public void putAnswer(Answer answer) {
+	public void putAnswer(Answer answer) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL + ANSWER_PATH
-					+ answer.getId() + "?parent=" + answer.getParent());
+					+ answer.getId() + "?refresh=true&parent=" + answer.getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(answer));
 			addRequest.setEntity(stringEntity);
@@ -125,25 +234,43 @@ public class RemoteDataStore implements IDataStore {
 			HttpResponse response = httpClient.execute(addRequest);
 			String status = response.getStatusLine().toString();
 			Log.i(TAG, status);
-
+			Log.i(TAG, getEntityContent(response));
+		} catch (IOException e) {
+			throw new IOException("Failed to upload answer", e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public List<Question> getQuestionList() {
-		// TODO Auto-generated method stub
+	public Answer getAnswer(UUID id) {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(ES_BASE_URL + ANSWER_PATH
+				+ "_search?q=id:" + id.toString());
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpGet);
+			SearchResponse<Answer> sr = parseESResponse(response,
+					new TypeToken<SearchResponse<Answer>>() {}.getType());
+			SearchHit<Answer> hit = sr.getHits().getHits().get(0);
+			return hit.getSource();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 
 	@Override
-	public void putQComment(Comment<Question> comment) {
+	public void putQComment(Comment<Question> comment) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL
-					+ QUESTION_COMMENT_PATH + comment.getId() + "?parent=" + comment.getParent());
+					+ QUESTION_COMMENT_PATH + comment.getId() + "?refresh=true&parent=" + comment.getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(comment,
 					new TypeToken<Comment<Question>>(){}.getType()));
@@ -154,6 +281,8 @@ public class RemoteDataStore implements IDataStore {
 			String status = response.getStatusLine().toString();
 			Log.i(TAG, status);
 
+		} catch (IOException e) {
+			throw new IOException("Failed to save question comment", e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -167,7 +296,7 @@ public class RemoteDataStore implements IDataStore {
 		try {
 			HttpPost addRequest = new HttpPost(ES_BASE_URL
 					+ ANSWER_COMMENT_PATH + comment.getId()
-					+ "?parent=" + comment.getParent()
+					+ "?refresh=true&parent=" + comment.getParent()
 					+ "&routing=" + dm.getAnswer(comment.getParent(), null).getParent());
 
 			StringEntity stringEntity = new StringEntity(gson.toJson(comment,
@@ -185,20 +314,46 @@ public class RemoteDataStore implements IDataStore {
 	}
 
 	@Override
-	public Answer getAnswer(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Comment<Question> getQComment(UUID id) {
-		// TODO Auto-generated method stub
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(ES_BASE_URL + QUESTION_COMMENT_PATH
+				+ "_search?q=id:" + id.toString());
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpGet);
+			SearchResponse<Comment<Question>> sr = parseESResponse(response,
+					new TypeToken<SearchResponse<Comment<Question>>>() {}.getType());
+			SearchHit<Comment<Question>> hit = sr.getHits().getHits().get(0);
+			return hit.getSource();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 
 	@Override
 	public Comment<Answer> getAComment(UUID id) {
-		// TODO Auto-generated method stub
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(ES_BASE_URL + ANSWER_COMMENT_PATH
+				+ "_search?q=id:" + id.toString());
+
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpGet);
+			SearchResponse<Comment<Answer>> sr = parseESResponse(response,
+					new TypeToken<SearchResponse<Comment<Answer>>>() {}.getType());
+			SearchHit<Comment<Answer>> hit = sr.getHits().getHits().get(0);
+			return hit.getSource();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 
@@ -212,21 +367,37 @@ public class RemoteDataStore implements IDataStore {
 	 * object
 	 * 
 	 * @param response
-	 * @param type
+	 * @param type Type of deserialized object
 	 * @return SearchHit object from ElasticSearch
 	 */
-	private SearchHit<?> parseESResponse(HttpResponse response, Type type) {
+	private <T> T parseESResponse(HttpResponse response, Type type) {
 
 		try {
 			String json = getEntityContent(response);
 
-			SearchHit<?> sr = gson.fromJson(json, type);
+			T sr = gson.fromJson(json, type);
 			return sr;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		return null;
+	}
+
+	/**
+	 * Extract a result list from an http response
+	 * @param response
+	 * @param type Expected type of deserialized http response body
+	 * @return
+	 */
+	private <T> List<T> getResultList(HttpResponse response, Type type) {
+		SearchResponse<T> sr = parseESResponse(response, type);
+		List<SearchHit<T>> hits = sr.getHits().getHits();
+		List<T> result = new ArrayList<T>();
+		for (SearchHit<T> hit: hits) {
+			result.add(hit.getSource());
+		}
+		return result;
 	}
 
 	/**

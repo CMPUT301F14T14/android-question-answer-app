@@ -1,6 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 
-import java.util.concurrent.ExecutionException;
+import java.io.IOException;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
@@ -8,54 +8,45 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.IDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerPushDelayedEvent;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 import android.content.Context;
+import android.util.Log;
 
+/**
+ * This task updates or creates an answer record.
+ * The user is responsible for ensuring that the related records are updated.
+ */
 public class AddAnswerTask extends AbstractDataManagerTask<Answer, Void, Void>{
 
-	
 	public AddAnswerTask(Context c) {
 		super(c);
-		// TODO Auto-generated constructor stub
+	}
+	
+	public AddAnswerTask(Context c, Callback<Void> callback) {
+		super(c, callback);
 	}
 
 	@Override
 	protected Void doInBackground(Answer... args) {
-		ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer ans = args[0];
-		
-		
-		//Question question = DataManager.getInstance(context).getQuestion(ans.getParent());
-		Question question = null;
-		
-		
-		
-		//Get the parent question
-		GetQuestionTask gqt = new GetQuestionTask(getContext());
-		question = gqt.blockingRun(ans.getParent());
-		
-		
-		question.addAnswer(ans.getId());
-		IDataStore remote = DataManager.getInstance(this.getContext())
-				.getRemoteDataStore();
+		IDataStore remote = DataManager.getInstance(getContext()).getRemoteDataStore();
 		IDataStore local = DataManager.getInstance(getContext()).getLocalDataStore();
-		if(remote.hasAccess()){
+		Answer ans = args[0];
+
+		// Save the answer record remotely
+		try {
 			remote.putAnswer(ans);
-			remote.putQuestion(question);
-			remote.save();
-		}else{
-			//We are offline. Put the answer into local data store, and keep the task as incomplete
-			local.putAnswer(ans);
-			local.putQuestion(question);
-			local.save();
-		
+		} catch (IOException e) {
+			Log.d("AddAnswerTask", "Failed to push answer remotely");
 			EventBus.getInstance().addEvent(new AnswerPushDelayedEvent(ans));
 		}
+		try {
+			local.putAnswer(ans);
+			local.save();
+		} catch (IOException e) {
+			Log.e("AddAnswerTask", "Failed to save answer record");
+		}
 
-		
-		
 		return null;
 	}
-	
 
 }

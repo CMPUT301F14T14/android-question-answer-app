@@ -1,13 +1,16 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 
+import java.io.IOException;
+
 import android.content.Context;
+import android.util.Log;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.IDataStore;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerCommentPushDelayedEvent;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerPushDelayedEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class AddAnswerCommentTask extends AbstractDataManagerTask<Comment<Answer>, Void, Void> {
 
@@ -23,24 +26,28 @@ public class AddAnswerCommentTask extends AbstractDataManagerTask<Comment<Answer
 		IDataStore localDataStore = DataManager.getInstance(this.getContext())
 				.getLocalDataStore();
 		
+		// Get parent answer record
 		Answer answer = null;
-		GetAnswerTask gat = new GetAnswerTask(getContext());
-		answer = gat.blockingRun(C.getParent());
+		GetAnswerTask aTask = new GetAnswerTask(getContext());
+		answer = aTask.blockingRun(C.getParent());
 		
 		answer.addComment(C.getId());
-		if(remoteDataStore.hasAccess()){
-			//We are online, make it so
+		
+		try {
 			remoteDataStore.putAComment(C);
-			remoteDataStore.putAnswer(answer);
-			remoteDataStore.save();
-		}
-		else{
-			//We are offline. Need to post to Local DataStore.
-			localDataStore.putAComment(C);
-			localDataStore.putAnswer(answer);
-			localDataStore.save();
-			//Log failure to post onto EventBus
+		} catch (IOException e) {
 			EventBus.getInstance().addEvent(new AnswerCommentPushDelayedEvent(C));
+		}
+		try {
+			remoteDataStore.putAnswer(answer);
+		} catch (IOException e) {
+			EventBus.getInstance().addEvent(new AnswerPushDelayedEvent(answer));
+		}
+		try {
+			localDataStore.putAComment(C);
+			localDataStore.save();
+		} catch (IOException e) {
+			Log.e("AddAnswerCommentTask", "Failed to save comment record");
 		}
 
 		return null;

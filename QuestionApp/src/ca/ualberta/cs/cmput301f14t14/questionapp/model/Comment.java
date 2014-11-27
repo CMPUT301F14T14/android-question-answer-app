@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class Comment<T extends Model> implements Serializable {
+import android.location.Location;
+
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
+
+public class Comment<T extends ICommentable> implements Serializable {
 	
 	private static final long serialVersionUID = 2455600018596168474L;
 
@@ -13,6 +17,7 @@ public class Comment<T extends Model> implements Serializable {
 	private UUID id;
 	private UUID parent;
 	private Date date;
+	private Location location;
 
 	public Comment() {
 		setId(new UUID(0L, 0L));
@@ -84,5 +89,13 @@ public class Comment<T extends Model> implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 }

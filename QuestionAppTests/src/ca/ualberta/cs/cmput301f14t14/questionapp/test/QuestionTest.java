@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import android.test.ActivityInstrumentationTestCase2;
@@ -111,8 +112,13 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 		Question q = new Question(title, body, author, image);
 		local.putQuestion(q);
 		UUID id = q.getId();
-		assertNotNull(manager.getQuestion(id));
-		remote.putQuestion(q);
+		assertNotNull(manager.getQuestion(id, null));
+		try {
+			remote.putQuestion(q);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertNotNull(remote.getQuestion(id));
 	}
 	

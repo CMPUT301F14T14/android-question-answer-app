@@ -8,36 +8,40 @@ import android.util.Log;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.IDataStore;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
-public class GetAnswerListTask extends AbstractDataManagerTask<Question, Void, List<Answer>> {
+public class GetQuestionListTask extends AbstractDataManagerTask<Void, Void, List<Question>> {
 
-	public GetAnswerListTask(Context c) {
+	public GetQuestionListTask(Context c) {
 		super(c);
 	}
 
 	@Override
-	protected List<Answer> doInBackground(Question... arg0) {
-		Question question = arg0[0];
-		List<Answer> answerList = null;
+	protected List<Question> doInBackground(Void... arg0) {
+		List<Question> questionList = null;
 		IDataStore localDataStore = DataManager.getInstance(context).getLocalDataStore();
 		IDataStore remoteDataStore = DataManager.getInstance(context).getRemoteDataStore();
 		try {
-			answerList = remoteDataStore.getAnswerList(question);
+			questionList = remoteDataStore.getQuestionList();
 		} catch (IOException e) {
 			Log.e("DataManager", "Failed to get data from network");
 		}
-		if (answerList == null) {
+		if (questionList == null) {
 			try {
-				answerList = localDataStore.getAnswerList(question);
+				questionList = localDataStore.getQuestionList();
 			} catch (IOException e) {
-				Log.e("DataManager", "Failed to get answer list");
+				Log.e("DataManager", "Failed to get any question list");
 			}
 		}
-		return answerList;
+		return questionList;
 	}
 	
-
+	@Override
+	protected void onPostExecute(List<Question> la) {
+		if (callback == null){
+			return;
+		}
+		callback.run(la);
+	}
 
 }

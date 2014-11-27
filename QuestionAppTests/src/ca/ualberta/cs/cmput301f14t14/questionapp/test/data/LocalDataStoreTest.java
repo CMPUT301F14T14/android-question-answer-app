@@ -52,10 +52,8 @@ public class LocalDataStoreTest extends ActivityInstrumentationTestCase2<MainAct
 	}
 	
 	public void testPutAnswer() {
-		assertNull(localStore.getQuestion(new_q.getId()));
 		assertNull(localStore.getAnswer(new_a.getId()));
 		localStore.putAnswer(new_a);
-		assertEquals(new_q, localStore.getQuestion(new_q.getId()));
 		assertEquals(new_a, localStore.getAnswer(new_a.getId()));
 	}
 	

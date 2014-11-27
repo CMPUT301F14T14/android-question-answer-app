@@ -6,7 +6,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class Answer extends Model implements Serializable {
+import android.location.Location;
+
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
+
+public class Answer extends Model implements Serializable, ICommentable {
 
 	private static final long serialVersionUID = -237004584128041997L;
 
@@ -18,6 +22,7 @@ public class Answer extends Model implements Serializable {
 	private UUID parent;
 	private Date date;
 	private int upVotes;
+	private Location location;
 
 	
 	public Answer() {
@@ -26,6 +31,7 @@ public class Answer extends Model implements Serializable {
 		this.author = null;
 		this.image = null;
 		this.parent = null;
+		this.setLocation(null);
 		this.commentList = new ArrayList<UUID>();
 		setDate(new Date());
 		upVotes = 0;
@@ -153,5 +159,13 @@ public class Answer extends Model implements Serializable {
 
 	public void setUpvotes(int upvotes) {
 		this.upVotes = upvotes;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 }

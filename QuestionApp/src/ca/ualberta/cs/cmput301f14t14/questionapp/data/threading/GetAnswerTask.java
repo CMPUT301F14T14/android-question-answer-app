@@ -1,8 +1,10 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import android.content.Context;
+import android.util.Log;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.IDataStore;
@@ -17,23 +19,28 @@ public class GetAnswerTask extends AbstractDataManagerTask<UUID, Void, Answer> {
 
 	@Override
 	protected Answer doInBackground(UUID... uuid) {
-		UUID Aid = uuid[0];
+		UUID id = uuid[0];
 		IDataStore remoteDataStore = DataManager.getInstance(this.getContext())
 				.getRemoteDataStore();
 		IDataStore localDataStore = DataManager.getInstance(this.getContext())
 				.getLocalDataStore();
-		Answer answer = null;
-		if (remoteDataStore.hasAccess()){
-			answer = remoteDataStore.getAnswer(Aid);
+		Answer a = null;
+		try {
+			a = remoteDataStore.getAnswer(id);
+			// Cache visited question
+			localDataStore.putAnswer(a);
+			localDataStore.save();
+		} catch (IOException e) {
+			//We could not access the question online.
+			Log.d("GetAnswerTask", "Getting local record");
+			try {
+				return localDataStore.getAnswer(id);
+			} catch (IOException e1) {
+				Log.e("GetAnswerTask", "Failed to get answer");
+				e1.printStackTrace();
+			}
 		}
-		if (answer == null) {
-			//We were unable to fetch it online
-			return localDataStore.getAnswer(Aid);
-		} 
-		//Got the answer online, save to local for reading earlier.
-		localDataStore.putAnswer(answer);
-	  	localDataStore.save();
-	  	return answer;
+	  	return a;
 	}
 	
 

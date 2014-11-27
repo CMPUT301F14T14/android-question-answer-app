@@ -50,12 +50,8 @@ public class ClientData {
 		e.apply();
 	}
 
-	public List<UUID> getFavoriteAnswers() {
-		// TODO Auto-generated method stub
-		ArrayList<UUID> list = new ArrayList<UUID>();
-		return list;
-	}
 	
+
 	public void saveFavoriteQuestions(List<UUID> list){
 		saveItems(list, "favqlist");
 	}
@@ -68,10 +64,18 @@ public class ClientData {
 	String readlaterfilename = "readlaterlist";
 	
 	public void markQuestionReadLater(UUID u) {
+
+
 		
 		List<UUID> appendlist = getItems(readlaterfilename);
 		appendlist.add(u);
 		saveItems(appendlist, readlaterfilename);
+	}
+	
+	public void unmarkQuestionReadLater(UUID u){
+		List<UUID> list = getItems(readlaterfilename);
+		list.remove(u);
+		saveItems(list,readlaterfilename);
 	}
 	public boolean isQuestionReadLater(UUID id) {
 		/** Call this to see if your desired question is
@@ -84,6 +88,8 @@ public class ClientData {
 		} else {
 			return false;
 		}
+
+
 	}
 	
 	
@@ -92,6 +98,8 @@ public class ClientData {
 		//We can then add to this list
 		//Pull a list of favorited questions from SharedPrefs		
 		Set<String> favset = prefs.getStringSet(filename, null);
+
+
 		if (favset == null ){ //Only on first run of the app this will be null
 			return new ArrayList<UUID>();
 		}
@@ -108,6 +116,7 @@ public class ClientData {
 		returnlist.addAll(intset);
 		return returnlist;
 	}
+
 	
 	public void saveItems(List<UUID> list, String filename) {
 		//Saves the list to sharedPreferences.
@@ -122,9 +131,5 @@ public class ClientData {
 		e.commit();
 	}
 
-	public List<UUID> getReadLater() {
-		// TODO Auto-generated method stub
-		ArrayList<UUID> list = new ArrayList<UUID>();
-		return list;
-	}
+
 }

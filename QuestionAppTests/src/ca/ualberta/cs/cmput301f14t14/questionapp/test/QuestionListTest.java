@@ -1,5 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.test;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
@@ -14,7 +16,7 @@ import junit.framework.TestCase;
 public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	private LocalDataStore mLocalStore;
-	public RemoteDataStore mRemoteStore = new RemoteDataStore(getInstrumentation().getTargetContext().getApplicationContext());
+	private RemoteDataStore mRemoteStore;
 
 	private Question mQuestion;
 	private DataManager manager;
@@ -28,6 +30,7 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActiv
 	protected void setUp() throws Exception {
 		super.setUp();
 		mLocalStore = new LocalDataStore(getInstrumentation().getTargetContext().getApplicationContext());
+		mRemoteStore = new RemoteDataStore(getInstrumentation().getTargetContext().getApplicationContext());
 
 		mQuestion = new Question("TITLE", "BODY", "AUTHOR", null);
 		mAnswer = new Answer(mQuestion.getId(), "ANSWERBODY", "AUTHOR", null);
@@ -57,7 +60,12 @@ public class QuestionListTest extends ActivityInstrumentationTestCase2<MainActiv
 
 	/** UC1 TC1.2 */
 	public void testViewRemotelyStoredItems() {
-		mRemoteStore.putQuestion(mQuestion);
+		try {
+			mRemoteStore.putQuestion(mQuestion);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/*
 		 * Need to create a list adapter, list view, then use
 		 * AtivityInstrumentationTestCase2 to get Views by Id

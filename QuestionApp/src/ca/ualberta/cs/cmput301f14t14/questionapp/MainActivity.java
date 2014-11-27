@@ -1,12 +1,15 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.QuestionListAdapter;
@@ -22,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.content.Context;
@@ -30,8 +34,11 @@ public class MainActivity extends Activity {
 
 	private DataManager dataManager;
 	private QuestionListAdapter qla = null;
+	private List<Question> qList = null;
 	
 	private ClientData cd = null;
+	private Callback<List<Question>> listCallback = null;
+	private Callback<Question> favouriteQuestionCallback = null;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +70,8 @@ public class MainActivity extends Activity {
         	startActivity(intent);
         }
         
-        //create the list of questions
-        List<Question> qList = dataManager.load();
-        qla = new QuestionListAdapter(this, R.layout.list_question, qList);  
+        qList = new ArrayList<Question>();
+        qla = new QuestionListAdapter(this, R.layout.list_question, qList);
         ListView questionView = (ListView) findViewById(R.id.question_list);
         questionView.setAdapter(qla);
         questionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,6 +87,22 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+        
+        listCallback = new Callback<List<Question>>() {
+
+			@Override
+			public void run(List<Question> list) {
+		        qList.clear();
+
+		        if (list != null) {
+		        	qList.addAll(list);
+		        }
+		        qla.update();
+			}
+        };
+        
+        //create the list of questions
+        dataManager.getQuestionList(listCallback);
     }
     
     public OnNavigationListener changeSort() {
@@ -92,9 +114,7 @@ public class MainActivity extends Activity {
 			public boolean onNavigationItemSelected(int itemposition, long itemid) {
 				// change way of sorting based on way selected
 				ClientData cd = new ClientData(activitycontext);
-				List<Question> sortedList = MainActivity.sortList(itemposition, dataManager, cd);
-				qla.clear();
-				qla.addAll(sortedList);
+				sortList(itemposition, dataManager, cd);
 				qla.update();
 				return true;
 				
@@ -103,14 +123,11 @@ public class MainActivity extends Activity {
     }
 
 
-    protected static List<Question> sortList(int itemposition, final DataManager dm, final ClientData cd) {
-		// sort the list based on way selected
-    	List<Question> qlist = dm.load();
-
+    protected void sortList(int itemposition, final DataManager dm, final ClientData cd) {
 		switch (itemposition){
 		case 1:{
 			// Sort by date
-			Collections.sort(qlist, new Comparator<Question>(){
+			Collections.sort(qList, new Comparator<Question>(){
 			
 				@Override
 				public int compare(Question q1, Question q2) {
@@ -124,10 +141,13 @@ public class MainActivity extends Activity {
 		}	
 		case 2:{
 			// Sort by most upvoted
-			Collections.sort(qlist, new Comparator<Question>(){
+			Collections.sort(qList, new Comparator<Question>(){
 
 				@Override
 				public int compare(Question q1, Question q2) {
+					if(q1.getUpvotes() == q2.getUpvotes()){
+						return q1.getDate().compareTo(q2.getDate());
+					}
 					
 					return q2.getUpvotes() - q1.getUpvotes();
 				}
@@ -138,10 +158,22 @@ public class MainActivity extends Activity {
 			}
 		case 3:{
 			final List<UUID> favQ = cd.getFavoriteQuestions();
-			for (UUID q : favQ){
-				qlist.add(dm.getQuestion(q, null));
+			favouriteQuestionCallback = new Callback<Question>(){
+
+				@Override
+				public void run(Question o) {
+					if(!qList.contains(o)){
+						qList.add(o);
+						
+					}
+				}
+				
+			};
+
+			for(UUID q: favQ){
+				dataManager.getQuestion(q, favouriteQuestionCallback);
 			}
-			Collections.sort(qlist,new Comparator<Question>(){
+			Collections.sort(qList, new Comparator<Question>(){
 
 				@Override
 				public int compare(Question arg0, Question arg1) {
@@ -150,10 +182,10 @@ public class MainActivity extends Activity {
 						return arg0.getDate().compareTo(arg1.getDate());
 					}
 					else if(favQ.contains(arg0.getId()) && !favQ.contains(arg1.getId())){
-						return 1;
+						return -1;
 					}
 					else{
-						return -1;
+						return 1;
 					}
 				}
 				
@@ -163,7 +195,7 @@ public class MainActivity extends Activity {
 		case 4:{
 			
 			// Sort by current user posts
-			Collections.sort(qlist, new Comparator<Question>(){
+			Collections.sort(qList, new Comparator<Question>(){
 				
 				@Override
 				public int compare(Question q1, Question q2) {
@@ -183,8 +215,9 @@ public class MainActivity extends Activity {
 			break;
 		}
 		}
-		return qlist;
+	
     }
+    
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -228,4 +261,5 @@ public class MainActivity extends Activity {
 		intent.putExtra("QUERY_STRING", q);
 		startActivity(intent);
     }
+    
 }
