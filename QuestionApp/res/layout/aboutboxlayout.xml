@@ -48,6 +48,7 @@
         android:id="@+id/aboutbox_authors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="2dp"
         android:text="@string/aboutbox_authorheading"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
