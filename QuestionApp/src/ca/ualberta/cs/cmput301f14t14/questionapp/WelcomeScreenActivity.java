@@ -2,14 +2,19 @@ package ca.ualberta.cs.cmput301f14t14.questionapp;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AboutBoxDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.IView;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.SearchQueryDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.UsernameFragment;
 
 public class WelcomeScreenActivity extends Activity implements IView {
@@ -69,5 +74,30 @@ public class WelcomeScreenActivity extends Activity implements IView {
 	public void update() {
 		
 	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.welcomes_screen, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        
+        switch (id) {
+	        case R.id.welcomescreen_showaboutbox:
+	        	FragmentManager fm = getFragmentManager();
+	        	AboutBoxDialogFragment ab = new AboutBoxDialogFragment();
+	        	ab.show(fm, "WelcomeSCreenAboutBoxDF");
+	        	break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+	
 	
 }
