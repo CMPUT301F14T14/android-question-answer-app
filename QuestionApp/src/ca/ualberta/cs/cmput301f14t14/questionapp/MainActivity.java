@@ -240,11 +240,10 @@ public class MainActivity extends Activity {
 
 				@Override
 				public int compare(Question q1, Question q2) {
-
+					
 					return q2.getCommentList().size() - q1.getCommentList().size();
-
+					
 				}
-				
 			});
 			break;
 		}
@@ -261,8 +260,6 @@ public class MainActivity extends Activity {
 						return 0;
 					}
 					return (q1.getImage() != null) ? -1: 1;
-					
-
 				}
 				
 			});
