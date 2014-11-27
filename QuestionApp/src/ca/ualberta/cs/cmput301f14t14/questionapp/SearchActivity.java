@@ -66,6 +66,7 @@ public class SearchActivity extends Activity {
 
 	@Override
 	protected void onResume() {
+		super.onResume();
 		ESSearchTask esTask = new ESSearchTask(this);
 		esTask.setCallBack(new SearchResultCallback());
 		esTask.execute(query);
