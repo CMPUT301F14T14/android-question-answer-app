@@ -1,9 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer;
 
 import java.lang.reflect.Type;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import java.util.Date;
 import java.util.UUID;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
@@ -24,17 +22,12 @@ public class CommentDeserializer<T extends ICommentable> implements JsonDeserial
 			final JsonDeserializationContext context) throws JsonParseException {
 		final JsonObject jsonObject = json.getAsJsonObject();
 
-		try {
-			final Comment<T> comment = new Comment<T>();
-			comment.setId(UUID.fromString(jsonObject.get("id").getAsString()));
-			comment.setBody(jsonObject.get("body").getAsString());
-			comment.setUsername(jsonObject.get("author").getAsString());
-			comment.setDate(new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(jsonObject.get("date").getAsString()));
-			return comment;
-		} catch (ParseException ex) {
-			ex.printStackTrace();
-		}
-		return null;
+		final Comment<T> comment = new Comment<T>();
+		comment.setId(UUID.fromString(jsonObject.get("id").getAsString()));
+		comment.setBody(jsonObject.get("body").getAsString());
+		comment.setUsername(jsonObject.get("author").getAsString());
+		comment.setDate((Date) context.deserialize(jsonObject.get("date"), Date.class));
+		return comment;
 	}
 
 }

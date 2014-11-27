@@ -26,7 +26,7 @@ public class QuestionSerializer implements JsonSerializer<Question> {
 		object.addProperty("body", item.getBody());
 		// image - don't know what I'm doing with this yet;
 		object.addProperty("author", item.getAuthor());
-		object.addProperty("date", item.getDate().toString());
+		object.add("date", context.serialize(item.getDate()));
 		object.addProperty("upvotes", item.getUpvotes());
 		final JsonArray answerList = new JsonArray();
 		for (UUID aid: item.getAnswerList()) {
