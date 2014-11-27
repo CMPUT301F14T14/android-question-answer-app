@@ -21,37 +21,22 @@ public class SearchActivity extends Activity {
 	public static final String ARG_QUERY_STRING = "QUERY_STRING";
 
 	private GenericSearchItemAdapter listAdapter = null;
-	private Callback<List<GenericSearchItem>> searchResultCallback;
 	private List<GenericSearchItem> searchResult = null;
+	private String query;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 		Intent intent = getIntent();
-		String query = intent.getStringExtra(ARG_QUERY_STRING);
+		query = intent.getStringExtra(ARG_QUERY_STRING);
 
 		searchResult = new ArrayList<GenericSearchItem>();
 		listAdapter = new GenericSearchItemAdapter(
 				this, R.layout.list_generic, searchResult);
-
-		searchResultCallback = new Callback<List<GenericSearchItem>>() {
-
-			@Override
-			public void run(List<GenericSearchItem> list) {
-				searchResult.clear();
-				searchResult.addAll(list);
-				listAdapter.update();
-			}
-
-		};
-
-		ESSearchTask esTask = new ESSearchTask(this);
-		esTask.setCallBack(searchResultCallback);
-		esTask.execute(query);
-
 		ListView questionView = (ListView) findViewById(R.id.question_list);
 		questionView.setAdapter(listAdapter);
+
 		questionView
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -64,7 +49,7 @@ public class SearchActivity extends Activity {
 							UUID qId = gItem.getId();
 							Intent intent = new Intent(getApplicationContext(),
 									QuestionActivity.class);
-							intent.putExtra("QUESTION_UUID", qId.toString());
+							intent.putExtra(QuestionActivity.ARG_QUESTION_ID, qId.toString());
 							startActivity(intent);
 						} else if (gItem.getType().toLowerCase(Locale.US)
 								.equals("answer")) {
@@ -78,4 +63,22 @@ public class SearchActivity extends Activity {
 				});
 
 	}
+
+	@Override
+	protected void onResume() {
+		ESSearchTask esTask = new ESSearchTask(this);
+		esTask.setCallBack(new SearchResultCallback());
+		esTask.execute(query);
+	}
+	
+	private class SearchResultCallback implements Callback<List<GenericSearchItem>> {
+
+		@Override
+		public void run(List<GenericSearchItem> list) {
+			searchResult.clear();
+			searchResult.addAll(list);
+			listAdapter.update();
+		}
+
+	};
 }
