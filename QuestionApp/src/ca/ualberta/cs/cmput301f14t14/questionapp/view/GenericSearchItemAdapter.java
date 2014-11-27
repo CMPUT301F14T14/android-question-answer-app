@@ -38,7 +38,8 @@ public class GenericSearchItemAdapter extends ArrayAdapter<GenericSearchItem> im
 		TextView gDate = (TextView) convertView.findViewById(R.id.generic_date);
 		gType.setText(item.getType());
 		gText.setText(item.getBody());
-		gLocation.setText(item.getLocation().toString());
+		if (item.getLocation() != null)
+			gLocation.setText(item.getLocation().toString());
 		gDate.setText(item.getDate().toString());
 		return parent;
 		

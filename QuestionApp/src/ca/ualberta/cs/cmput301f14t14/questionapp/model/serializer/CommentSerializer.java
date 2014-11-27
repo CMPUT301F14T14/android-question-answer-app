@@ -22,7 +22,7 @@ public class CommentSerializer<T extends ICommentable> implements JsonSerializer
 		object.addProperty("id", item.getId().toString());
 		object.addProperty("body", item.getBody());
 		object.addProperty("author", item.getUsername());
-		object.addProperty("date", item.getDate().toString());
+		object.add("date", context.serialize(item.getDate()));
 		
 		return object;
 	}
