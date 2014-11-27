@@ -218,6 +218,56 @@ public class MainActivity extends Activity {
 			});
 			break;
 		}
+		case 5: {
+			
+			// Sort by most answered
+			Collections.sort(qList, new Comparator<Question>(){
+
+				@Override
+				public int compare(Question q1, Question q2) {
+
+					return q2.getAnswerList().size() - q1.getAnswerList().size();
+
+				}
+				
+			});
+			break;
+		}
+		case 6: {
+			
+			// Sort by most answered
+			Collections.sort(qList, new Comparator<Question>(){
+
+				@Override
+				public int compare(Question q1, Question q2) {
+
+					return q2.getCommentList().size() - q1.getCommentList().size();
+
+				}
+				
+			});
+			break;
+		}
+		
+		case 7: {
+			
+			// Sort by has images
+			Collections.sort(qList, new Comparator<Question>(){
+
+				@Override
+				public int compare(Question q1, Question q2) {
+					if ((q1.getImage() != null && q2.getImage() != null) || (q1.getImage() == null && q2.getImage() == null)){
+						// Both same, relative order doesn't matter
+						return 0;
+					}
+					return (q1.getImage() != null) ? -1: 1;
+					
+
+				}
+				
+			});
+			break;
+		}
 		}
 	
     }
