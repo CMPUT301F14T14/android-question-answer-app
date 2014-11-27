@@ -39,8 +39,8 @@ public class SearchActivity extends Activity {
   		};
         	
   		ESSearchTask esTask = new ESSearchTask(this);
-  		esTask.equals(query);
   		esTask.setCallBack(searchResultCallback);
+  		esTask.execute(query);
   		
   		
   		if(searchResult == null){
