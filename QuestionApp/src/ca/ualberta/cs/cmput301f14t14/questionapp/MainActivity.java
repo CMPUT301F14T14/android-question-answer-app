@@ -9,7 +9,6 @@ import java.util.UUID;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.QuestionListAdapter;
@@ -25,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.content.Context;
@@ -104,6 +102,12 @@ public class MainActivity extends Activity {
         //create the list of questions
         dataManager.getQuestionList(listCallback);
     }
+    
+    @Override 
+	public void onResume(){
+		super.onResume();
+		qla.update();
+	}
     
     public OnNavigationListener changeSort() {
     	//This is the callback that is called when the user chooses 
@@ -209,6 +213,53 @@ public class MainActivity extends Activity {
 					else{
 						return 1;
 					}
+				}
+				
+			});
+			break;
+		}
+		case 5: {
+			
+			// Sort by most answered
+			Collections.sort(qList, new Comparator<Question>(){
+
+				@Override
+				public int compare(Question q1, Question q2) {
+
+					return q2.getAnswerList().size() - q1.getAnswerList().size();
+
+				}
+				
+			});
+			break;
+		}
+		case 6: {
+			
+			// Sort by most answered
+			Collections.sort(qList, new Comparator<Question>(){
+
+				@Override
+				public int compare(Question q1, Question q2) {
+					
+					return q2.getCommentList().size() - q1.getCommentList().size();
+					
+				}
+			});
+			break;
+		}
+		
+		case 7: {
+			
+			// Sort by has images
+			Collections.sort(qList, new Comparator<Question>(){
+
+				@Override
+				public int compare(Question q1, Question q2) {
+					if ((q1.getImage() != null && q2.getImage() != null) || (q1.getImage() == null && q2.getImage() == null)){
+						// Both same, relative order doesn't matter
+						return 0;
+					}
+					return (q1.getImage() != null) ? -1: 1;
 				}
 				
 			});

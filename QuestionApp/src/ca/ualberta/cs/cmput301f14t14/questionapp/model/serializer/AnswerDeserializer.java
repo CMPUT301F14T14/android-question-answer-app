@@ -2,11 +2,9 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 import android.content.Context;
@@ -35,40 +33,35 @@ public class AnswerDeserializer implements JsonDeserializer<Answer> {
 			final JsonDeserializationContext context) throws JsonParseException {
 		final JsonObject jsonObject = json.getAsJsonObject();
 
+		Answer answer;
+		UUID aid = UUID.fromString(jsonObject.get("id").getAsString());
+
+		// Get existing object if available
 		try {
-			Answer answer;
-			UUID aid = UUID.fromString(jsonObject.get("id").getAsString());
-
-			// Get existing object if available
-			try {
-				answer = dm.getLocalDataStore().getAnswer(aid);
-			} catch (IOException e) {
-				Log.e("AnswerDeserializer", "Failed to get answer record");
-				answer = null;
-			}
-			if (answer == null)
-				answer = new Answer();
-
-			// Populate object
-			answer.setId(UUID.fromString(jsonObject.get("id").getAsString()));
-			answer.setBody(jsonObject.get("body").getAsString());
-			answer.setAuthor(jsonObject.get("author").getAsString());
-			answer.setDate(new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(jsonObject.get("date").getAsString()));
-			answer.setUpvotes(jsonObject.get("upvotes").getAsInt());
-
-			// Populate comment list
-			List<UUID> commentList = new ArrayList<UUID>();
-			JsonArray commentJsonArray = jsonObject.getAsJsonArray("comments");
-			for (JsonElement cIdElement: commentJsonArray) {
-				commentList.add(UUID.fromString(cIdElement.getAsString()));
-			}
-			answer.setCommentList(commentList);
-
-			return answer;
-		} catch (ParseException ex) {
-			ex.printStackTrace();
+			answer = dm.getLocalDataStore().getAnswer(aid);
+		} catch (IOException e) {
+			Log.e("AnswerDeserializer", "Failed to get answer record");
+			answer = null;
 		}
-		return null;
+		if (answer == null)
+			answer = new Answer();
+
+		// Populate object
+		answer.setId(UUID.fromString(jsonObject.get("id").getAsString()));
+		answer.setBody(jsonObject.get("body").getAsString());
+		answer.setAuthor(jsonObject.get("author").getAsString());
+		answer.setDate((Date) context.deserialize(jsonObject.get("date"), Date.class));
+		answer.setUpvotes(jsonObject.get("upvotes").getAsInt());
+
+		// Populate comment list
+		List<UUID> commentList = new ArrayList<UUID>();
+		JsonArray commentJsonArray = jsonObject.getAsJsonArray("comments");
+		for (JsonElement cIdElement: commentJsonArray) {
+			commentList.add(UUID.fromString(cIdElement.getAsString()));
+		}
+		answer.setCommentList(commentList);
+
+		return answer;
 	}
 
 }
