@@ -41,7 +41,7 @@ public class GenericSearchItemAdapter extends ArrayAdapter<GenericSearchItem> im
 		if (item.getLocation() != null)
 			gLocation.setText(item.getLocation().toString());
 		gDate.setText(item.getDate().toString());
-		return parent;
+		return convertView;
 		
 	}
 
