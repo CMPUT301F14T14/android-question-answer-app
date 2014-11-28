@@ -28,6 +28,7 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 
 	private Answer answer = null;
 	private DataManager dataManager = null;
+	private ClientData clientData;
 	String aId = null;
 	
 	/* These need to be class variables so that update
@@ -41,6 +42,8 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		super.onCreate(savedInstanceState);
 		
 		dataManager = DataManager.getInstance(this);
+		
+		clientData = new ClientData(this);
 		
 		setContentView(R.layout.answerviewactivitylayout);
 
@@ -114,9 +117,18 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 	 * @param v View needed for xml hook to run.
 	 */
 	public void addAnsUpvote(View v){
+		if (answer.getAuthor().equals(clientData.getUsername())) {
+			Toast.makeText(this, "Unable to upvote your own answer", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if (clientData.isItemUpvoted(answer.getId())) {
+			Toast.makeText(this, "Cannot upvote an answer more than once", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		answer.addUpvote();
 		TextView upvotes = (TextView) findViewById(R.id.answer_upvotes);
 		upvotes.setText(answer.getUpvotes().toString());
+		clientData.markItemUpvoted(answer.getId());
 	}
 	
 	private class UpdateAnswerCallback implements Callback<Answer> {

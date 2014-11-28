@@ -60,7 +60,7 @@ public class ClientData {
 	
 	
 	String readlaterfilename = "readlaterlist";
-	String upvotedquestions = "upvotelist";
+	String upvoteditems = "upvotelist";
 	
 	public void markQuestionReadLater(UUID u) {
 
@@ -91,14 +91,14 @@ public class ClientData {
 
 	}
 	
-	public void markQuestionUpvoted(UUID id) {
-		List<UUID> upvoteList = getItems(upvotedquestions);
+	public void markItemUpvoted(UUID id) {
+		List<UUID> upvoteList = getItems(upvoteditems);
 		upvoteList.add(id);
-		saveItems(upvoteList, upvotedquestions);
+		saveItems(upvoteList, upvoteditems);
 	}
 	
-	public boolean isQuestionUpvoted(UUID id) {
-		List<UUID> list = getItems(upvotedquestions);
+	public boolean isItemUpvoted(UUID id) {
+		List<UUID> list = getItems(upvoteditems);
 		return (list.contains(id)) ? true : false;
 	}
 	public ArrayList<UUID> getItems(String filename) {

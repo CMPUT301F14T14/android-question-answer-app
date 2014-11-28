@@ -225,7 +225,7 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 			Toast.makeText(this, "Unable to upvote your own question", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if (clientData.isQuestionUpvoted(question.getId())) {
+		if (clientData.isItemUpvoted(question.getId())) {
 			Toast.makeText(this, "Cannot upvote a question more than once", Toast.LENGTH_SHORT).show();
 			return;
 		}
@@ -233,7 +233,7 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		TextView upvotes = (TextView) findViewById(R.id.upvotes);
 		upvotes.setText(question.getUpvotes().toString());
 		DataManager.getInstance(this).upvoteQuestion(question);
-		clientData.markQuestionUpvoted(question.getId());
+		clientData.markItemUpvoted(question.getId());
 		}
 	
 	public void favQuestion(View v){
