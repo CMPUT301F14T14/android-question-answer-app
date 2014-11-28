@@ -60,6 +60,7 @@ public class ClientData {
 	
 	
 	String readlaterfilename = "readlaterlist";
+	String upvotedquestions = "upvotelist";
 	
 	public void markQuestionReadLater(UUID u) {
 
@@ -90,7 +91,16 @@ public class ClientData {
 
 	}
 	
+	public void markQuestionUpvoted(UUID id) {
+		List<UUID> upvoteList = getItems(upvotedquestions);
+		upvoteList.add(id);
+		saveItems(upvoteList, upvotedquestions);
+	}
 	
+	public boolean isQuestionUpvoted(UUID id) {
+		List<UUID> list = getItems(upvotedquestions);
+		return (list.contains(id)) ? true : false;
+	}
 	public ArrayList<UUID> getItems(String filename) {
 		//Supposed to return a list of favorite questions
 		//We can then add to this list
