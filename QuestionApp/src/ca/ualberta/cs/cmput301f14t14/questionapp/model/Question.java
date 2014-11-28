@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.gson.annotations.SerializedName;
+
 import android.location.Location;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
@@ -20,10 +22,10 @@ public class Question extends Model implements Serializable, ICommentable {
 	private String body;
 	private Image image;
 	private String author;
-	private List<UUID> answerList; 
-	private List<UUID> commentList;
+	@SerializedName("answers") private List<UUID> answerList; 
+	@SerializedName("comments") private List<UUID> commentList;
 	private Date date;
-	private int upVotes;
+	private int upvotes;
 	private Location location;
 
 	public Question() {
@@ -35,7 +37,7 @@ public class Question extends Model implements Serializable, ICommentable {
 		answerList = new ArrayList<UUID>();
 		commentList = new ArrayList<UUID>();
 		setDate(new Date());
-		upVotes = 0;
+		upvotes = 0;
 	}
 
 	public Question(String title, String body, String author, Image image) {
@@ -47,7 +49,7 @@ public class Question extends Model implements Serializable, ICommentable {
 		setImage(image);
 		this.setAnswerList(new ArrayList<UUID>());
 		this.setCommentList(new ArrayList<UUID>());
-		upVotes = 0;
+		upvotes = 0;
 		setDate(new Date());
 	}
 
@@ -118,15 +120,15 @@ public class Question extends Model implements Serializable, ICommentable {
 	}
 
 	public void addUpvote() {
-		upVotes++;
+		upvotes++;
 	}
 
 	public Integer getUpvotes() {
-		return upVotes;
+		return upvotes;
 	}
 	
 	public void setUpvotes(int val) {
-		upVotes = val;
+		upvotes = val;
 	}
 
 	public String getAuthor() {

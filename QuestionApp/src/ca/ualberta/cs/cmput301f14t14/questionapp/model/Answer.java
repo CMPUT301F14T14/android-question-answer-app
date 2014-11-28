@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.gson.annotations.SerializedName;
+
 import android.location.Location;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
@@ -17,11 +19,11 @@ public class Answer extends Model implements Serializable, ICommentable {
 	private UUID id;
 	private Image image;
 	private String body;
-	private List<UUID> commentList;
+	@SerializedName("comments") private List<UUID> commentList;
 	private String author;
 	private UUID parent;
 	private Date date;
-	private int upVotes;
+	private int upvotes;
 	private Location location;
 
 	
@@ -34,7 +36,7 @@ public class Answer extends Model implements Serializable, ICommentable {
 		this.setLocation(null);
 		this.commentList = new ArrayList<UUID>();
 		setDate(new Date());
-		upVotes = 0;
+		upvotes = 0;
 	}
 
 	//Create answer with a parent, body, string and optional image
@@ -46,7 +48,7 @@ public class Answer extends Model implements Serializable, ICommentable {
 		setParent(parent);
 		setCommentList(new ArrayList<UUID>());
 		setDate(new Date());
-		upVotes = 0;
+		upvotes = 0;
 	}
 	
 	public Image getImage() {
@@ -98,11 +100,11 @@ public class Answer extends Model implements Serializable, ICommentable {
 	}
 
 	public Integer getUpvotes() {
-		return upVotes;
+		return upvotes;
 	}
 
 	public void addUpvote() {
-		upVotes++;
+		upvotes++;
 	}
 
 	public List<UUID> getCommentList() {
@@ -158,7 +160,7 @@ public class Answer extends Model implements Serializable, ICommentable {
 	}
 
 	public void setUpvotes(int upvotes) {
-		this.upVotes = upvotes;
+		this.upvotes = upvotes;
 	}
 
 	public Location getLocation() {
