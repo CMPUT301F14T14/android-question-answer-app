@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,15 +19,22 @@ import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 public class MainActivity extends Activity {
 
@@ -37,6 +45,10 @@ public class MainActivity extends Activity {
 	private ClientData cd = null;
 	private Callback<List<Question>> listCallback = null;
 	private Callback<Question> favouriteQuestionCallback = null;
+	
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE =  100;
+	private Uri Urifile;
+	ImageView img;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +69,7 @@ public class MainActivity extends Activity {
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getActionBar().setListNavigationCallbacks(sortAdapter, changeSort());
-                
+              
         dataManager = DataManager.getInstance(this);
         
         // if first time logging in, prompt user to set username
@@ -265,5 +277,47 @@ public class MainActivity extends Activity {
 		intent.putExtra("QUERY_STRING", q);
 		startActivity(intent);
     }
+	
+	public void takeAPhoto(View v){
+		String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/QAImages";
+		File folder = new File(path);
+		
+		if (!folder.exists()){
+			folder.mkdir();
+		}
+			
+		String imagePathAndFileName = path + File.separator + 
+				String.valueOf(System.currentTimeMillis()) + ".jpg" ;
+		
+		File imageFile = new File(imagePathAndFileName);
+		Urifile = Uri.fromFile(imageFile);
+		LayoutInflater inflater = getLayoutInflater();
+		final View text = inflater.inflate(R.layout.addquestiondialogfragmentlayout , null);
+		img = (ImageView)text.findViewById(R.id.imageView1);  
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, Urifile);
+		startActivityForResult(intent, 0);
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		
+		super.onActivityResult(requestCode, resultCode, data);
+		//Bitmap bp = (Bitmap) data.getExtras().get("data");
+		//img.setImageBitmap(bp);
+		img.setImageDrawable((Drawable.createFromPath(Urifile.getPath())));
+		/*if (requestcode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE){
+			if (resultcode == Activity.RESULT_OK){
+				Image img = new Image(file, );
+			}
+			else{
+				Toast.makeText(getActivity(), "Image Capture Failed", Toast.LENGTH_LONG).show();
+			}
+		}*/
+		
+	}
+	public void addImage(View v){
+		
+	}
     
 }
