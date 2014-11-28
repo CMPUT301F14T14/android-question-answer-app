@@ -38,7 +38,11 @@ public class ESSearch {
 		HttpPost httpPost = new HttpPost(ES_BASE_URL + "_search");
 
 		httpPost.setEntity(new StringEntity(
-				"{\"query\": {\"match\": {\"_all\": \"" + query + "\"}}}"));
+				"{\"query\": {\"filtered\": {\"query\": {\"match\": {\"_all\": \"" + query + "\"}}," +
+						"\"filter\": {\"or\": [" +
+						"{\"type\": {\"value\": \"question\"}}," +
+						"{\"type\": {\"value\": \"answer\"}}" +
+						"]}}}}"));
 		
 		HttpResponse response;
 
