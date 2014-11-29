@@ -79,27 +79,11 @@ public class UploaderService extends Service {
 			//For each event in the event bus, try and do it again.
 			for (AbstractEvent e: eventbus.getEventQueue()){				
 				/* Remove the current event from the eventbus. If "trying again" fails,
-				 * it will happen in a separate thread, and it will again be added to the bus
+				 * it will happen in a the AsyncTask threadpool, and it will again be added to the bus
 				 */
 				eventbus.removeEvent(e);
+				e.retry(dm); //dm is from the outer class.
 				
-				//Could get into infinite loop if offline, pop event, try again, re-add before
-				//going online again... etc. Don't want this thread to consume all battery life
-				//while offline.
-				
-				if (e instanceof QuestionPushDelayedEvent) {
-					//try pushing the question again
-					dm.addQuestion(((QuestionPushDelayedEvent) e).q, null);
-				}
-				if (e instanceof AnswerPushDelayedEvent) {
-					dm.addAnswer(((AnswerPushDelayedEvent) e).a);
-				}
-				if (e instanceof QuestionCommentPushDelayedEvent) {
-					dm.addQuestionComment(((QuestionCommentPushDelayedEvent) e).qc);
-				}
-				if (e instanceof AnswerCommentPushDelayedEvent) {
-					dm.addAnswerComment(((AnswerCommentPushDelayedEvent)e).ca);
-				}
 			}
 			
 			// Return number of elements still in queue
