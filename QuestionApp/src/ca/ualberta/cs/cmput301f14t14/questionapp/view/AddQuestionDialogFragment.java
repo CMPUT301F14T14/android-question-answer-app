@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,7 +30,11 @@ import android.widget.Toast;
 
 public class AddQuestionDialogFragment extends DialogFragment
 implements IView{
+	private LayoutInflater inflater = getActivity().getLayoutInflater();
+	private final View text = inflater.inflate(R.layout.addquestiondialogfragmentlayout , null);
+	private Image img;
 	@Override
+	
 	public void update() {
 		// TODO Auto-generated method stub
 		
@@ -39,10 +44,8 @@ implements IView{
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		
-		LayoutInflater inflater = getActivity().getLayoutInflater();
 		final Context context = this.getActivity().getApplicationContext();
-		final View text = inflater.inflate(R.layout.addquestiondialogfragmentlayout , null);
+		
 		
 		
 		builder.setView(text)
@@ -56,7 +59,7 @@ implements IView{
 							EditText body = (EditText) text.findViewById(R.id.add_question_body);
 							String bd = body.getText().toString();
 							String tle = title.getText().toString();
-							ImageView img = (ImageView) text.findViewById(R.id.imageView1);
+							
 							
 							ClientData cd = new ClientData(context);
 							Question newQues = new Question(tle, bd, cd.getUsername(), null);
@@ -76,6 +79,11 @@ implements IView{
 					}
 					);
 	return builder.create();				
+	}
+	
+	public void onResume(){
+		ImageView imgV = (ImageView) text.findViewById(R.id.imageView1);
+		imgV.setImageDrawable(Drawable.createFromPath(img.getLocalUrl().getPath()));
 	}
 
 }

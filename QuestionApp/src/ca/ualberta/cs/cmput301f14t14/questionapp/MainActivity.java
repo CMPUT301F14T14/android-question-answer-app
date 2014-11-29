@@ -10,7 +10,9 @@ import java.util.UUID;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddImage;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.QuestionListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.SearchQueryDialogFragment;
@@ -29,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -46,9 +49,10 @@ public class MainActivity extends Activity {
 	private Callback<List<Question>> listCallback = null;
 	private Callback<Question> favouriteQuestionCallback = null;
 	
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE =  100;
-	private Uri Urifile;
-	ImageView img;
+	private AddImage AI = new AddImage();
+	private static final int CAMERA =  1;
+	private static final int ADD_IMAGE = 2;
+	public Image img;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -279,33 +283,27 @@ public class MainActivity extends Activity {
     }
 	
 	public void takeAPhoto(View v){
-		String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/QAImages";
-		File folder = new File(path);
-		
-		if (!folder.exists()){
-			folder.mkdir();
-		}
-			
-		String imagePathAndFileName = path + File.separator + 
-				String.valueOf(System.currentTimeMillis()) + ".jpg" ;
-		
-		File imageFile = new File(imagePathAndFileName);
-		Urifile = Uri.fromFile(imageFile);
-		LayoutInflater inflater = getLayoutInflater();
-		final View text = inflater.inflate(R.layout.addquestiondialogfragmentlayout , null);
-		img = (ImageView)text.findViewById(R.id.imageView1);  
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, Urifile);
-		startActivityForResult(intent, 0);
+		Intent intent = AI.takeAPhoto();
+		startActivityForResult(intent, CAMERA);
+	}
+	
+	public void addImage(View v){
+		Intent intent = AI.addPhoto();
+		startActivityForResult(intent, ADD_IMAGE);
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		
 		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == CAMERA){
+			img = new Image(data.getData() ,null);
+		}
+		else if(requestCode == ADD_IMAGE){
+			
+		}
 		//Bitmap bp = (Bitmap) data.getExtras().get("data");
 		//img.setImageBitmap(bp);
-		img.setImageDrawable((Drawable.createFromPath(Urifile.getPath())));
+		//img.setImageDrawable((Drawable.createFromPath(Urifile.getPath())));
 		/*if (requestcode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE){
 			if (resultcode == Activity.RESULT_OK){
 				Image img = new Image(file, );
@@ -316,8 +314,6 @@ public class MainActivity extends Activity {
 		}*/
 		
 	}
-	public void addImage(View v){
-		
-	}
+
     
 }
