@@ -16,6 +16,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -409,7 +411,18 @@ public class RemoteDataStore implements IDataStore {
 
 	@Override
 	public boolean hasAccess() {
-		// TODO Auto-generated method stub
-		return false;
+		//Needed in UploaderService.
+		//Used code from here: http://www.vogella.com/tutorials/AndroidNetworking/article.html#networkstate
+		
+	    ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    	    NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+	    	    // if no network is available networkInfo will be null
+	    	    // otherwise check if we are connected
+	    	    if (networkInfo != null && networkInfo.isConnected()) {
+	    	        return true;
+	    	    }
+	    	    return false;
+		
+		
 	}
 }

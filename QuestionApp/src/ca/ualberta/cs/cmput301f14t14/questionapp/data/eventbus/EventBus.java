@@ -17,7 +17,16 @@ public class EventBus {
 		return bus;
 	}
 	
-	public void addEvent(AbstractEvent e){
+	public synchronized void addEvent(AbstractEvent e){ 
+		//Need addEvent to be a synchronized event (one thread at a time) because youngestevent
+		//needs to be consistent.
+		
+		
+		//On the note of when to start the uploader service:
+		//If we have gotten to this point, then somewhere in the code an upload failed.
+		//So, we should start the service now.
+		
+		
 		try {
 			queue.put(e);
 			youngestevent = e;
