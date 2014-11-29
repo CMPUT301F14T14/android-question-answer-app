@@ -65,4 +65,5 @@
 	<string name="aboutbox_tagline">The friendly Q/A app!</string>
 	<string name="aboutbox_version">Version 1.0</string>
 	<string name="aboutbox_authorheading">Authors:</string>
+	<string name="_quot_the_friendly_qa_app_quot_">&amp;quot;The friendly QA app&amp;quot;</string>
 </resources>
