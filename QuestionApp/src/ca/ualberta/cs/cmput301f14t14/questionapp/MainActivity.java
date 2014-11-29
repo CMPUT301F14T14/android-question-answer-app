@@ -341,29 +341,18 @@ public class MainActivity extends Activity {
 	
 	public void addImage(View v){
 		Intent intent = AI.addPhoto();
-		startActivityForResult(intent, ADD_IMAGE);
+		startActivityForResult(intent.createChooser(intent, "Select Image"), ADD_IMAGE);
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == CAMERA){
-			img = new Image(data.getData() ,null);
+			img = new Image(AI.getImgUri() ,null);
 		}
 		else if(requestCode == ADD_IMAGE){
-			
+			img = new Image(data.getData(), null);
 		}
-		//Bitmap bp = (Bitmap) data.getExtras().get("data");
-		//img.setImageBitmap(bp);
-		//img.setImageDrawable((Drawable.createFromPath(Urifile.getPath())));
-		/*if (requestcode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE){
-			if (resultcode == Activity.RESULT_OK){
-				Image img = new Image(file, );
-			}
-			else{
-				Toast.makeText(getActivity(), "Image Capture Failed", Toast.LENGTH_LONG).show();
-			}
-		}*/
 		
 	}
 

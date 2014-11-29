@@ -15,26 +15,22 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 public class AddQuestionDialogFragment extends DialogFragment
 implements IView{
-	private LayoutInflater inflater = getActivity().getLayoutInflater();
-	private final View text = inflater.inflate(R.layout.addquestiondialogfragmentlayout , null);
-	private Image img;
-	@Override
+	private LayoutInflater inflater;
+	private View text;
+	private Image img = null;
 	
+	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		
@@ -45,9 +41,8 @@ implements IView{
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		final Context context = this.getActivity().getApplicationContext();
-		
-		
-		
+		inflater = getActivity().getLayoutInflater();
+		text = inflater.inflate(R.layout.addquestiondialogfragmentlayout , null);
 		builder.setView(text)
 			.setPositiveButton(R.string.OK, 
 					new DialogInterface.OnClickListener() {
@@ -64,7 +59,7 @@ implements IView{
 								return;
 							}
 							ClientData cd = new ClientData(context);
-							Question newQues = new Question(tle, bd, cd.getUsername(), null);
+							Question newQues = new Question(tle, bd, cd.getUsername(), img);
 							datamanager.addQuestion(newQues, null);
 							MainActivity a = (MainActivity) getActivity();
 							//Populate the list with what we have.
@@ -84,8 +79,14 @@ implements IView{
 	}
 	
 	public void onResume(){
-		ImageView imgV = (ImageView) text.findViewById(R.id.imageView1);
-		imgV.setImageDrawable(Drawable.createFromPath(img.getLocalUrl().getPath()));
-	}
+		super.onResume();
+		MainActivity ma = (MainActivity) getActivity();
+		img = ma.img;
+		if(img != null){
+			ImageView imgV = (ImageView) text.findViewById(R.id.imageView1);
+			imgV.setImageDrawable(Drawable.createFromPath(img.getLocalUrl().getPath()));
+		}
+		}
+		
 
 }
