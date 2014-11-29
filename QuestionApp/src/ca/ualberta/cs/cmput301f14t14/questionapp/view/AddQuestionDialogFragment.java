@@ -59,8 +59,10 @@ implements IView{
 							EditText body = (EditText) text.findViewById(R.id.add_question_body);
 							String bd = body.getText().toString();
 							String tle = title.getText().toString();
-							
-							
+							if (bd.isEmpty() || tle.isEmpty()) {
+								Toast.makeText(getActivity(), "Questions must have both a valid title and a valid body", Toast.LENGTH_LONG).show();
+								return;
+							}
 							ClientData cd = new ClientData(context);
 							Question newQues = new Question(tle, bd, cd.getUsername(), null);
 							datamanager.addQuestion(newQues, null);

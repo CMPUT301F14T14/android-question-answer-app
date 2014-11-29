@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,11 +26,8 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.AnswerDeserializer;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.AnswerSerializer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.CommentDeserializer;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.CommentSerializer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.QuestionDeserializer;
-import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.QuestionSerializer;
 
 /**
  * A data store that uses an ElasticSearch server as a data storage mechanism.
@@ -53,16 +49,10 @@ public class RemoteDataStore implements IDataStore {
 		GsonBuilder gb = new GsonBuilder();
 		// Register serializers and deserializers
 		// Note: The comment stuff is ugly, but it should work
-		gb.registerTypeAdapter(Question.class, new QuestionSerializer());
 		gb.registerTypeAdapter(Question.class, new QuestionDeserializer(context));
-		gb.registerTypeAdapter(Answer.class, new AnswerSerializer());
 		gb.registerTypeAdapter(Answer.class, new AnswerDeserializer(context));
 		gb.registerTypeAdapter(new TypeToken<Comment<Question>>() {}.getType(),
-				new CommentSerializer<Question>());
-		gb.registerTypeAdapter(new TypeToken<Comment<Question>>() {}.getType(),
 				new CommentDeserializer<Question>());
-		gb.registerTypeAdapter(new TypeToken<Comment<Answer>>() {}.getType(),
-				new CommentSerializer<Answer>());
 		gb.registerTypeAdapter(new TypeToken<Comment<Answer>>() {}.getType(),
 				new CommentDeserializer<Answer>());
 		gson = gb.create();

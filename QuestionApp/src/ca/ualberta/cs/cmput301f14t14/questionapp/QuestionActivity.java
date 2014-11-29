@@ -42,7 +42,7 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 	private Question question;
 	private TabHost tabs;
 	private DataManager dataManager;
-	
+	private ClientData clientData;
 	private List<Comment<Question>> commentList;
 	private List<Answer> answerList;
 	
@@ -56,6 +56,7 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		
 		Intent intent = getIntent();
 		dataManager = DataManager.getInstance(getApplicationContext());
+		clientData = new ClientData(this);
 		String qId = intent.getStringExtra(ARG_QUESTION_ID);
 		
 		if (qId != null) {
@@ -220,11 +221,20 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 
 	public void upvoteQuestion(View v) {
 		// Adds upvotes and updates textview to show number of upvotes
+		if (question.getAuthor().equals(clientData.getUsername())) {
+			Toast.makeText(this, "Unable to upvote your own question", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if (clientData.isItemUpvoted(question.getId())) {
+			Toast.makeText(this, "Cannot upvote a question more than once", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		question.addUpvote();
 		TextView upvotes = (TextView) findViewById(R.id.upvotes);
 		upvotes.setText(question.getUpvotes().toString());
 		DataManager.getInstance(this).upvoteQuestion(question);
-	}
+		clientData.markItemUpvoted(question.getId());
+		}
 	
 	public void favQuestion(View v){
 		//Need to change icon

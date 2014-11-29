@@ -69,7 +69,7 @@ public class ViewCommentDialogFragment extends DialogFragment {
 		public void run(Comment<? extends ICommentable> comment) {
 			TextView username = (TextView) viewComment
 					.findViewById(R.id.comment_username);
-			username.setText(comment.getUsername());
+			username.setText(comment.getAuthor());
 
 			TextView body = (TextView) viewComment
 					.findViewById(R.id.comment_body);
