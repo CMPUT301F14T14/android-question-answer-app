@@ -81,37 +81,7 @@ public class DataManager {
 		return instance;
 	}
 	
-	private void completeQueuedEvents() {
-		//The singleton eventbus contains events that attempted to 
-		//be posted to the internet. If posting failed, an event was created
-		//on the eventbus. These queued events should regularly "tried again"
-		//so that we are as frequently as possible trying to update the internet
-		//with our new local information.
-		//I believe this is the magic that is currently missing to make the DataManager
-		//transparently update the local and remote stores.
-		
-		//For each event in the event bus, try and do it again.
-		for (AbstractEvent e: eventbus.getEventQueue()){				
-			/* Remove the current event from the eventbus. If "trying again" fails,
-			 * it will happen in a separate thread, and it will again be added to the bus
-			 */
-			eventbus.removeEvent(e);
-			
-			if (e instanceof QuestionPushDelayedEvent) {
-				//try pushing the question again
-				addQuestion(((QuestionPushDelayedEvent) e).q, null);
-			}
-			if (e instanceof AnswerPushDelayedEvent) {
-				addAnswer(((AnswerPushDelayedEvent) e).a);
-			}
-			if (e instanceof QuestionCommentPushDelayedEvent) {
-				addQuestionComment(((QuestionCommentPushDelayedEvent) e).qc);
-			}
-			if (e instanceof AnswerCommentPushDelayedEvent) {
-				addAnswerComment(((AnswerCommentPushDelayedEvent)e).ca);
-			}
-		}
-	}
+	
 	
 	//View Interface Begins
 	public void addQuestion(Question validQ, Callback<Void> c) {
