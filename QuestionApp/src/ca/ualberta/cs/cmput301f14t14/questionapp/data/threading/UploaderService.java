@@ -34,46 +34,82 @@ public class UploaderService extends Service {
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-	    handleCommand(intent);
+	    // Flags is useful for services restarted. 
+		// startId is for A unique integer representing this 
+		//    specific request to start. Use with stopSelfResult(int)
+		
+		//TODO: We should allow this service to be started only once. Allowing multiple things
+		//to start this service is evil. 
+		
+		//Next, we need to create a thread to run completeQueuedEvents in.
+		(new Thread(new QueueClearer())).start();
+		
 	    // We want this service to continue running until it is explicitly
 	    // stopped, so return sticky.
 	    return START_STICKY;
 	}
 
-	private synchronized void completeQueuedEvents(DataManager dm) {
-		/* The singleton eventbus contains events that attempted to 
-		 * be posted to the internet. If posting failed, an event was created
-		 * on the eventbus. These queued events should regularly "tried again"
-		 * so that we are as frequently as possible trying to update the internet
-		 * with our new local information.
-		 */
-		EventBus eventbus = EventBus.getInstance();
-		//For each event in the event bus, try and do it again.
-		for (AbstractEvent e: eventbus.getEventQueue()){				
-			/* Remove the current event from the eventbus. If "trying again" fails,
-			 * it will happen in a separate thread, and it will again be added to the bus
-			 */
-			eventbus.removeEvent(e);
+	/**
+	 * Private inner class that implements Runnable. This is needed so that
+	 * we can create a thread above (within the service). This service itself
+	 * should not implement Runnable as we don't want people willy-nilly running
+	 * and Android service in a thread. The service itself should exist in the UI
+	 * thread and run its own stuff in other threads.
+	 * @author Stefan
+	 *
+	 */
+	private class QueueClearer implements Runnable {
+
+		@Override
+		public void run() {
+			//In here we can have the logic for the thread itself. 
+			//(Such as checking for connectvitiy, sleeping, etc.)
+			completeQueuedEvents();
 			
-			if (e instanceof QuestionPushDelayedEvent) {
-				//try pushing the question again
-				dm.addQuestion(((QuestionPushDelayedEvent) e).q, null);
-			}
-			if (e instanceof AnswerPushDelayedEvent) {
-				dm.addAnswer(((AnswerPushDelayedEvent) e).a);
-			}
-			if (e instanceof QuestionCommentPushDelayedEvent) {
-				dm.addQuestionComment(((QuestionCommentPushDelayedEvent) e).qc);
-			}
-			if (e instanceof AnswerCommentPushDelayedEvent) {
-				dm.addAnswerComment(((AnswerCommentPushDelayedEvent)e).ca);
-			}
 		}
+
+		private synchronized int completeQueuedEvents() {
+			/* The singleton eventbus contains events that attempted to 
+			 * be posted to the internet. If posting failed, an event was created
+			 * on the eventbus. These queued events should regularly "tried again"
+			 * so that we are as frequently as possible trying to update the internet
+			 * with our new local information.
+			 */
+			EventBus eventbus = EventBus.getInstance();
+			//For each event in the event bus, try and do it again.
+			for (AbstractEvent e: eventbus.getEventQueue()){				
+				/* Remove the current event from the eventbus. If "trying again" fails,
+				 * it will happen in a separate thread, and it will again be added to the bus
+				 */
+				eventbus.removeEvent(e);
+				
+				//Could get into infinite loop if offline, pop event, try again, re-add before
+				//going online again... etc. Don't want this thread to consume all battery life
+				//while offline.
+				
+				if (e instanceof QuestionPushDelayedEvent) {
+					//try pushing the question again
+					dm.addQuestion(((QuestionPushDelayedEvent) e).q, null);
+				}
+				if (e instanceof AnswerPushDelayedEvent) {
+					dm.addAnswer(((AnswerPushDelayedEvent) e).a);
+				}
+				if (e instanceof QuestionCommentPushDelayedEvent) {
+					dm.addQuestionComment(((QuestionCommentPushDelayedEvent) e).qc);
+				}
+				if (e instanceof AnswerCommentPushDelayedEvent) {
+					dm.addAnswerComment(((AnswerCommentPushDelayedEvent)e).ca);
+				}
+			}
+			
+			// Return number of elements still in queue
+			return eventbus.getEventQueue().size();
+			
+			
+		}		
 	}
-
-
-
-
+	
+	
 
 
 
