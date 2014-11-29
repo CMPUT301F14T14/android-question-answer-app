@@ -77,18 +77,38 @@ public class UploaderService extends Service {
 			 */
 			EventBus eventbus = EventBus.getInstance();
 			//For each event in the event bus, try and do it again.
-			for (AbstractEvent e: eventbus.getEventQueue()){				
-				/* Remove the current event from the eventbus. If "trying again" fails,
-				 * it will happen in a the AsyncTask threadpool, and it will again be added to the bus
-				 */
-				eventbus.removeEvent(e);
-				e.retry(dm); //dm is from the outer class.
+
+			/** There is quite a bit of fancy footwork below, so pay attention.
+			 * 
+			 *  We have a BlockingQueue with AbstractEvent elements
+			 *  
+			 *  [] [] [] [] []
+			 *  H      T     T'
+			 *  
+			 *  Where H = head, T = tail, T' = tail after retrying events.
+			 *  Recall the head is the oldest, and the tail is the youngest in a queue.
+			 *  
+			 *  We want the loop below to only run from H-->T. If we are offline, running through
+			 *  the entire queue will lead to an infinite loop and a significant drain on battery life.
+			 * 
+			 */
+			AbstractEvent youngestevent = eventbus.getYoungestEvent();
+			
+			while(!eventbus.getEventQueue().isEmpty() 
+					&& !eventbus.getEventQueue().peek().equals(youngestevent) ){				
+				try {
+					//Take the event from the head of the queue 
+					//(block this thread if needed), and retry it.
+					eventbus.getEventQueue().take().retry(dm);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				
 				
 			}
 			
 			// Return number of elements still in queue
-			return eventbus.getEventQueue().size();
-			
+			return eventbus.getEventQueue().size();	
 			
 		}		
 	}
