@@ -25,11 +25,14 @@ import com.google.gson.reflect.TypeToken;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.AnswerDeserializer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.AnswerSerializer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.CommentDeserializer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.CommentSerializer;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.ImageDeserializer;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.ImageSerializer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.QuestionDeserializer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.QuestionSerializer;
 
@@ -65,6 +68,8 @@ public class RemoteDataStore implements IDataStore {
 				new CommentSerializer<Answer>());
 		gb.registerTypeAdapter(new TypeToken<Comment<Answer>>() {}.getType(),
 				new CommentDeserializer<Answer>());
+		gb.registerTypeAdapter(Image.class, new ImageSerializer());
+		gb.registerTypeAdapter(Image.class, new ImageDeserializer(context));
 		gson = gb.create();
 	}
 
