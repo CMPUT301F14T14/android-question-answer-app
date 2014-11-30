@@ -48,6 +48,7 @@ public class AnswerDeserializer implements JsonDeserializer<Answer> {
 
 		// Populate object
 		answer.setId(UUID.fromString(jsonObject.get("id").getAsString()));
+		answer.setParent(UUID.fromString(jsonObject.get("parent").getAsString()));
 		answer.setBody(jsonObject.get("body").getAsString());
 		answer.setAuthor(jsonObject.get("author").getAsString());
 		answer.setDate((Date) context.deserialize(jsonObject.get("date"), Date.class));

@@ -24,6 +24,7 @@ public class CommentDeserializer<T extends ICommentable> implements JsonDeserial
 
 		final Comment<T> comment = new Comment<T>();
 		comment.setId(UUID.fromString(jsonObject.get("id").getAsString()));
+		comment.setParent(UUID.fromString(jsonObject.get("parent").getAsString()));
 		comment.setBody(jsonObject.get("body").getAsString());
 		comment.setAuthor(jsonObject.get("author").getAsString());
 		comment.setDate((Date) context.deserialize(jsonObject.get("date"), Date.class));
