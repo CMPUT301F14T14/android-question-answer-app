@@ -7,11 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AbstractEvent;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerCommentPushDelayedEvent;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerPushDelayedEvent;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionCommentPushDelayedEvent;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionPushDelayedEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionCommentTask;
@@ -24,7 +19,6 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionComme
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionListTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.UploaderService;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.UpvoteQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -270,14 +264,6 @@ public class DataManager {
 		//User should pull result out of callback
 		return null;
 	}
-	
-	public void upvoteQuestion(Question q){
-		UpvoteQuestionTask uqt = new UpvoteQuestionTask(context);
-		uqt.execute(q);
-		
-	}
-
-
 
 	public IDataStore getLocalDataStore() {
 		return localDataStore;
