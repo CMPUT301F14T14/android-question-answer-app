@@ -36,7 +36,7 @@ public class UpvoteQuestionTask extends AbstractDataManagerTask<Question, Void, 
 			//We do not need to have list of "things to upvote online" and "questions
 			// to push online". What actually happens is that the whole question is pushed
 			//again anyways.
-			EventBus.getInstance().addEvent(new QuestionPushDelayedEvent(q));
+			tryPushLater(new QuestionPushDelayedEvent(q));
 		}  
 		//In both cases (online and not), update what we have locally
 		try {

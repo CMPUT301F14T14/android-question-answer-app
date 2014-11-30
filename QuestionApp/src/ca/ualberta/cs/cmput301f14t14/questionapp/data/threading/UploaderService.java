@@ -125,7 +125,7 @@ public class UploaderService extends Service {
 			AbstractEvent youngestevent = eventbus.getYoungestEvent();
 			
 			while(!eventbus.getEventQueue().isEmpty() 
-					&& !eventbus.getEventQueue().peek().equals(youngestevent) ){				
+					&& !eventbus.getEventQueue().peek().equals(youngestevent) ){	//Sort circuit logic should prevent .peek() from failing.			
 				try {
 					//Take the event from the head of the queue 
 					//(block this thread if needed), and retry it.

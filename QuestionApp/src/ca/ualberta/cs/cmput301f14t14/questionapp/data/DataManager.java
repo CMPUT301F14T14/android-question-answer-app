@@ -78,8 +78,6 @@ public class DataManager {
 		if (instance == null){
 			instance = new DataManager(context.getApplicationContext());
 			instance.initDataStores();
-			
-			
 		}
 		
 		return instance;
@@ -87,7 +85,8 @@ public class DataManager {
 	/**
 	 * Starts the uploader service that copies cached creations in local to remote.
 	 */
-	private void startUploaderService() {
+	public void startUploaderService() {
+		//Hackery. No idea how to start a service only once and not get into threading problems.
 		if (UploaderService.isServiceAlreadyRunning == false) {
 			Intent i = new Intent(context, UploaderService.class);
 			context.startService(i);
