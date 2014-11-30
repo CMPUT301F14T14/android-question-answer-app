@@ -60,7 +60,7 @@ public class RemoteDataStore implements IDataStore {
 		gb.registerTypeAdapter(new TypeToken<Comment<Answer>>() {}.getType(),
 				new CommentDeserializer<Answer>());
 		gb.registerTypeAdapter(Image.class, new ImageSerializer());
-		gb.registerTypeAdapter(Image.class, new ImageDeserializer(context));
+		gb.registerTypeAdapter(Image.class, new ImageDeserializer());
 		gson = gb.create();
 	}
 

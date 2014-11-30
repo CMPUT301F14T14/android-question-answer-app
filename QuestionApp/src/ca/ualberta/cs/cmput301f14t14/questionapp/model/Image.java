@@ -3,8 +3,11 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Base64;
 
@@ -13,9 +16,11 @@ public class Image implements Serializable {
 	private static final long serialVersionUID = -5471444176345711312L;
 
 	private Uri mLocalUrl;
+	private byte[] imageData;
 	
-	public Image(Uri local) {
+	public Image(Uri local, byte[] image) {
 		setmLocalUrl(local);
+		setImageData(image);
 	}
 
 
@@ -28,7 +33,7 @@ public class Image implements Serializable {
 		return mLocalUrl;
 	}
 	
-	public String getByteImage() {
+	public String getByteImageFromFile() {
 		Bitmap b = null;
 		if (this.getLocalUrl() != null) {
 			b = BitmapFactory.decodeFile(this.getLocalUrl().toString());
@@ -38,6 +43,21 @@ public class Image implements Serializable {
 			return Base64.encodeToString(array, Base64.DEFAULT);
 		}
 		return null;
+	}
+
+
+	public byte[] getImageData() {
+		return imageData;
+	}
+
+
+	public void setImageData(byte[] imageData) {
+		this.imageData = imageData;
+	}
+	
+	public Drawable getDrawable(Context c) {
+		byte[] b = this.getImageData();
+		return new BitmapDrawable(c.getResources(),BitmapFactory.decodeByteArray(b, 0, b.length));
 	}
 
 }

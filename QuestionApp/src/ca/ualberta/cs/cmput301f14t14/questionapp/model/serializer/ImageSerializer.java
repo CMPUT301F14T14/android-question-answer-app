@@ -19,7 +19,7 @@ public class ImageSerializer implements JsonSerializer<Image>{
 	public JsonElement serialize(Image im, Type typeOfImage,
 		JsonSerializationContext context) {
 		final JsonObject encodedImage = new JsonObject();
-		String encodedImageString = im.getByteImage();
+		String encodedImageString = im.getByteImageFromFile();
 		encodedImage.addProperty("image", encodedImageString);
 		return encodedImage;
 	}
