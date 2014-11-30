@@ -34,24 +34,23 @@ public class SearchActivity extends Activity {
 		searchResult = new ArrayList<GenericSearchItem>();
 		listAdapter = new GenericSearchItemAdapter(
 				this, R.layout.list_generic, searchResult);
-		ListView questionView = (ListView) findViewById(R.id.question_list);
+		ListView questionView = (ListView) findViewById(R.id.search_list);
 		questionView.setAdapter(listAdapter);
 
-		questionView
-				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		questionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						// run off to the question view if you tap an item
 						final GenericSearchItem gItem = listAdapter.getItem(position);
-						if (gItem.getType().toLowerCase(Locale.US).equals("question")) {
+						if (gItem.getType().toLowerCase(Locale.US).trim().equals("question")) {
 							UUID qId = gItem.getId();
 							Intent intent = new Intent(getApplicationContext(),
 									QuestionActivity.class);
 							intent.putExtra(QuestionActivity.ARG_QUESTION_ID, qId.toString());
 							startActivity(intent);
-						} else if (gItem.getType().toLowerCase(Locale.US)
+						} else if (gItem.getType().toLowerCase(Locale.US).trim()
 								.equals("answer")) {
 							UUID aId = gItem.getId();
 							Intent intent = new Intent(getApplicationContext(),
