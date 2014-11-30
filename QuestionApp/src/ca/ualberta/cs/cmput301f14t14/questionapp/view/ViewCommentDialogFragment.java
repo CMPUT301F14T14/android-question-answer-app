@@ -15,12 +15,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class ViewCommentDialogFragment extends DialogFragment {
 
 	private View viewComment;
+	private ProgressBar loaderView;
+	private TextView commentBodyView;
+	private TextView commentAuthorView;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -28,12 +32,20 @@ public class ViewCommentDialogFragment extends DialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		DataManager datamanager = DataManager.getInstance(getActivity());
 
-		builder.setTitle(R.string.viewing_comments);
 		viewComment = inflater
 				.inflate(R.layout.viewcommentdialogfragmentlayout,
 						(ViewGroup) getView());
 		builder.setView(viewComment);
 
+		// Get views
+		loaderView = (ProgressBar) viewComment.findViewById(R.id.loading_progress);
+		commentBodyView = (TextView) viewComment.findViewById(R.id.comment_body);
+		commentAuthorView = (TextView) viewComment.findViewById(R.id.comment_username);
+		
+		loaderView.setVisibility(View.VISIBLE);
+		commentBodyView.setVisibility(View.GONE);
+		commentAuthorView.setVisibility(View.GONE);
+		
 		// Get arguments
 		UUID questionId = null, answerId = null, commentId = null;
 		String qIdString = getArguments().getString("questionId");
@@ -67,13 +79,13 @@ public class ViewCommentDialogFragment extends DialogFragment {
 
 		@Override
 		public void run(Comment<? extends ICommentable> comment) {
-			TextView username = (TextView) viewComment
-					.findViewById(R.id.comment_username);
-			username.setText(comment.getAuthor());
-
-			TextView body = (TextView) viewComment
-					.findViewById(R.id.comment_body);
-			body.setText(comment.getBody());
+			commentAuthorView.setText(comment.getAuthor());
+			commentBodyView.setText(comment.getBody());
+			
+			// Show views
+			loaderView.setVisibility(View.GONE);
+			commentAuthorView.setVisibility(View.VISIBLE);
+			commentBodyView.setVisibility(View.VISIBLE);
 		}
 
 	}
