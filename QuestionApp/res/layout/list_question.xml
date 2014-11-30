@@ -21,6 +21,18 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fav_highlighted" />
 
+        <ImageView
+            android:id="@+id/question_upvoteImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_upvote" />
+
+        <TextView
+            android:id="@+id/question_upvotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
     </LinearLayout>
 
     <TextView

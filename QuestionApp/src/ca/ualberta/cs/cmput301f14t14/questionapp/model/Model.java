@@ -6,7 +6,7 @@ import java.util.List;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.IView;
 
 public abstract class Model {
-	protected List<IView> mViews;
+	protected transient List<IView> mViews;
 	
 	public Model() {
 		mViews = new ArrayList<IView>();

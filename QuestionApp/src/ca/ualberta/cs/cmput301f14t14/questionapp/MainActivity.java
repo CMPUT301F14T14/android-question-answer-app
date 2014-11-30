@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,7 +10,9 @@ import java.util.UUID;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddImage;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.QuestionListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.SearchQueryDialogFragment;
@@ -18,15 +21,23 @@ import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 public class MainActivity extends Activity {
 
@@ -37,6 +48,11 @@ public class MainActivity extends Activity {
 	private ClientData cd = null;
 	private Callback<List<Question>> listCallback = null;
 	private Callback<Question> favouriteQuestionCallback = null;
+	
+	private AddImage AI = new AddImage();
+	private static final int CAMERA =  1;
+	private static final int ADD_IMAGE = 2;
+	public Image img;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +73,7 @@ public class MainActivity extends Activity {
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getActionBar().setListNavigationCallbacks(sortAdapter, changeSort());
-                
+              
         dataManager = DataManager.getInstance(this);
         
         // if first time logging in, prompt user to set username
@@ -150,7 +166,7 @@ public class MainActivity extends Activity {
 				@Override
 				public int compare(Question q1, Question q2) {
 					if(q1.getUpvotes() == q2.getUpvotes()){
-						return q1.getDate().compareTo(q2.getDate());
+						return q2.getDate().compareTo(q1.getDate());
 					}
 					
 					return q2.getUpvotes() - q1.getUpvotes();
@@ -183,7 +199,7 @@ public class MainActivity extends Activity {
 				public int compare(Question arg0, Question arg1) {
 					if(favQ.contains(arg0.getId()) == favQ.contains(arg1.getId())){
 						//Sort by date if both in or not in favourites
-						return arg0.getDate().compareTo(arg1.getDate());
+						return arg1.getDate().compareTo(arg0.getDate());
 					}
 					else if(favQ.contains(arg0.getId()) && !favQ.contains(arg1.getId())){
 						return -1;
@@ -206,7 +222,7 @@ public class MainActivity extends Activity {
 					//Instantiate ClientData here
 					
 					if(q1.getAuthor().equals(cd.getUsername()) == q2.getAuthor().equals(cd.getUsername())){
-						return q1.getDate().compareTo(q2.getDate());
+						return q2.getDate().compareTo(q1.getDate());
 					}
 					else if(q1.getAuthor().equals(cd.getUsername()) && !q2.getAuthor().equals(cd.getUsername()))
 						return -1;
@@ -225,6 +241,9 @@ public class MainActivity extends Activity {
 
 				@Override
 				public int compare(Question q1, Question q2) {
+					if(q2.getAnswerList().size() == q1.getAnswerList().size()){
+						return q2.getDate().compareTo(q1.getDate());
+					}
 
 					return q2.getAnswerList().size() - q1.getAnswerList().size();
 
@@ -240,7 +259,9 @@ public class MainActivity extends Activity {
 
 				@Override
 				public int compare(Question q1, Question q2) {
-					
+					if(q1.getCommentList().size() == q2.getCommentList().size()){
+						return q2.getDate().compareTo(q1.getDate());
+					}
 					return q2.getCommentList().size() - q1.getCommentList().size();
 					
 				}
@@ -256,8 +277,8 @@ public class MainActivity extends Activity {
 				@Override
 				public int compare(Question q1, Question q2) {
 					if ((q1.getImage() != null && q2.getImage() != null) || (q1.getImage() == null && q2.getImage() == null)){
-						// Both same, relative order doesn't matter
-						return 0;
+						// Both same, sort by date for consistency
+						return q2.getDate().compareTo(q1.getDate());
 					}
 					return (q1.getImage() != null) ? -1: 1;
 				}
@@ -312,5 +333,28 @@ public class MainActivity extends Activity {
 		intent.putExtra("QUERY_STRING", q);
 		startActivity(intent);
     }
+	
+	public void takeAPhoto(View v){
+		Intent intent = AI.takeAPhoto();
+		startActivityForResult(intent, CAMERA);
+	}
+	
+	public void addImage(View v){
+		Intent intent = AI.addPhoto();
+		startActivityForResult(intent.createChooser(intent, "Select Image"), ADD_IMAGE);
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == CAMERA){
+			img = new Image(AI.getImgUri() ,null);
+		}
+		else if(requestCode == ADD_IMAGE){
+			img = new Image(data.getData(), null);
+		}
+		
+	}
+
     
 }

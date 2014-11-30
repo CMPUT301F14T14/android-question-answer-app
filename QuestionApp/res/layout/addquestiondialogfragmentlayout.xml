@@ -24,14 +24,28 @@
         android:singleLine="false"
         android:minLines="14"
         />
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_camera" 
+        android:onClick="takeAPhoto"/>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:src="@drawable/ic_action_image" />
+
     <ImageButton
         android:id="@+id/add_question_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_image"
         android:contentDescription="@string/add_question_image"
+        android:onClick="addImage"
         />
-    
-
 
 </LinearLayout>

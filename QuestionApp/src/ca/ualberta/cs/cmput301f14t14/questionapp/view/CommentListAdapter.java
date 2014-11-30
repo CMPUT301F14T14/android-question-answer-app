@@ -27,7 +27,7 @@ public class CommentListAdapter<T extends ICommentable> extends ArrayAdapter<Com
 		TextView cText = (TextView) convertView.findViewById(R.id.comment_body);
 		TextView cAuthor = (TextView) convertView.findViewById(R.id.comment_username);
 		cText.setText(c.getBody());
-		cAuthor.setText(c.getUsername());
+		cAuthor.setText(c.getAuthor());
 		
 		return convertView;
 	}

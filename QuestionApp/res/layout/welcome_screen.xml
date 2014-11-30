@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <Button
-        android:id="@+id/specifyUsernameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/pleaseChooseTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp"
-        android:text="@string/choose_your_own_" />
+    android:layout_height="wrap_content"
+    android:gravity="center|center_horizontal"
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/enterUsernameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="77dp"
         android:text="@string/welcome_to_qasper"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -25,13 +16,26 @@
         android:typeface="sans" />
 
     <TextView
+        android:id="@+id/appDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="&quot;The friendly QA app&quot;"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
         android:id="@+id/pleaseChooseTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/enterUsernameTextView"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="17dp"
         android:text="Please enter a username"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/specifyUsernameButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="@string/choose_your_own_" />
+
+</LinearLayout>
+

@@ -17,11 +17,12 @@ public class Image implements Serializable {
 	}
 	
 	private void setmRemoteUrl(Uri remote) {
-		
+		mRemoteUrl = remote;
 	}
 
 	private void setmLocalUrl(Uri local) {
 		// TODO Auto-generated method stub
+		mLocalUrl = local;
 		
 	}
 

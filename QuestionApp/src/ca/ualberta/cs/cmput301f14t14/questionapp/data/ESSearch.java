@@ -15,8 +15,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.ESSearchTask;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -40,7 +38,11 @@ public class ESSearch {
 		HttpPost httpPost = new HttpPost(ES_BASE_URL + "_search");
 
 		httpPost.setEntity(new StringEntity(
-				"{\"query\": {\"match\": {\"_all\": \"" + query + "\"}}}"));
+				"{\"query\": {\"filtered\": {\"query\": {\"match\": {\"_all\": \"" + query + "\"}}," +
+						"\"filter\": {\"or\": [" +
+						"{\"type\": {\"value\": \"question\"}}," +
+						"{\"type\": {\"value\": \"answer\"}}" +
+						"]}}}}"));
 		
 		HttpResponse response;
 
