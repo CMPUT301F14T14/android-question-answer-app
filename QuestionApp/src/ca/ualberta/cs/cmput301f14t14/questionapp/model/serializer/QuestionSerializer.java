@@ -3,6 +3,9 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer;
 import java.lang.reflect.Type;
 import java.util.UUID;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 import com.google.gson.JsonArray;
