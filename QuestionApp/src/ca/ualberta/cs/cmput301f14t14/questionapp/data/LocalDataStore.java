@@ -229,10 +229,5 @@ public class LocalDataStore implements IDataStore {
 		return this.questions.equals(lds.questions) && this.answers.equals(lds.answers) &&
 				this.qcomments.equals(lds.qcomments) && this.acomments.equals(lds.acomments);
 	}
-
-	@Override
-	public boolean hasAccess() {
-		return true;
-	}
 	
 }

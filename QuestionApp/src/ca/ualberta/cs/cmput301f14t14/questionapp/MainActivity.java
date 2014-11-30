@@ -48,6 +48,7 @@ public class MainActivity extends Activity {
 	private ClientData cd = null;
 	private Callback<List<Question>> listCallback = null;
 	private Callback<Question> favouriteQuestionCallback = null;
+	private Callback<Question> readLaterQuestionCallback = null;
 	
 	private AddImage AI = new AddImage();
 	private static final int CAMERA =  1;
@@ -281,6 +282,42 @@ public class MainActivity extends Activity {
 						return q1.getDate().compareTo(q2.getDate());
 					}
 					return (q1.getImage() != null) ? -1: 1;
+				}
+				
+			});
+			break;
+		}
+		case 8:{
+			final List<UUID> readQ = cd.getReadLaterQuestions();
+			readLaterQuestionCallback = new Callback<Question>(){
+
+				@Override
+				public void run(Question o) {
+					if(!qList.contains(o)){
+						qList.add(o);
+						
+					}
+				}
+				
+			};
+
+			for(UUID q: readQ){
+				dataManager.getQuestion(q, readLaterQuestionCallback);
+			}
+			Collections.sort(qList, new Comparator<Question>(){
+
+				@Override
+				public int compare(Question arg0, Question arg1) {
+					if(readQ.contains(arg0.getId()) == readQ.contains(arg1.getId())){
+						//Sort by date if both in or not in read later
+						return arg0.getDate().compareTo(arg1.getDate());
+					}
+					else if(readQ.contains(arg0.getId()) && !readQ.contains(arg1.getId())){
+						return -1;
+					}
+					else{
+						return 1;
+					}
 				}
 				
 			});

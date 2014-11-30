@@ -36,12 +36,12 @@ public class AddAnswerCommentTask extends AbstractDataManagerTask<Comment<Answer
 		try {
 			remoteDataStore.putAComment(C);
 		} catch (IOException e) {
-			EventBus.getInstance().addEvent(new AnswerCommentPushDelayedEvent(C));
+			tryPushLater(new AnswerCommentPushDelayedEvent(C));
 		}
 		try {
 			remoteDataStore.putAnswer(answer);
 		} catch (IOException e) {
-			EventBus.getInstance().addEvent(new AnswerPushDelayedEvent(answer));
+			tryPushLater(new AnswerPushDelayedEvent(answer));
 		}
 		try {
 			localDataStore.putAComment(C);

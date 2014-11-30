@@ -4,13 +4,9 @@ import java.util.List;
 import java.util.UUID;
 
 import android.content.Context;
+import android.content.Intent;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AbstractEvent;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerCommentPushDelayedEvent;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AnswerPushDelayedEvent;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionCommentPushDelayedEvent;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.QuestionPushDelayedEvent;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddQuestionCommentTask;
@@ -22,7 +18,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListTa
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionListTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.UpvoteQuestionTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.UploaderService;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
@@ -80,38 +76,17 @@ public class DataManager {
 		
 		return instance;
 	}
-	
-	private void completeQueuedEvents() {
-		//The singleton eventbus contains events that attempted to 
-		//be posted to the internet. If posting failed, an event was created
-		//on the eventbus. These queued events should regularly "tried again"
-		//so that we are as frequently as possible trying to update the internet
-		//with our new local information.
-		//I believe this is the magic that is currently missing to make the DataManager
-		//transparently update the local and remote stores.
-		
-		//For each event in the event bus, try and do it again.
-		for (AbstractEvent e: eventbus.getEventQueue()){				
-			/* Remove the current event from the eventbus. If "trying again" fails,
-			 * it will happen in a separate thread, and it will again be added to the bus
-			 */
-			eventbus.removeEvent(e);
-			
-			if (e instanceof QuestionPushDelayedEvent) {
-				//try pushing the question again
-				addQuestion(((QuestionPushDelayedEvent) e).q, null);
-			}
-			if (e instanceof AnswerPushDelayedEvent) {
-				addAnswer(((AnswerPushDelayedEvent) e).a);
-			}
-			if (e instanceof QuestionCommentPushDelayedEvent) {
-				addQuestionComment(((QuestionCommentPushDelayedEvent) e).qc);
-			}
-			if (e instanceof AnswerCommentPushDelayedEvent) {
-				addAnswerComment(((AnswerCommentPushDelayedEvent)e).ca);
-			}
+	/**
+	 * Starts the uploader service that copies cached creations in local to remote.
+	 */
+	public void startUploaderService() {
+		//Hackery. No idea how to start a service only once and not get into threading problems.
+		if (UploaderService.isServiceAlreadyRunning == false) {
+			Intent i = new Intent(context, UploaderService.class);
+			context.startService(i);
 		}
 	}
+	
 	
 	//View Interface Begins
 	public void addQuestion(Question validQ, Callback<Void> c) {
@@ -289,14 +264,6 @@ public class DataManager {
 		//User should pull result out of callback
 		return null;
 	}
-	
-	public void upvoteQuestion(Question q){
-		UpvoteQuestionTask uqt = new UpvoteQuestionTask(context);
-		uqt.execute(q);
-		
-	}
-
-
 
 	public IDataStore getLocalDataStore() {
 		return localDataStore;

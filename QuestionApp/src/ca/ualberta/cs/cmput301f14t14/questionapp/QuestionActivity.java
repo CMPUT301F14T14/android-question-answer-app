@@ -250,7 +250,7 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		question.addUpvote();
 		TextView upvotes = (TextView) findViewById(R.id.upvotes);
 		upvotes.setText(question.getUpvotes().toString());
-		DataManager.getInstance(this).upvoteQuestion(question);
+		DataManager.getInstance(this).addQuestion(question, null);
 		clientData.markItemUpvoted(question.getId());
 		}
 	
