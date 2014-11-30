@@ -80,16 +80,15 @@ public class UploaderService extends Service {
 				if (queuesize > 0) {
 					//We've retried what we could, but there are still things left 
 					//in the eventbus that we cannot do. 
-					//This service should sleep until network is restored.
-					while(dm.getRemoteDataStore().hasAccess() == false){
-						try {
+					//It's okay to sleep and simply try again.
 							//Arbitrary sleep time. Could be 1ms, but that would be equivalent to busy-waiting.
-							Thread.sleep(20000); 
-						} catch (InterruptedException e) {
-							/* Not a huge deal if sleeping is interrupted, the EventBus still contains events. */
-							//Therefore, it's okay to do nothing here.
-						}
-					}	
+							try {
+								Thread.sleep(20000);
+							} catch (InterruptedException e) {
+								// It's fine to be interrupted while sleeping.
+							} 
+						
+						
 				} else {
 					//We have cleared out everything in the queue. This service no longer needs to exist.
 					//(The service is recreated in EventBus.addEvent()).
