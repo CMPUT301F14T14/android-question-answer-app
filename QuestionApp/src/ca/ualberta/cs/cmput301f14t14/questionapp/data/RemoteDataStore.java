@@ -16,8 +16,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -413,10 +411,5 @@ public class RemoteDataStore implements IDataStore {
 		}
 
 		return result.toString();
-	}
-
-	@Override
-	public boolean hasAccess() {
-		return false;
 	}
 }
