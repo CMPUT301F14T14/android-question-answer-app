@@ -58,13 +58,14 @@ public class ClientData {
 		return getItems("favqlist");
 	}
 	
+	public ArrayList<UUID> getReadLaterQuestions() {
+		return getItems(readlaterfilename);
+	}
+	
 	
 	String readlaterfilename = "readlaterlist";
 	
 	public void markQuestionReadLater(UUID u) {
-
-
-		
 		List<UUID> appendlist = getItems(readlaterfilename);
 		appendlist.add(u);
 		saveItems(appendlist, readlaterfilename);
