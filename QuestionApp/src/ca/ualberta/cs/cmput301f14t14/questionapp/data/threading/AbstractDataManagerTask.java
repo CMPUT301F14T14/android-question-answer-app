@@ -1,6 +1,9 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data.threading;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AbstractEvent;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -47,5 +50,11 @@ public abstract class AbstractDataManagerTask<S,T,V> extends AsyncTask<S,T,V> {
 			return;
 		}
 		callback.run(v);
+	}
+	
+	/* Log the pushDelayed event to the bus, and start the uploader service */
+	protected void tryPushLater(AbstractEvent e) {
+		EventBus.getInstance().addEvent(e);
+		DataManager.getInstance(getContext()).startUploaderService();
 	}
 }

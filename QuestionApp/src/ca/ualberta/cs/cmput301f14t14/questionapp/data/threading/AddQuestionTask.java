@@ -25,7 +25,7 @@ public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Voi
 		try {
 			remote.putQuestion(q);
 		} catch (IOException e) {
-			EventBus.getInstance().addEvent(new QuestionPushDelayedEvent(q));
+			tryPushLater(new QuestionPushDelayedEvent(q));
 		}
 		try {
 			// All questions created by the user should be saved locally
