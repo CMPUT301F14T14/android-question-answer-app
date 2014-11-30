@@ -4,48 +4,58 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-   
     <EditText
         android:id="@+id/add_question_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/add_question_title_hint"
-        android:inputType="textAutoCorrect"
-        />
-    
+        android:inputType="textAutoCorrect" />
+
     <EditText
         android:id="@+id/add_question_body"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="top|left"
         android:hint="@string/add_question_body_hint"
         android:inputType="textMultiLine"
-        android:gravity="top|left"
-        android:scrollbars="vertical"
-        android:singleLine="false"
         android:minLines="14"
-        />
+        android:scrollbars="vertical"
+        android:singleLine="false" />
 
-    <ImageButton
-        android:id="@+id/imageButton1"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_camera" 
-        android:onClick="takeAPhoto"/>
+        android:layout_height="116dp"
+        android:gravity="start"
+        android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:src="@drawable/ic_action_image" />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_action_image" />
 
-    <ImageButton
-        android:id="@+id/add_question_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_image"
-        android:contentDescription="@string/add_question_image"
-        android:onClick="addImage"
-        />
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:onClick="takeAPhoto"
+            android:src="@android:drawable/ic_menu_camera" />
+
+        <ImageButton
+            android:id="@+id/add_question_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/imageButton1"
+            android:contentDescription="@string/add_question_image"
+            android:onClick="addImage"
+            android:src="@drawable/ic_action_image" />
+
+    </RelativeLayout>
 
 </LinearLayout>

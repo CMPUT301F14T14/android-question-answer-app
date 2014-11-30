@@ -15,6 +15,8 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -82,9 +84,12 @@ implements IView{
 		super.onResume();
 		MainActivity ma = (MainActivity) getActivity();
 		img = ma.img;
+		
 		if(img != null){
+			Bitmap bp = BitmapFactory.decodeFile(img.getLocalUrl().getPath());
+			
 			ImageView imgV = (ImageView) text.findViewById(R.id.imageView1);
-			imgV.setImageDrawable(Drawable.createFromPath(img.getLocalUrl().getPath()));
+			imgV.setImageBitmap(bp);
 		}
 		}
 		
