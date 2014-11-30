@@ -26,13 +26,11 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.AnswerDeserializer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.CommentDeserializer;
-
-
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.ImageDeserializer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.ImageSerializer;
-
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.QuestionDeserializer;
 
 /**
