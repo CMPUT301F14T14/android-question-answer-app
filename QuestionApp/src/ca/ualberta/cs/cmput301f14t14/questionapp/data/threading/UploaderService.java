@@ -18,6 +18,10 @@ public class UploaderService extends Service {
 	private DataManager dm = null;
 	private Context context = null;
 	
+	//Had to make this static. Little bit of evil hackery to get "singleton"-like behavior.
+	//See DataManager.java:startUploaderService() for the other half of this spaghetti.
+	public static boolean isServiceAlreadyRunning = false;
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		// This service does not need to communicate with the rest of the app 
@@ -30,6 +34,13 @@ public class UploaderService extends Service {
 		//Set up class variables on creation of service
 		context = getApplicationContext();
 		dm = DataManager.getInstance(context);
+		/* Set */ isServiceAlreadyRunning = true;
+	}
+	
+	@Override
+	public void onDestroy(){
+		//Clean up.
+		isServiceAlreadyRunning = false;
 	}
 	
 	@Override
@@ -37,11 +48,10 @@ public class UploaderService extends Service {
 	    // Flags is useful for services restarted. 
 		// startId is for A unique integer representing this 
 		//    specific request to start. Use with stopSelfResult(int)
+
+
 		
-		//TODO: We should allow this service to be started only once. Allowing multiple things
-		//to start this service is evil. 
-		
-		//Next, we need to create a thread to run completeQueuedEvents in.
+		//We need to create a thread to run completeQueuedEvents in.
 		(new Thread(new QueueClearer())).start();
 		
 	    // We want this service to continue running until it is explicitly

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import android.content.Context;
+import android.content.Intent;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AbstractEvent;
@@ -22,6 +23,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetCommentListTa
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionCommentTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionListTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.GetQuestionTask;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.UploaderService;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.UpvoteQuestionTask;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
@@ -76,11 +78,21 @@ public class DataManager {
 		if (instance == null){
 			instance = new DataManager(context.getApplicationContext());
 			instance.initDataStores();
+			
+			
 		}
 		
 		return instance;
 	}
-	
+	/**
+	 * Starts the uploader service that copies cached creations in local to remote.
+	 */
+	private void startUploaderService() {
+		if (UploaderService.isServiceAlreadyRunning == false) {
+			Intent i = new Intent(context, UploaderService.class);
+			context.startService(i);
+		}
+	}
 	
 	
 	//View Interface Begins

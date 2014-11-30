@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import android.content.Intent;
+
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.events.AbstractEvent;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.UploaderService;
 
 public class EventBus {
 	//This is a singleton event bus that contains events.
@@ -19,14 +22,7 @@ public class EventBus {
 	
 	public synchronized void addEvent(AbstractEvent e){ 
 		//Need addEvent to be a synchronized event (one thread at a time) because youngestevent
-		//needs to be consistent.
-		
-		
-		//On the note of when to start the uploader service:
-		//If we have gotten to this point, then somewhere in the code an upload failed.
-		//So, we should start the service now.
-		
-		
+		//needs to be consistent.		
 		try {
 			queue.put(e);
 			youngestevent = e;
