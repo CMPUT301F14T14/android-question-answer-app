@@ -75,12 +75,7 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 			}
 			
 		});
-		return convertView;
-		
-				
-				
-		
-		
+		return convertView;	
 	}
 
 	@Override
