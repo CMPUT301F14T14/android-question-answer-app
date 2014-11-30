@@ -33,6 +33,11 @@ public class CommentListAdapter<T extends ICommentable> extends ArrayAdapter<Com
 	}
 
 	@Override
+	public Comment<T> getItem(int position) {
+	   return super.getItem(super.getCount() - position - 1);
+	}
+	
+	@Override
 	public void update() {
 		//This is proper MVC
 		notifyDataSetChanged();
