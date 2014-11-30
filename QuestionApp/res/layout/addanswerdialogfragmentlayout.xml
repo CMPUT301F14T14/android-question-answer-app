@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_image"
         android:contentDescription="@string/add_answer_image"
+        android:onClick="addImage"
         />
     
 

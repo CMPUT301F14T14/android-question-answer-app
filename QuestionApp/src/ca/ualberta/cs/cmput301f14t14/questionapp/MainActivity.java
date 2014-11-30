@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,7 +10,9 @@ import java.util.UUID;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddImage;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddQuestionDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.QuestionListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.SearchQueryDialogFragment;
@@ -18,15 +21,23 @@ import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 public class MainActivity extends Activity {
 
@@ -37,6 +48,11 @@ public class MainActivity extends Activity {
 	private ClientData cd = null;
 	private Callback<List<Question>> listCallback = null;
 	private Callback<Question> favouriteQuestionCallback = null;
+	
+	private AddImage AI = new AddImage();
+	private static final int CAMERA =  1;
+	private static final int ADD_IMAGE = 2;
+	public Image img;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +73,7 @@ public class MainActivity extends Activity {
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getActionBar().setListNavigationCallbacks(sortAdapter, changeSort());
-                
+              
         dataManager = DataManager.getInstance(this);
         
         // if first time logging in, prompt user to set username
@@ -317,5 +333,28 @@ public class MainActivity extends Activity {
 		intent.putExtra("QUERY_STRING", q);
 		startActivity(intent);
     }
+	
+	public void takeAPhoto(View v){
+		Intent intent = AI.takeAPhoto();
+		startActivityForResult(intent, CAMERA);
+	}
+	
+	public void addImage(View v){
+		Intent intent = AI.addPhoto();
+		startActivityForResult(intent.createChooser(intent, "Select Image"), ADD_IMAGE);
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == CAMERA){
+			img = new Image(AI.getImgUri() ,null);
+		}
+		else if(requestCode == ADD_IMAGE){
+			img = new Image(data.getData(), null);
+		}
+		
+	}
+
     
 }
