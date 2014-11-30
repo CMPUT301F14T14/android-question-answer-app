@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,19 +28,19 @@
         </activity>
         <activity
             android:name=".WelcomeScreenActivity"
-            android:label="@string/title_activity_welcomes_screen" >
+            android:label="@string/title_activity_welcomes_screen" android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".AnswerViewActivity"
-            android:label="@string/title_activity_answer_view" >
+            android:label="@string/title_activity_answer_view" android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".QuestionActivity"
-            android:label="@string/title_activity_question" >
+            android:label="@string/title_activity_question" android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".SearchActivity"
-            android:label="@string/title_activity_search" >
+            android:label="@string/title_activity_search" android:screenOrientation="portrait">
         </activity>
     </application>
 
