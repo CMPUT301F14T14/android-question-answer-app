@@ -37,6 +37,9 @@ public class AddAnswerTask extends AbstractDataManagerTask<Answer, Void, Void>{
 			remote.putAnswer(ans);
 		} catch (IOException e) {
 			Log.d("AddAnswerTask", "Failed to push answer remotely");
+			if (EventBus.getInstance().getEventQueue().contains(new AnswerPushDelayedEvent(ans))){
+				return null;
+			}
 			tryPushLater(new AnswerPushDelayedEvent(ans));
 		}
 		try {
