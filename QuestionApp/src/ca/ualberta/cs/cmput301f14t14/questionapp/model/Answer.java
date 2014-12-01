@@ -33,7 +33,7 @@ public class Answer extends Model implements Serializable, ICommentable {
 		this.author = null;
 		this.image = null;
 		this.parent = null;
-		this.setLocation(null);
+		this.setLocation((LocationHolder) null);
 		this.commentList = new ArrayList<UUID>();
 		setDate(new Date());
 		upvotes = 0;
@@ -168,6 +168,10 @@ public class Answer extends Model implements Serializable, ICommentable {
 			return null;
 		}
 		return location.getLocation();
+	}
+
+	public void setLocation(LocationHolder lh) {
+		this.location = lh;
 	}
 
 	public void setLocation(Location location) {

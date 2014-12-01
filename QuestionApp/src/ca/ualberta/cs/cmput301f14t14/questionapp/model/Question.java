@@ -188,6 +188,10 @@ public class Question extends Model implements Serializable, ICommentable {
 		return location.getLocation();
 	}
 
+	public void setLocation(LocationHolder lh) {
+		this.location = lh;
+	}
+
 	public void setLocation(Location location) {
 		this.location = LocationHolder.getLocationHolder(location);
 	}

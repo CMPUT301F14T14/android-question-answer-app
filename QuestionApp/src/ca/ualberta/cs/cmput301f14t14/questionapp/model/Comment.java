@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-import com.google.gson.annotations.SerializedName;
-
 import android.location.Location;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
@@ -98,6 +96,10 @@ public class Comment<T extends ICommentable> implements Serializable {
 			return null;
 		}
 		return location.getLocation();
+	}
+
+	public void setLocation(LocationHolder lh) {
+		this.location = lh;
 	}
 
 	public void setLocation(Location location) {

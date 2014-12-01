@@ -10,6 +10,7 @@ import java.util.UUID;
 import android.content.Context;
 import android.util.Log;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.LocationHolder;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 import com.google.gson.JsonArray;
@@ -53,6 +54,7 @@ public class QuestionDeserializer implements JsonDeserializer<Question> {
 		question.setAuthor(jsonObject.get("author").getAsString());
 		question.setDate((Date) context.deserialize(jsonObject.get("date"), Date.class));
 		question.setUpvotes(jsonObject.get("upvotes").getAsInt());
+		question.setLocation((LocationHolder) context.deserialize(jsonObject.get("location"), LocationHolder.class));
 		
 		// Populate comment list
 		List<UUID> commentList = new ArrayList<UUID>();
