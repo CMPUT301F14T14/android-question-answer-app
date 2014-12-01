@@ -19,7 +19,7 @@
         android:id="@+id/appDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/_quot_the_friendly_qa_app_quot_"
+        android:text="@string/aboutbox_tagline"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
