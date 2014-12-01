@@ -96,7 +96,7 @@ public class Question extends Model implements Serializable, ICommentable {
 		return image;
 	}
 
-	private void setImage(Image image) {
+	public void setImage(Image image) {
 		this.image = image;
 	}
 	
