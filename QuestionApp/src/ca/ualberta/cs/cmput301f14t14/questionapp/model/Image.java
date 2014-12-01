@@ -1,20 +1,14 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Iterator;
-import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.widget.ImageView;
 
 public class Image implements Serializable {
 
@@ -34,7 +28,7 @@ public class Image implements Serializable {
 			imageData = null;
 		}
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		b.compress(Bitmap.CompressFormat.JPEG, 10, stream);
+		b.compress(Bitmap.CompressFormat.JPEG, 50, stream);
 		imageData = stream.toByteArray();
 	}
 
@@ -64,9 +58,11 @@ public class Image implements Serializable {
 		return bmp;
 	}
 	
-	public Image compress(){
-		
-		return null;
+	public byte[] compress(Bitmap b){
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		b.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+		byte[] imageD = stream.toByteArray();
+		return imageD;
 	}
 
 }

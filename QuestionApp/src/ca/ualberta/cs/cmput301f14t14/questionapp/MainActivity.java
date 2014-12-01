@@ -388,9 +388,9 @@ public class MainActivity extends Activity {
 
 				}
 			}
-		if(img.getSize() > MAX_SIZE){
-			img = null;
-			Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
+		//long num = img.getSize();
+		while(img.getSize() > MAX_SIZE){
+			img.setImageData(img.compress(img.getBitmap()));
 		}
 		}
 	}
