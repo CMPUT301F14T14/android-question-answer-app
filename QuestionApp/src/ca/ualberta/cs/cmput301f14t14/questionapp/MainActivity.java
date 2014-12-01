@@ -276,6 +276,7 @@ public class MainActivity extends Activity {
 			break;
 		}
 		case 8:{
+			// Sort by read later
 			final List<UUID> readQ = cd.getReadLaterQuestions();
 			readLaterQuestionCallback = new Callback<Question>(){
 

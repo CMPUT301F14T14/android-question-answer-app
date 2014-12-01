@@ -1,6 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddCommentDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.ViewCommentDialogFragment;
@@ -154,6 +156,14 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 			commentList.clear();
 			commentList.addAll(list);
 			commentListAdapter.update();
+			commentListAdapter.sort(new Comparator<Comment<Answer>>() {
+
+				@Override
+				public int compare(Comment<Answer> c1, Comment<Answer> c2) {
+					return c2.getDate().compareTo(c1.getDate());
+				}
+				
+			});
 		}
 		
 	}
