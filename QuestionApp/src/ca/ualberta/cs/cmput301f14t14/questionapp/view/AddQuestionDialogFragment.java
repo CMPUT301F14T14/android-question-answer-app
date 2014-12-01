@@ -16,10 +16,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -29,7 +34,6 @@ implements IView{
 	private LayoutInflater inflater;
 	private View text;
 	private Image img = null;
-	
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
@@ -52,14 +56,26 @@ implements IView{
 							DataManager datamanager = DataManager.getInstance(context);
 							EditText title = (EditText) text.findViewById(R.id.add_question_title);
 							EditText body = (EditText) text.findViewById(R.id.add_question_body);
+							CheckBox locationBox = (CheckBox) text.findViewById(R.id.questionLocationBox);
 							String bd = body.getText().toString();
 							String tle = title.getText().toString();
+							Location loc = null;
 							if (bd.isEmpty() || tle.isEmpty()) {
 								Toast.makeText(getActivity(), "Questions must have both a valid title and a valid body", Toast.LENGTH_LONG).show();
 								return;
 							}
+							if(locationBox.isChecked()){
+								LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+								if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+									loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+								}
+								else{
+									Toast.makeText(context, "Please enable GPS to use Location Service", Toast.LENGTH_SHORT).show();
+								}
+							}
 							ClientData cd = new ClientData(context);
 							Question newQues = new Question(tle, bd, cd.getUsername(), img);
+							newQues.setLocation(loc);
 							datamanager.addQuestion(newQues, null);
 							MainActivity a = (MainActivity) getActivity();
 							//Populate the list with what we have.
@@ -75,7 +91,8 @@ implements IView{
 						}
 					}
 					);
-	return builder.create();				
+		
+		return builder.create();				
 	}
 	
 	public void onResume(){

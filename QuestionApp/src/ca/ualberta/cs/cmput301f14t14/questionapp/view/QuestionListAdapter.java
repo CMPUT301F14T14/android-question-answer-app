@@ -37,13 +37,18 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 		TextView qAuthor = (TextView) convertView.findViewById(R.id.question_username);
 		TextView qDate = (TextView) convertView.findViewById(R.id.question_date);
 		TextView qUpVotes = (TextView) convertView.findViewById(R.id.question_upvotes);
+		TextView qLocation = (TextView) convertView.findViewById(R.id.questionLocation);
 
 		qTitle.setText(q.getTitle());
 		qText.setText(q.getBody());
 		qAuthor.setText(q.getAuthor());
 		qDate.setText(q.getDate().toString());
 		qUpVotes.setText(q.getUpvotes().toString());
-
+		if(q.getLocation() != null){
+			qLocation.setText(q.getLocation().toString());
+		}else{
+			qLocation.setVisibility(View.INVISIBLE);
+		}
 		
 		final ImageButton readLaterbutton = (ImageButton)convertView.findViewById(R.id.list_question_read_later);
 		readLaterbutton.setTag(q);

@@ -27,8 +27,12 @@ public class AnswerListAdapter extends ArrayAdapter<Answer> implements IView {
 		Answer a = getItem(position);
 		TextView aText = (TextView) convertView.findViewById(R.id.answer_body);
 		TextView aAuthor = (TextView) convertView.findViewById(R.id.answer_username);
+		TextView aLocation = (TextView) convertView.findViewById(R.id.answerLocationText);
 		aText.setText(a.getBody());
 		aAuthor.setText(a.getAuthor());
+		if(a.getLocation() != null){
+			aLocation.setText(a.getLocation().toString());
+		}
 		
 		final ImageButton readLaterbutton = (ImageButton)convertView.findViewById(R.id.list_answer_read_later);
 		readLaterbutton.setTag(a);

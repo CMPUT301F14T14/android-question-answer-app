@@ -25,12 +25,26 @@
         android:minLines="14"
         />
 
-    <ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_camera" 
-        android:onClick="takeAPhoto"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="takeAPhoto"
+            android:src="@android:drawable/ic_menu_camera" />
+
+        <ImageButton
+            android:id="@+id/add_question_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/add_question_image"
+            android:onClick="addImage"
+            android:src="@drawable/ic_action_image" />
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView1"
@@ -39,13 +53,10 @@
         android:gravity="right"
         android:src="@drawable/ic_action_image" />
 
-    <ImageButton
-        android:id="@+id/add_question_image"
+    <CheckBox
+        android:id="@+id/questionLocationBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_image"
-        android:contentDescription="@string/add_question_image"
-        android:onClick="addImage"
-        />
+        android:text="Include Location?" />
 
 </LinearLayout>

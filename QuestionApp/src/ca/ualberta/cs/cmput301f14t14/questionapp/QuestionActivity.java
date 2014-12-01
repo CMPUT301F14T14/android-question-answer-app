@@ -20,6 +20,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.ViewCommentDialogFragment;
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -192,11 +193,14 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		dialogFragment.show(getFragmentManager(), "addanswerdialogfragmentlayout");
 	}
 	
-	public void addAnswerCallback(String body, Image img) {
+	public void addAnswerCallback(String body, Image img, Location location) {
 		ClientData cd = new ClientData(this);
 		Answer answer = null;
 		try {
 			answer = new Answer(question.getId(), body, cd.getUsername(), img);
+			if(location != null){
+				answer.setLocation(location);
+			}
 		} catch (IllegalArgumentException e) {
 			Toast.makeText(getApplicationContext(), R.string.add_answer_err_invalid, Toast.LENGTH_SHORT).show();
 		}
