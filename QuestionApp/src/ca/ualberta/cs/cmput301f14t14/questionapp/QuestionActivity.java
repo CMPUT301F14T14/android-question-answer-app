@@ -384,7 +384,14 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == Activity.RESULT_OK){
 			if (requestCode == CAMERA){
-				img = new Image(this, AI.getImgUri());
+				if(img.getSize() > MAX_SIZE){
+					img = null;
+					Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
+				}
+				else{
+					img = new Image(this, AI.getImgUri());
+				}
+				
 			}
 			else if(requestCode == ADD_IMAGE){
 				Uri uri = data.getData();
@@ -392,10 +399,7 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 
 				}
 			}
-	if(img.getSize() > MAX_SIZE){
-		img = null;
-		Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
-	}
+
 		
 		
 	}

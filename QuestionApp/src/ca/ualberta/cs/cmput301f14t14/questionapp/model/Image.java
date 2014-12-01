@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-
+import java.util.Iterator;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -62,6 +62,11 @@ public class Image implements Serializable {
 				getImageData().length);
 		bmp = Bitmap.createScaledBitmap(bmp, width, height, true);
 		return bmp;
+	}
+	
+	public Image compress(){
+		
+		return null;
 	}
 
 }
