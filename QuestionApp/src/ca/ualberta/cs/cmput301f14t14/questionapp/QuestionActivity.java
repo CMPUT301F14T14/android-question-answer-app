@@ -314,7 +314,8 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 			date.setText(question.getDate().toString());
 			dataManager.getAnswerList(question, new AnswerListUpdateCallback());
 			dataManager.getCommentList(question, new CommentListUpdateCallback());
-			
+			ImageView imgV = (ImageView) findViewById(R.id.questionImage);
+			imgV.setImageBitmap(q.getImage().getBitmap(q.getImage()));
 			// Set status of favorite button
 			ClientData cd = new ClientData(getApplicationContext());
 			if (cd.getFavoriteQuestions().contains(question.getId())) {
@@ -383,12 +384,13 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		//long len = imageFile.length();
 		if(resultCode == Activity.RESULT_OK){
 			if (requestCode == CAMERA){
-				img = new Image(AI.getImgUri(), null, 1);
+				img = new Image(this, AI.getImgUri());
 			}
 			else if(requestCode == ADD_IMAGE){
 				Uri uri = data.getData();
-				img = new Image(uri, null, 2);
+				img = new Image(this, uri);
 
+				}
 			}
 		}
 		//else{
@@ -398,4 +400,4 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		
 	}
  
-}
+

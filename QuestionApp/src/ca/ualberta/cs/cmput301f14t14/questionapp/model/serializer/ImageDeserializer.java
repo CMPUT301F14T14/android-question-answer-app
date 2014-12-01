@@ -2,8 +2,7 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer;
 
 import java.lang.reflect.Type;
 
-import android.content.Context;
-import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
+import android.util.Base64;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 
 import com.google.gson.JsonDeserializationContext;
@@ -19,9 +18,8 @@ public class ImageDeserializer implements JsonDeserializer<Image>{
 			JsonDeserializationContext context) throws JsonParseException {
 		final JsonObject jsonObject = json.getAsJsonObject();
 		String imageString = jsonObject.get("image").getAsString();
-		byte[] b = imageString.getBytes();
-		Image image= new Image(null, b, 0);
-		return image;
+		byte[] b = Base64.decode(imageString, Base64.DEFAULT);
+		return new Image(b);
 	}
 
 }

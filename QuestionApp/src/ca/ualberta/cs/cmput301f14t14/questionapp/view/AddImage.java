@@ -55,7 +55,8 @@ public class AddImage {
 		return intent;
 	}
 	
-	public Bitmap getBitmap(Image img) {
+
+	/*public Bitmap getBitmap(Image img) {
 		File imgFile = new File(img.getLocalUrl().getPath());
 		long len = imgFile.length();
 	    int width=100;
@@ -65,5 +66,5 @@ public class AddImage {
 		Bitmap bmp = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), op);
 		bmp=Bitmap.createScaledBitmap(bmp, width,height, true);
 		return bmp;
-	}
+}*/
 }

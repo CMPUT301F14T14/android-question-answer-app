@@ -28,7 +28,7 @@ import android.widget.Toast;
  * Fragment that allows inputting data to create an answer.
  */
 public class AddAnswerDialogFragment extends DialogFragment {
-	private Image img = new Image(null, null, 0);
+	private Image img;
 	private View text;
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -74,19 +74,13 @@ public class AddAnswerDialogFragment extends DialogFragment {
 		super.onResume();
 		QuestionActivity ma = (QuestionActivity) getActivity();
 		img = ma.img;
-		AddImage AI = new AddImage();
-		if(img != null){
-		    ImageView imgV = (ImageView) text.findViewById(R.id.imageViewAns);
-			if(img.getType() == 1){
-				Bitmap bmp = AI.getBitmap(img);
-				imgV.setImageBitmap(bmp);
-			}
-			else if(img.getType() == 2){
-				imgV.setImageURI(img.getLocalUrl());
-			}
-			
-		}
+
+		if (img != null) {
+			ImageView imgV = (ImageView) text.findViewById(R.id.imageViewAns);
+			Bitmap bmp = img.getBitmap(img);
+			imgV.setImageBitmap(bmp);
 		}
 		
 
+}
 }
