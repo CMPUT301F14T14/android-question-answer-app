@@ -169,7 +169,7 @@ public class MainActivity extends Activity {
 			}
 		case 3:{
 			//Sort by Favourites
-			final List<UUID> favQ = cd.getFavoriteQuestions();
+			final List<UUID> favQ = cd.getFavorites();
 			favouriteQuestionCallback = new Callback<Question>(){
 
 				@Override
@@ -280,7 +280,7 @@ public class MainActivity extends Activity {
 		}
 		case 8:{
 			// Sort by read later
-			final List<UUID> readQ = cd.getReadLaterQuestions();
+			final List<UUID> readQ = cd.getReadLaterItems();
 			readLaterQuestionCallback = new Callback<Question>(){
 
 				@Override

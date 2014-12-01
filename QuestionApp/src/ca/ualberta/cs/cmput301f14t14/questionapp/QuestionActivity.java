@@ -283,16 +283,16 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
 		Favbutton.setImageResource(R.drawable.ic_fav_highlighted);
 		ClientData cd = new ClientData(this);
-		if (cd.getFavoriteQuestions().contains(question.getId())) {
+		if (cd.getFavorites().contains(question.getId())) {
 			//Question is already favorited.
-			List<UUID> favq = cd.getFavoriteQuestions();
+			List<UUID> favq = cd.getFavorites();
 			favq.remove(question.getId());
-			cd.saveFavoriteQuestions(favq);
+			cd.saveFavorites(favq);
 			Favbutton.setImageResource(R.drawable.ic_fav_reg);
 		} else {
-			List<UUID> favq = cd.getFavoriteQuestions();
+			List<UUID> favq = cd.getFavorites();
 			favq.add(question.getId());
-			cd.saveFavoriteQuestions(favq);
+			cd.saveFavorites(favq);
 			Favbutton.setImageResource(R.drawable.ic_fav_highlighted);
 		}
 
@@ -321,7 +321,7 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 			}
 			// Set status of favorite button
 			ClientData cd = new ClientData(getApplicationContext());
-			if (cd.getFavoriteQuestions().contains(question.getId())) {
+			if (cd.getFavorites().contains(question.getId())) {
 				//Question is already favorited.
 				//Set the star to be highlighted on create.
 				ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
