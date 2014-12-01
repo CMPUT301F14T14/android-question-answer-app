@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -292,7 +293,8 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 			upvotes.setText(question.getUpvotes().toString());
 			TextView date = (TextView) findViewById(R.id.questionDate);
 			date.setText(question.getDate().toString());
-
+			ImageView img = (ImageView) findViewById(R.id.questionImage);
+			
 			dataManager.getAnswerList(question, new AnswerListUpdateCallback());
 			dataManager.getCommentList(question, new CommentListUpdateCallback());
 

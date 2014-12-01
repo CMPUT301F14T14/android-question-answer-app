@@ -88,9 +88,21 @@ implements IView{
 		if(img != null){
 			File imgFile = new File(img.getLocalUrl().getPath());
 			long len = imgFile.length();
+		    int width=100;
+		    int height=100;
+		    ImageView imgV = (ImageView) text.findViewById(R.id.imageView1);
+			if(img.getType() == 1){
+				BitmapFactory.Options op = new BitmapFactory.Options();
+				op.inPreferredConfig = Bitmap.Config.ARGB_8888;
+				Bitmap bmp = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), op);
+				bmp=Bitmap.createScaledBitmap(bmp, width,height, true);
+				imgV.setImageBitmap(bmp);
+			}
+			else if(img.getType() == 2){
+				imgV.setImageURI(img.getLocalUrl());
+			}
 			
-			ImageView imgV = (ImageView) text.findViewById(R.id.imageView1);
-			//imgV.setImageBitmap(bp);
+			
 		}
 		}
 		

@@ -17,13 +17,21 @@ public class Image implements Serializable {
 
 	private Uri mLocalUrl;
 	private byte[] imageData;
+	private int TYPE;
 	
-	public Image(Uri local, byte[] image) {
+	public Image(Uri local, byte[] image, int cTYPE) {
 		setmLocalUrl(local);
 		setImageData(image);
+		setType(cTYPE);
 	}
 
-
+	private void setType(int cTYPE){
+		TYPE = cTYPE;
+	}
+	public int getType(){
+		return TYPE;
+	}
+	
 	private void setmLocalUrl(Uri local) {
 		// TODO Auto-generated method stub
 		mLocalUrl = local;
