@@ -290,8 +290,8 @@ public class DataManager {
 			List<Address> la = null;
 			try {
 				la = g.getFromLocation(l.getLatitude(), l.getLongitude(), 1);
-			} catch (IOException e) {
-				//It's due in 14 hours! FML!!!!
+			} catch (Exception e) {
+				return "a Universe";
 			}
 			if (la != null && la.size() > 0){
 				return la.get(0).getLocality();

@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.LocationHolder;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -28,6 +29,7 @@ public class CommentDeserializer<T extends ICommentable> implements JsonDeserial
 		comment.setBody(jsonObject.get("body").getAsString());
 		comment.setAuthor(jsonObject.get("author").getAsString());
 		comment.setDate((Date) context.deserialize(jsonObject.get("date"), Date.class));
+		comment.setLocation((LocationHolder) context.deserialize(jsonObject.get("location"), LocationHolder.class));
 		return comment;
 	}
 

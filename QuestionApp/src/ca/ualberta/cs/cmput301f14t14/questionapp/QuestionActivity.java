@@ -236,11 +236,14 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 	}
 
     @Override
-	public void addCommentCallback(String text) {
+	public void addCommentCallback(String text, Location loc) {
 		ClientData cd = new ClientData(this);
 		Comment<Question> comment = null;
 		try {
 			comment = new Comment<Question>(question.getId(), text, cd.getUsername());
+			if(loc != null){
+				comment.setLocation(loc);
+			}
 		} catch (IllegalArgumentException e) {
 			Toast.makeText(getApplicationContext(), R.string.add_comment_err_invalid, Toast.LENGTH_SHORT).show();
 		}

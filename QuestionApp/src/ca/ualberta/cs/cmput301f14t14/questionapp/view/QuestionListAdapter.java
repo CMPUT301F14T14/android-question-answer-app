@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 
 public class QuestionListAdapter extends ArrayAdapter<Question> implements IView {
@@ -45,11 +46,8 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 		qDate.setText(q.getDate().toString());
 		qUpVotes.setText(q.getUpvotes().toString());
 		if(q.getLocation() != null){
-			qLocation.setText(q.getLocation().toString());
-		}else{
-			qLocation.setVisibility(View.INVISIBLE);
+			qLocation.setText("near: " + DataManager.getInstance(getContext()).getCityFromLocation(q.getLocation()));
 		}
-		
 		final ImageButton readLaterbutton = (ImageButton)convertView.findViewById(R.id.list_question_read_later);
 		readLaterbutton.setTag(q);
 		String readlaterfilename = "readlaterlist";
