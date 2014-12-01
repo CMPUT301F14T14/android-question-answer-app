@@ -97,30 +97,24 @@ implements IView{
 		return builder.create();				
 	}
 	
-	public void onResume(){
+	public void onResume() {
 		super.onResume();
 		MainActivity ma = (MainActivity) getActivity();
 		img = ma.img;
-		
-		if(img != null){
-			File imgFile = new File(img.getLocalUrl().getPath());
-			long len = imgFile.length();
-		    int width=100;
-		    int height=100;
-		    ImageView imgV = (ImageView) text.findViewById(R.id.imageView1);
-			if(img.getType() == 1){
-				BitmapFactory.Options op = new BitmapFactory.Options();
-				op.inPreferredConfig = Bitmap.Config.ARGB_8888;
-				Bitmap bmp = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), op);
-				bmp=Bitmap.createScaledBitmap(bmp, width,height, true);
-				imgV.setImageBitmap(bmp);
-			}
-			else if(img.getType() == 2){
-				imgV.setImageURI(img.getLocalUrl());
-			}
-			
+
+		if (img != null) {
+			int width = 100;
+			int height = 100;
+			ImageView imgV = (ImageView) text.findViewById(R.id.imageView1);
+			BitmapFactory.Options op = new BitmapFactory.Options();
+			op.inPreferredConfig = Bitmap.Config.ARGB_8888;
+			Bitmap bmp = BitmapFactory.decodeByteArray(img.getImageData(), 0,
+					img.getImageData().length);
+			bmp = Bitmap.createScaledBitmap(bmp, width, height, true);
+			imgV.setImageBitmap(bmp);
+
 		}
-		}
+	}
 		
 
 }

@@ -373,7 +373,7 @@ public class MainActivity extends Activity {
 	
 	public void addImage(View v){
 		Intent intent = AI.addPhoto();
-		startActivityForResult(intent.createChooser(intent, "Select Image"), ADD_IMAGE);
+		startActivityForResult(Intent.createChooser(intent, "Select Image"), ADD_IMAGE);
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -384,11 +384,11 @@ public class MainActivity extends Activity {
 		//long len = imageFile.length();
 		if(resultCode == Activity.RESULT_OK){
 			if (requestCode == CAMERA){
-				img = new Image(AI.getImgUri(), null, 1);
+				img = new Image(this, AI.getImgUri());
 			}
 			else if(requestCode == ADD_IMAGE){
 				Uri uri = data.getData();
-				img = new Image(uri, null, 2);
+				img = new Image(this, uri);
 
 			}
 		}
