@@ -9,12 +9,11 @@ import java.util.UUID;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
 
 /**
  * This class handles data that only exists on the client, and is
  * never transferred to the web service.
- * 
+ *
  * The back-end for this data store is Android SharedPreferences.
  */
 public class ClientData {
@@ -53,55 +52,87 @@ public class ClientData {
 		e.apply();
 	}
 
-	public void saveFavoriteQuestions(List<UUID> list){
-		saveItems(list, VAL_FAVORITES_LIST);
-	}
-	
+	/**
+	 * Get a list UUIDs for favorite items
+	 * @return List of UUIDs
+	 */
 	public List<UUID> getFavoriteQuestions() {
 		return getItems(VAL_FAVORITES_LIST);
 	}
-	
+
+	/**
+	 * Set the list of UUIDs for favorite items
+	 * @param list List of UUIDs
+	 */
+	public void saveFavoriteQuestions(List<UUID> list){
+		saveItems(list, VAL_FAVORITES_LIST);
+	}
+
+	/**
+	 * Set the list of UUIDs for items to read later
+	 * @return List of UUIDs
+	 */
 	public List<UUID> getReadLaterQuestions() {
 		return getItems(VAL_READ_LATER_LIST);
 	}
-	
+
+	/**
+	 * Add a UUID to the read later list
+	 * @param u UUID
+	 */
 	public void markQuestionReadLater(UUID u) {
 		List<UUID> appendlist = getItems(VAL_READ_LATER_LIST);
 		appendlist.add(u);
 		saveItems(appendlist, VAL_READ_LATER_LIST);
 	}
-	
+
+	/**
+	 * Remove a UUID from the read later list
+	 * @param u UUID
+	 */
 	public void unmarkQuestionReadLater(UUID u){
 		List<UUID> list = getItems(VAL_READ_LATER_LIST);
 		list.remove(u);
 		saveItems(list,VAL_READ_LATER_LIST);
 	}
+
+	/**
+	 * Check if an item's UUID is in the read later list.
+	 * 
+	 * A user will still have to call the DataManager to get
+	 * the desired item.
+	 * @param id UUID of item
+	 * @return True if the item is in the list, false otherwise.
+	 */
 	public boolean isQuestionReadLater(UUID id) {
-		/** Call this to see if your desired question is
-		 *  marked as read later. After that, the user will
-		 *  call the datamanager to get the question itself
-		 */  
 		List<UUID> rllist = getItems(VAL_READ_LATER_LIST);
-		if (rllist.contains(id)){
+		if (rllist.contains(id)) {
 			return true; 
 		} else {
 			return false;
 		}
-
-
 	}
-	
+
+	/**
+	 * Add an item's UUID to the list of items that have been upvoted
+	 * @param id UUID
+	 */
 	public void markItemUpvoted(UUID id) {
 		List<UUID> upvoteList = getItems(VAL_UPVOTED_LIST);
 		upvoteList.add(id);
 		saveItems(upvoteList, VAL_UPVOTED_LIST);
 	}
-	
+
+	/**
+	 * Check that a UUID is in the list of items that have been upvoted
+	 * @param id UUID
+	 * @return True if an item has been upvoted, false otherwise
+	 */
 	public boolean isItemUpvoted(UUID id) {
 		List<UUID> list = getItems(VAL_UPVOTED_LIST);
 		return (list.contains(id)) ? true : false;
 	}
-	
+
 	/**
 	 * Get a list of UUIDs from a named list
 	 * @param name Name of list
