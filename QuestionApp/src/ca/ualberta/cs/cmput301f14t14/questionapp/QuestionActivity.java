@@ -314,8 +314,10 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 			date.setText(question.getDate().toString());
 			dataManager.getAnswerList(question, new AnswerListUpdateCallback());
 			dataManager.getCommentList(question, new CommentListUpdateCallback());
+			if(q.getImage() != null){
 			ImageView imgV = (ImageView) findViewById(R.id.questionImage);
-			imgV.setImageBitmap(q.getImage().getBitmap(q.getImage()));
+			imgV.setImageBitmap(q.getImage().getBitmap());
+			}
 			// Set status of favorite button
 			ClientData cd = new ClientData(getApplicationContext());
 			if (cd.getFavoriteQuestions().contains(question.getId())) {

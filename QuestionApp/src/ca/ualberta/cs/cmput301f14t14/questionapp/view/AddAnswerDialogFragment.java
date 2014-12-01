@@ -56,6 +56,8 @@ public class AddAnswerDialogFragment extends DialogFragment {
 							
 							}
 						}
+						QuestionActivity qa = (QuestionActivity) getActivity();
+						img = qa.img;
 						((QuestionActivity) getActivity()).addAnswerCallback(body.getText().toString(), img, loc);
 					}
 				})
@@ -72,12 +74,12 @@ public class AddAnswerDialogFragment extends DialogFragment {
 	
 	public void onResume(){
 		super.onResume();
-		QuestionActivity ma = (QuestionActivity) getActivity();
-		img = ma.img;
+		QuestionActivity qa = (QuestionActivity) getActivity();
+		img = qa.img;
 
 		if (img != null) {
 			ImageView imgV = (ImageView) text.findViewById(R.id.imageViewAns);
-			Bitmap bmp = img.getBitmap(img);
+			Bitmap bmp = img.getBitmap();
 			imgV.setImageBitmap(bmp);
 		}
 		

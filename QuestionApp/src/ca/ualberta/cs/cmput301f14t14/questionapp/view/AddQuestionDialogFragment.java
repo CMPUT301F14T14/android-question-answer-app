@@ -105,7 +105,7 @@ implements IView{
 
 		if (img != null) {
 			ImageView imgV = (ImageView) text.findViewById(R.id.imageView1);
-			Bitmap bmp = img.getBitmap(img);
+			Bitmap bmp = img.getBitmap();
 			imgV.setImageBitmap(bmp);
 		}
 	}

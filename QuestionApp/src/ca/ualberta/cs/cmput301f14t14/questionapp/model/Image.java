@@ -50,13 +50,13 @@ public class Image implements Serializable {
 		this.imageData = imageData;
 	}
 	
-	public Bitmap getBitmap(Image img) {
+	public Bitmap getBitmap() {
 		int width = 100;
 		int height = 100;
 		BitmapFactory.Options op = new BitmapFactory.Options();
 		op.inPreferredConfig = Bitmap.Config.ARGB_8888;
-		Bitmap bmp = BitmapFactory.decodeByteArray(img.getImageData(), 0,
-				img.getImageData().length);
+		Bitmap bmp = BitmapFactory.decodeByteArray(getImageData(), 0,
+				getImageData().length);
 		bmp = Bitmap.createScaledBitmap(bmp, width, height, true);
 		return bmp;
 	}
