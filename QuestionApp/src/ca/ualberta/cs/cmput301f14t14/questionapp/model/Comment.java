@@ -19,7 +19,7 @@ public class Comment<T extends ICommentable> implements Serializable {
 	private UUID id;
 	private UUID parent;
 	private Date date;
-	private Location location;
+	private LocationHolder location;
 
 	public Comment() {
 		setId(new UUID(0L, 0L));
@@ -95,10 +95,10 @@ public class Comment<T extends ICommentable> implements Serializable {
 	}
 
 	public Location getLocation() {
-		return location;
+		return location.getLocation();
 	}
 
 	public void setLocation(Location location) {
-		this.location = location;
+		this.location = LocationHolder.getLocationHolder(location);
 	}
 }
