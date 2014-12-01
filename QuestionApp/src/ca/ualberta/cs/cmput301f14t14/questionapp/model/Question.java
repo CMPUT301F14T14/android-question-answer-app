@@ -51,7 +51,6 @@ public class Question extends Model implements Serializable, ICommentable {
 		this.setCommentList(new ArrayList<UUID>());
 		upvotes = 0;
 		setDate(new Date());
-		setLocation(null);
 	}
 
 	//Add an answer if it already hasn't been

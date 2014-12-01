@@ -26,6 +26,9 @@ public class LocationHolder implements Serializable {
 	}
 	
 	public static LocationHolder getLocationHolder(Location loc){
+		if (loc == null){
+			return new LocationHolder(0,0);
+		}
 		return new LocationHolder(loc.getLatitude(), loc.getLongitude());
 	}
 }
