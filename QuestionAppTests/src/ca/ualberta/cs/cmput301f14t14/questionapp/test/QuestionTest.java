@@ -106,9 +106,10 @@ public class QuestionTest extends ActivityInstrumentationTestCase2<MainActivity>
 	/**
 	 * UC4 TC4.4- Create Local Question, and push
 	 * to remote server on network restoration
+	 * @throws IOException 
 	 */
 	
-	public void testLocalQuestionCreate() {
+	public void testLocalQuestionCreate() throws IOException {
 		Question q = new Question(title, body, author, image);
 		local.putQuestion(q);
 		UUID id = q.getId();

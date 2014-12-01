@@ -43,7 +43,13 @@ public class RemoteDataStoreTest extends
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Question retrievedQuestion = remoteStore.getQuestion(q.getId());
+		Question retrievedQuestion = null;
+		try {
+			retrievedQuestion = remoteStore.getQuestion(q.getId());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(q, retrievedQuestion);
 	}
 	
