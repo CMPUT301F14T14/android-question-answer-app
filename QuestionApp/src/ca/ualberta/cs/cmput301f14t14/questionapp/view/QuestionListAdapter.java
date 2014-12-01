@@ -45,9 +45,9 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 		qAuthor.setText(q.getAuthor());
 		qDate.setText(q.getDate().toString());
 		qUpVotes.setText(q.getUpvotes().toString());
-		qLocation.setText("near: " + DataManager.getInstance(getContext()).getCityFromLocation(q.getLocation()));
-
-		
+		if(q.getLocation() != null){
+			qLocation.setText("near: " + DataManager.getInstance(getContext()).getCityFromLocation(q.getLocation()));
+		}
 		final ImageButton readLaterbutton = (ImageButton)convertView.findViewById(R.id.list_question_read_later);
 		readLaterbutton.setTag(q);
 		String readlaterfilename = "readlaterlist";

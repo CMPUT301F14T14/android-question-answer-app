@@ -95,6 +95,9 @@ public class Comment<T extends ICommentable> implements Serializable {
 	}
 
 	public Location getLocation() {
+		if(location == null){
+			return null;
+		}
 		return location.getLocation();
 	}
 

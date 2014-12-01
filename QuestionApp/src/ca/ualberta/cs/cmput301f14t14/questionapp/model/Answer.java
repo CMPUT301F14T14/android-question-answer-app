@@ -165,6 +165,9 @@ public class Answer extends Model implements Serializable, ICommentable {
 	}
 
 	public Location getLocation() {
+		if(location == null){
+			return null;
+		}
 		return location.getLocation();
 	}
 

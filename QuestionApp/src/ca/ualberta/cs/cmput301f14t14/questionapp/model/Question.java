@@ -183,6 +183,9 @@ public class Question extends Model implements Serializable, ICommentable {
 	}
 
 	public Location getLocation() {
+		if(location == null){
+			return null;
+		}
 		return location.getLocation();
 	}
 
