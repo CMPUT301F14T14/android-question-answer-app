@@ -10,10 +10,10 @@
 
     <ListView
         android:id="@+id/search_list"
+        android:clickable="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" >
-    </ListView>
+        android:layout_centerVertical="true" />
 
 </LinearLayout>

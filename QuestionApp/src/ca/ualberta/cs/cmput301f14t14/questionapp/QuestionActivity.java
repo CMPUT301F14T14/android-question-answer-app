@@ -262,15 +262,15 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
 		Favbutton.setImageResource(R.drawable.ic_fav_highlighted);
 		ClientData cd = new ClientData(this);
-		if (cd.getFavoriteQuestions().contains(questionId)) {
+		if (cd.getFavoriteQuestions().contains(question.getId())) {
 			//Question is already favorited.
 			List<UUID> favq = cd.getFavoriteQuestions();
-			favq.remove(questionId);
+			favq.remove(question.getId());
 			cd.saveFavoriteQuestions(favq);
 			Favbutton.setImageResource(R.drawable.ic_fav_reg);
 		} else {
 			List<UUID> favq = cd.getFavoriteQuestions();
-			favq.add(questionId);
+			favq.add(question.getId());
 			cd.saveFavoriteQuestions(favq);
 			Favbutton.setImageResource(R.drawable.ic_fav_highlighted);
 		}
