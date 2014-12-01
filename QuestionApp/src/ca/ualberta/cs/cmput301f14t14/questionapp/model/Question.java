@@ -26,7 +26,7 @@ public class Question extends Model implements Serializable, ICommentable {
 	@SerializedName("comments") private List<UUID> commentList;
 	private Date date;
 	private int upvotes;
-	private Location location;
+	private LocationHolder location;
 
 	public Question() {
 		id = new UUID(0L, 0L);
@@ -183,11 +183,11 @@ public class Question extends Model implements Serializable, ICommentable {
 	}
 
 	public Location getLocation() {
-		return location;
+		return location.getLocation();
 	}
 
 	public void setLocation(Location location) {
-		this.location = location;
+		this.location = LocationHolder.getLocationHolder(location);
 	}
 
 }

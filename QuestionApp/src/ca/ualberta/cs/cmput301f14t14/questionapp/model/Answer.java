@@ -24,7 +24,7 @@ public class Answer extends Model implements Serializable, ICommentable {
 	private UUID parent;
 	private Date date;
 	private int upvotes;
-	private Location location;
+	private LocationHolder location;
 
 	
 	public Answer() {
@@ -165,10 +165,10 @@ public class Answer extends Model implements Serializable, ICommentable {
 	}
 
 	public Location getLocation() {
-		return location;
+		return location.getLocation();
 	}
 
 	public void setLocation(Location location) {
-		this.location = location;
+		this.location = LocationHolder.getLocationHolder(location);
 	}
 }
