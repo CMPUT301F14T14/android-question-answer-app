@@ -2,6 +2,7 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -280,9 +281,16 @@ public class DataManager {
 
 
 	}
+	// Cache old location lookups for speed
+	private HashMap<Location, String> oldloclookups = new HashMap<Location, String>();
 	
 	public String getCityFromLocation(Location l) {
 		//Go to here: http://stackoverflow.com/questions/2296377/how-to-get-city-name-from-latitude-and-longitude-coordinates-in-google-maps
+		
+		//Cache old locations for speed
+		if (oldloclookups.containsKey(l)) {
+			return oldloclookups.get(l);
+		}
 		
 		Geocoder g = new Geocoder(context, Locale.getDefault());
 		if (Geocoder.isPresent()){
@@ -294,7 +302,9 @@ public class DataManager {
 				return "a Universe";
 			}
 			if (la != null && la.size() > 0){
-				return la.get(0).getLocality();
+				String city = la.get(0).getLocality();
+				oldloclookups.put(l, city);
+				return city;
 			}
 		} 
 		return "a Universe";
