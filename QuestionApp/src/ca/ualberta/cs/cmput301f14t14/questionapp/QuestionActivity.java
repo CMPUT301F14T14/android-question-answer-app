@@ -392,10 +392,9 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 
 				}
 			}
-	if(img.getSize() > MAX_SIZE){
-		img = null;
-		Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
-	}
+		while(img.getSize() > MAX_SIZE){
+			img.setImageData(img.compress(img.getBitmap()));
+		}
 		
 		
 	}
