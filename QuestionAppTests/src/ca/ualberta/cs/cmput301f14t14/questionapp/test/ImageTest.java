@@ -24,7 +24,7 @@ public class ImageTest extends TestCase {
 	 */
 	
 	public void testAddImage() {
-		Image image = new Image(Uri.parse("android.resource://QuestionAppTests/drawable/under64"), null);
+		Image image = new Image(Uri.parse("android.resource://QuestionAppTests/drawable/under64"), null, 0);
 		mQuestion = new Question("Title", "QBody", "Author", image);
 		mAnswer = new Answer(mQuestion.getId(), "ABody", "Author", image);
 		assertNotNull(mAnswer.getImage());
@@ -38,7 +38,7 @@ public class ImageTest extends TestCase {
 		try {
 			Uri local = null;
 			local = Uri.parse("android.resource://QuestionAppTests/drawable/over64");
-			Image tooBig = new Image(local, null);
+			Image tooBig = new Image(local, null, 0);
 			fail("Try giving a smaller image.");
 		}
 		catch(IllegalArgumentException e){

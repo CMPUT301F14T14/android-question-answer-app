@@ -172,6 +172,7 @@ public class MainActivity extends Activity {
 			break;
 			}
 		case 3:{
+			//Sort by Favourites
 			final List<UUID> favQ = cd.getFavoriteQuestions();
 			favouriteQuestionCallback = new Callback<Question>(){
 
@@ -361,6 +362,7 @@ public class MainActivity extends Activity {
     }
     
     public void searchQuestions(String q) {
+    	//Start search activity
     	Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
 		intent.putExtra("QUERY_STRING", q);
 		startActivity(intent);

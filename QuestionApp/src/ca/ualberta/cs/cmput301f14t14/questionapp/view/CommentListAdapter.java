@@ -23,7 +23,7 @@ public class CommentListAdapter<T extends ICommentable> extends ArrayAdapter<Com
 		if (convertView == null) {
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_comment, parent, false);
 		}
-		
+		//Update views with data
 		Comment<T> c = getItem(position);
 		TextView cText = (TextView) convertView.findViewById(R.id.comment_body);
 		TextView cAuthor = (TextView) convertView.findViewById(R.id.comment_username);
