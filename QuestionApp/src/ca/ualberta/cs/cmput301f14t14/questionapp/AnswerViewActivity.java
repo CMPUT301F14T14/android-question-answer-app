@@ -16,6 +16,7 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.ViewCommentDialogFragment;
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -175,11 +176,14 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 	}
 
 	@Override
-	public void addCommentCallback(String text) {
+	public void addCommentCallback(String text, Location loc) {
 		ClientData cd = new ClientData(this);
 		Comment<Answer> comment = null;
 		try {
 			comment = new Comment<Answer>(answer.getId(), text, cd.getUsername());
+			if(loc != null){
+				comment.setLocation(loc);
+			}
 		} catch (IllegalArgumentException e) {
 			Toast.makeText(getApplicationContext(), R.string.add_comment_err_invalid, Toast.LENGTH_SHORT).show();
 		}

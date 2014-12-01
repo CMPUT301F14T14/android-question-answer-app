@@ -65,10 +65,8 @@
            android:layout_height="wrap_content"
            android:layout_alignBottom="@+id/imageView1"
            android:layout_alignParentLeft="true"
-           android:text="Include Location?" />
+           android:text="@string/include_location_" />
 
     </RelativeLayout>
-
-    
 
 </LinearLayout>

@@ -3,6 +3,7 @@ package ca.ualberta.cs.cmput301f14t14.questionapp.view;
 import java.util.List;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ICommentable;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Comment;
 import android.content.Context;
@@ -26,6 +27,10 @@ public class CommentListAdapter<T extends ICommentable> extends ArrayAdapter<Com
 		Comment<T> c = getItem(position);
 		TextView cText = (TextView) convertView.findViewById(R.id.comment_body);
 		TextView cAuthor = (TextView) convertView.findViewById(R.id.comment_username);
+		TextView cLocation = (TextView) convertView.findViewById(R.id.commentLocationText);
+		if(c.getLocation() != null){
+			cLocation.setText("near: " + DataManager.getInstance(getContext()).getCityFromLocation(c.getLocation()));
+		}
 		cText.setText(c.getBody());
 		cAuthor.setText(c.getAuthor());
 		
