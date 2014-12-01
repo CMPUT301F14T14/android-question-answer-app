@@ -75,11 +75,12 @@ implements IView{
 									Toast.makeText(context, "Please enable GPS to use Location Service", Toast.LENGTH_SHORT).show();
 								}
 							}
+							MainActivity a = (MainActivity) getActivity();
 							ClientData cd = new ClientData(context);
-							Question newQues = new Question(tle, bd, cd.getUsername(), img);
+							Question newQues = new Question(tle, bd, cd.getUsername(), a.img);
 							newQues.setLocation(loc);
 							datamanager.addQuestion(newQues, null);
-							MainActivity a = (MainActivity) getActivity();
+							
 							//Populate the list with what we have.
 							a.updateList(newQues);
 						}

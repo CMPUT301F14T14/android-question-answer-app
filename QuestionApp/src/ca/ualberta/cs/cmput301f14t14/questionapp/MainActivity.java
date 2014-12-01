@@ -379,22 +379,26 @@ public class MainActivity extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		
 		super.onActivityResult(requestCode, resultCode, data);
-		//String path = AI.getImgUri().getPath();
-		//File imageFile = new File(path);
-		//long len = imageFile.length();
+		
 		if(resultCode == Activity.RESULT_OK){
-			if (requestCode == CAMERA){
-				img = new Image(AI.getImgUri(), null, 1);
-			}
-			else if(requestCode == ADD_IMAGE){
-				Uri uri = data.getData();
-				img = new Image(uri, null, 2);
+			String path = AI.getImgUri().getPath();
+			File imageFile = new File(path);
+			long len = imageFile.length();
+			if(len < 64000){
+				
+				if (requestCode == CAMERA){
+					img = new Image(AI.getImgUri(), null, 1);
+				}
+				else if(requestCode == ADD_IMAGE){
+					Uri uri = data.getData();
+					img = new Image(uri, null, 2);
 
+				}
 			}
 		}
-		//else{
-			//Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
-		//}
+		else{
+			Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
+		}
 		
 		
 	}
