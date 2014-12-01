@@ -1,10 +1,12 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 
+import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.widget.ImageView;
 
 public class Image implements Serializable {
 
@@ -47,10 +50,18 @@ public class Image implements Serializable {
 		this.imageData = imageData;
 	}
 	
-	public Drawable getDrawable(Context c) {
-		byte[] b = this.getImageData();
-		return new BitmapDrawable(c.getResources(),
-				BitmapFactory.decodeByteArray(b, 0, b.length));
+	public long getSize(){
+		return imageData.length;
+	}
+	public Bitmap getBitmap() {
+		int width = 100;
+		int height = 100;
+		BitmapFactory.Options op = new BitmapFactory.Options();
+		op.inPreferredConfig = Bitmap.Config.ARGB_8888;
+		Bitmap bmp = BitmapFactory.decodeByteArray(getImageData(), 0,
+				getImageData().length);
+		bmp = Bitmap.createScaledBitmap(bmp, width, height, true);
+		return bmp;
 	}
 
 }

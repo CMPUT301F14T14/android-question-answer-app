@@ -1,13 +1,11 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.Callback;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
@@ -29,12 +27,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 public class MainActivity extends Activity {
 
@@ -51,6 +46,7 @@ public class MainActivity extends Activity {
 	private static final int CAMERA =  1;
 	private static final int ADD_IMAGE = 2;
 	public Image img;
+	private long MAX_SIZE = 64000;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -381,9 +377,7 @@ public class MainActivity extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		
 		super.onActivityResult(requestCode, resultCode, data);
-		//String path = AI.getImgUri().getPath();
-		//File imageFile = new File(path);
-		//long len = imageFile.length();
+		
 		if(resultCode == Activity.RESULT_OK){
 			if (requestCode == CAMERA){
 				img = new Image(this, AI.getImgUri());
@@ -392,14 +386,15 @@ public class MainActivity extends Activity {
 				Uri uri = data.getData();
 				img = new Image(this, uri);
 
+				}
 			}
+		if(img.getSize() > MAX_SIZE){
+			img = null;
+			Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
 		}
-		//else{
-			//Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
-		//}
-		
-		
+		}
 	}
+	
 
     
-}
+

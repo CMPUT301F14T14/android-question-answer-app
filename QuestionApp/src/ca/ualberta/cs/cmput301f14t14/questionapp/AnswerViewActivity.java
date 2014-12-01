@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class AnswerViewActivity extends Activity
@@ -144,6 +145,9 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 			((TextView) findViewById(R.id.answer_body)).setText(answer.getBody());
 			((TextView) findViewById(R.id.answer_username)).setText(answer.getAuthor());
 			((TextView) findViewById(R.id.answer_upvotes)).setText(answer.getUpvotes().toString());
+			if(answer.getImage() != null){
+				((ImageView) findViewById(R.id.answerImage)).setImageBitmap(answer.getImage().getBitmap());
+			}
 			
 			dataManager.getCommentList(answer, new UpdateCommentListCallback());
 		}

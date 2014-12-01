@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,7 +55,11 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 	private List<Comment<Question>> commentList;
 	private List<Answer> answerList;
 	
-	private AddImage AI;
+	private AddImage AI = new AddImage();
+	private static final int CAMERA =  1;
+	private static final int ADD_IMAGE = 2;
+	public Image img;
+	private long MAX_SIZE = 64000;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -310,7 +315,10 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 			date.setText(question.getDate().toString());
 			dataManager.getAnswerList(question, new AnswerListUpdateCallback());
 			dataManager.getCommentList(question, new CommentListUpdateCallback());
-			
+			if(q.getImage() != null){
+			ImageView imgV = (ImageView) findViewById(R.id.questionImage);
+			imgV.setImageBitmap(q.getImage().getBitmap());
+			}
 			// Set status of favorite button
 			ClientData cd = new ClientData(getApplicationContext());
 			if (cd.getFavoriteQuestions().contains(question.getId())) {
@@ -359,7 +367,38 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 				
 			});
 		}
+	}
+	
+	public void takeAPhoto(View v){
+		Intent intent = AI.takeAPhoto();
+		startActivityForResult(intent, CAMERA);
+	}
+	
+	public void addImage(View v){
+		Intent intent = AI.addPhoto();
+		startActivityForResult(intent.createChooser(intent, "Select Image"), ADD_IMAGE);
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode == Activity.RESULT_OK){
+			if (requestCode == CAMERA){
+				img = new Image(this, AI.getImgUri());
+			}
+			else if(requestCode == ADD_IMAGE){
+				Uri uri = data.getData();
+				img = new Image(this, uri);
+
+				}
+			}
+	if(img.getSize() > MAX_SIZE){
+		img = null;
+		Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
+	}
+		
 		
 	}
- 
 }
+ 
+

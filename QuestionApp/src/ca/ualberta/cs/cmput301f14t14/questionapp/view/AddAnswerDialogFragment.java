@@ -1,5 +1,8 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.view;
 
+import java.io.File;
+
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.QuestionActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
@@ -8,6 +11,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -16,19 +21,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 /**
  * Fragment that allows inputting data to create an answer.
  */
 public class AddAnswerDialogFragment extends DialogFragment {
-
+	private Image img;
+	private View text;
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 		LayoutInflater inflater = getActivity().getLayoutInflater();
-		final View text = inflater.inflate(
+		text = inflater.inflate(
 				R.layout.addanswerdialogfragmentlayout, (ViewGroup) getView());
 		
 		builder.setView(text)
@@ -49,6 +56,8 @@ public class AddAnswerDialogFragment extends DialogFragment {
 							
 							}
 						}
+						QuestionActivity qa = (QuestionActivity) getActivity();
+						img = qa.img;
 						((QuestionActivity) getActivity()).addAnswerCallback(body.getText().toString(), img, loc);
 					}
 				})
@@ -62,5 +71,18 @@ public class AddAnswerDialogFragment extends DialogFragment {
 						});
 		return builder.create();
 	}
+	
+	public void onResume(){
+		super.onResume();
+		QuestionActivity qa = (QuestionActivity) getActivity();
+		img = qa.img;
 
+		if (img != null) {
+			ImageView imgV = (ImageView) text.findViewById(R.id.imageViewAns);
+			Bitmap bmp = img.getBitmap();
+			imgV.setImageBitmap(bmp);
+		}
+		
+
+}
 }

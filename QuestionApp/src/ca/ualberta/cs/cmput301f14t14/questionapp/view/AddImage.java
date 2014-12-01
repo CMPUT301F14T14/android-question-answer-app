@@ -55,20 +55,16 @@ public class AddImage {
 		return intent;
 	}
 	
-	public Bitmap scaleImage1(Image img){
+
+	/*public Bitmap getBitmap(Image img) {
+		File imgFile = new File(img.getLocalUrl().getPath());
+		long len = imgFile.length();
 	    int width=100;
 	    int height=100;
-	    //ImageView imgV = (ImageView) findViewById(R.id.imageView1);
 		BitmapFactory.Options op = new BitmapFactory.Options();
 		op.inPreferredConfig = Bitmap.Config.ARGB_8888;
-		Bitmap bmp = BitmapFactory.decodeByteArray(img.getImageData(), 0, img.getImageData().length);
+		Bitmap bmp = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), op);
 		bmp=Bitmap.createScaledBitmap(bmp, width,height, true);
-		//imgV.setImageBitmap(bmp);
-		return null;
-	}
-	
-	
-	public void scaleImage(){
-		
-	}
+		return bmp;
+}*/
 }

@@ -35,7 +35,7 @@ public class AddQuestionDialogFragment extends DialogFragment
 implements IView{
 	private LayoutInflater inflater;
 	private View text;
-	private Image img = null;
+	private Image img;
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
@@ -75,11 +75,12 @@ implements IView{
 									Toast.makeText(context, "Please enable GPS to use Location Service", Toast.LENGTH_SHORT).show();
 								}
 							}
+							MainActivity a = (MainActivity) getActivity();
 							ClientData cd = new ClientData(context);
-							Question newQues = new Question(tle, bd, cd.getUsername(), img);
+							Question newQues = new Question(tle, bd, cd.getUsername(), a.img);
 							newQues.setLocation(loc);
 							datamanager.addQuestion(newQues, null);
-							MainActivity a = (MainActivity) getActivity();
+							
 							//Populate the list with what we have.
 							a.updateList(newQues);
 						}
@@ -103,16 +104,9 @@ implements IView{
 		img = ma.img;
 
 		if (img != null) {
-			int width = 100;
-			int height = 100;
 			ImageView imgV = (ImageView) text.findViewById(R.id.imageView1);
-			BitmapFactory.Options op = new BitmapFactory.Options();
-			op.inPreferredConfig = Bitmap.Config.ARGB_8888;
-			Bitmap bmp = BitmapFactory.decodeByteArray(img.getImageData(), 0,
-					img.getImageData().length);
-			bmp = Bitmap.createScaledBitmap(bmp, width, height, true);
+			Bitmap bmp = img.getBitmap();
 			imgV.setImageBitmap(bmp);
-
 		}
 	}
 		
