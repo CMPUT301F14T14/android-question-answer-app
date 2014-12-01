@@ -1,6 +1,8 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -131,7 +133,23 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		super.onResume();
 		// Get question data
 		dataManager.getQuestion(questionId, new QuestionUpdateCallback());
+		sortAnswers();
 		aListAdapter.update();
+	}
+	
+	public void sortAnswers(){
+		Collections.sort(answerList, new Comparator<Answer>(){
+
+			@Override
+			public int compare(Answer lhs, Answer rhs) {
+				if(lhs.getUpvotes().equals(rhs.getUpvotes())){
+					return lhs.getDate().compareTo(rhs.getDate());
+				}
+				return lhs.getUpvotes()-rhs.getUpvotes();
+			}
+			
+		
+		});
 	}
 
 	@Override
@@ -244,7 +262,7 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		ImageButton Favbutton = (ImageButton)findViewById(R.id.question_view_fav_button);
 		Favbutton.setImageResource(R.drawable.ic_fav_highlighted);
 		ClientData cd = new ClientData(this);
-		if (cd.getFavoriteQuestions().contains(this.question.getId())) {
+		if (cd.getFavoriteQuestions().contains(question.getId())) {
 			//Question is already favorited.
 			List<UUID> favq = cd.getFavoriteQuestions();
 			favq.remove(question.getId());

@@ -44,14 +44,4 @@
         android:text="@string/date"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <ImageButton
-        android:id="@+id/list_question_read_later"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:contentDescription="@string/list_question_read_later"
-        android:focusable="false"
-        android:src="@drawable/ic_action_readlater" />
-
 </LinearLayout>
