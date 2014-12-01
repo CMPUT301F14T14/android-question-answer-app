@@ -32,6 +32,9 @@ public class AddQuestionCommentTask extends AbstractDataManagerTask<Comment<Ques
 		} catch (IOException e) {
 			Log.e("AddQuestionCommentTask", "Failed to upload question comment");
 			//Push to event bus
+			if (EventBus.getInstance().getEventQueue().contains(new QuestionCommentPushDelayedEvent(comment))){
+				return null;
+			}
 			tryPushLater(new QuestionCommentPushDelayedEvent(comment));
 		}
 		// Push comment to local store

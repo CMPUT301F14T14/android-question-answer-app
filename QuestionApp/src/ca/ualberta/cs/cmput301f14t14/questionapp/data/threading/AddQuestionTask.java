@@ -25,6 +25,11 @@ public class AddQuestionTask extends AbstractDataManagerTask<Question, Void, Voi
 		try {
 			remote.putQuestion(q);
 		} catch (IOException e) {
+			//Need to check if this exact question is already queued for uploading. If not, 
+			//then upload. Else, silently return.
+			if (EventBus.getInstance().getEventQueue().contains(new QuestionPushDelayedEvent(q))){
+				return null;
+			}
 			tryPushLater(new QuestionPushDelayedEvent(q));
 		}
 		try {

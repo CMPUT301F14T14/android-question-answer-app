@@ -7,7 +7,7 @@ import android.location.Location;
 public class LocationHolder implements Serializable {
 
 	/**
-	 * 
+	 * Class that holds latitude and longitude and generates a Location when needed. Allows for easy serialization.
 	 */
 	private static final long serialVersionUID = -9097277563557497450L;
 
