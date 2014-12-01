@@ -4,26 +4,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-   
     <EditText
         android:id="@+id/add_question_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/add_question_title_hint"
-        android:inputType="textAutoCorrect"
-        />
-    
+        android:inputType="textAutoCorrect" />
+
     <EditText
         android:id="@+id/add_question_body"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="top|left"
         android:hint="@string/add_question_body_hint"
         android:inputType="textMultiLine"
-        android:gravity="top|left"
-        android:scrollbars="vertical"
-        android:singleLine="false"
         android:minLines="14"
-        />
+        android:scrollbars="vertical"
+        android:singleLine="false" />
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="116dp"
+        android:gravity="start"
+        android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,17 +50,25 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:src="@drawable/ic_action_image" />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_action_image" />
 
-    <CheckBox
-        android:id="@+id/questionLocationBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Include Location?" />
+       <CheckBox
+           android:id="@+id/questionLocationBox"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignBottom="@+id/imageView1"
+           android:layout_alignParentLeft="true"
+           android:text="Include Location?" />
+
+    </RelativeLayout>
+
+    
 
 </LinearLayout>

@@ -1,5 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,15 +22,19 @@ import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class MainActivity extends Activity {
 
@@ -373,12 +379,23 @@ public class MainActivity extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == CAMERA){
-			img = new Image(AI.getImgUri() ,null);
+		//String path = AI.getImgUri().getPath();
+		//File imageFile = new File(path);
+		//long len = imageFile.length();
+		if(resultCode == Activity.RESULT_OK){
+			if (requestCode == CAMERA){
+				img = new Image(AI.getImgUri(), null, 1);
+			}
+			else if(requestCode == ADD_IMAGE){
+				Uri uri = data.getData();
+				img = new Image(uri, null, 2);
+
+			}
 		}
-		else if(requestCode == ADD_IMAGE){
-			img = new Image(data.getData(), null);
-		}
+		//else{
+			//Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
+		//}
+		
 		
 	}
 

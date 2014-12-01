@@ -20,7 +20,7 @@ public class ImageDeserializer implements JsonDeserializer<Image>{
 		final JsonObject jsonObject = json.getAsJsonObject();
 		String imageString = jsonObject.get("image").getAsString();
 		byte[] b = imageString.getBytes();
-		Image image= new Image(null, b);
+		Image image= new Image(null, b, 0);
 		return image;
 	}
 
