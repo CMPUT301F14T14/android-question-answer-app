@@ -35,7 +35,7 @@ public class AddQuestionDialogFragment extends DialogFragment
 implements IView{
 	private LayoutInflater inflater;
 	private View text;
-	private Image img = null;
+	private Image img = new Image(null, null, 0);
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
@@ -101,18 +101,11 @@ implements IView{
 		super.onResume();
 		MainActivity ma = (MainActivity) getActivity();
 		img = ma.img;
-		
+		AddImage AI = new AddImage();
 		if(img != null){
-			File imgFile = new File(img.getLocalUrl().getPath());
-			long len = imgFile.length();
-		    int width=100;
-		    int height=100;
 		    ImageView imgV = (ImageView) text.findViewById(R.id.imageView1);
 			if(img.getType() == 1){
-				BitmapFactory.Options op = new BitmapFactory.Options();
-				op.inPreferredConfig = Bitmap.Config.ARGB_8888;
-				Bitmap bmp = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), op);
-				bmp=Bitmap.createScaledBitmap(bmp, width,height, true);
+				Bitmap bmp = AI.getBitmap(img);
 				imgV.setImageBitmap(bmp);
 			}
 			else if(img.getType() == 2){

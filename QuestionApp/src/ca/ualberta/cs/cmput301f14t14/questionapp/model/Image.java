@@ -1,6 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.model;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.Serializable;
 
 import android.content.Context;
@@ -63,9 +64,5 @@ public class Image implements Serializable {
 		this.imageData = imageData;
 	}
 	
-	public Drawable getDrawable(Context c) {
-		byte[] b = this.getImageData();
-		return new BitmapDrawable(c.getResources(),BitmapFactory.decodeByteArray(b, 0, b.length));
-	}
 
 }
