@@ -86,10 +86,11 @@ implements IView{
 		img = ma.img;
 		
 		if(img != null){
-			Bitmap bp = BitmapFactory.decodeFile(img.getLocalUrl().getPath());
+			File imgFile = new File(img.getLocalUrl().getPath());
+			long len = imgFile.length();
 			
 			ImageView imgV = (ImageView) text.findViewById(R.id.imageView1);
-			imgV.setImageBitmap(bp);
+			//imgV.setImageBitmap(bp);
 		}
 		}
 		
