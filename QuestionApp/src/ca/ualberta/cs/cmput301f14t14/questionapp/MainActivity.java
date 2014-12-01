@@ -46,6 +46,7 @@ public class MainActivity extends Activity {
 	private static final int CAMERA =  1;
 	private static final int ADD_IMAGE = 2;
 	public Image img;
+	private long MAX_SIZE = 64000;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -387,13 +388,13 @@ public class MainActivity extends Activity {
 
 				}
 			}
+		if(img.getSize() > MAX_SIZE){
+			img = null;
+			Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
 		}
-		//else{
-			//Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
-		//}
-		
-		
+		}
 	}
+	
 
     
 

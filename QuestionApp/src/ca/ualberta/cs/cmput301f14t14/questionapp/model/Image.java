@@ -50,6 +50,9 @@ public class Image implements Serializable {
 		this.imageData = imageData;
 	}
 	
+	public long getSize(){
+		return imageData.length;
+	}
 	public Bitmap getBitmap() {
 		int width = 100;
 		int height = 100;

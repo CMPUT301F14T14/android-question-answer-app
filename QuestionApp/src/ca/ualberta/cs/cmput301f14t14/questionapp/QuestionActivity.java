@@ -59,6 +59,7 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 	private static final int CAMERA =  1;
 	private static final int ADD_IMAGE = 2;
 	public Image img;
+	private long MAX_SIZE = 64000;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -381,9 +382,6 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		
 		super.onActivityResult(requestCode, resultCode, data);
-		//String path = AI.getImgUri().getPath();
-		//File imageFile = new File(path);
-		//long len = imageFile.length();
 		if(resultCode == Activity.RESULT_OK){
 			if (requestCode == CAMERA){
 				img = new Image(this, AI.getImgUri());
@@ -394,12 +392,13 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 
 				}
 			}
-		}
-		//else{
-			//Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
-		//}
+	if(img.getSize() > MAX_SIZE){
+		img = null;
+		Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
+	}
 		
 		
 	}
+}
  
 
