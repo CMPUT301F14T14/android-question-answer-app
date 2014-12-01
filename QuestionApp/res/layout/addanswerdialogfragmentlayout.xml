@@ -3,31 +3,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-        
+
     <EditText
         android:id="@+id/add_answer_body"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="top|left"
         android:hint="@string/add_answer_body_hint"
         android:inputType="textMultiLine"
-        android:gravity="top|left"
-        android:scrollbars="vertical"
-        android:singleLine="false"
         android:minLines="14"
-        />
-    <ImageButton
-        android:id="@+id/add_answer_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_image"
-        android:contentDescription="@string/add_answer_image"
-        android:onClick="addImage"
-        />
+        android:scrollbars="vertical"
+        android:singleLine="false" />
 
-    <CheckBox
-        android:id="@+id/answerLocationBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Include Location?" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="116dp"
+        android:layout_weight="0.68"
+        android:gravity="start"
+        android:orientation="vertical" >
+
+        <CheckBox
+            android:id="@+id/answerLocationBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:text="Include Location?" />
+
+        <ImageView
+            android:id="@+id/imageViewAns"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_action_image" />
+
+        <ImageButton
+            android:id="@+id/take_answer_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:onClick="takeAPhoto"
+            android:src="@android:drawable/ic_menu_camera" />
+
+        <ImageButton
+            android:id="@+id/add_answer_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/take_answer_photo"
+            android:contentDescription="@string/add_answer_image"
+            android:onClick="addImage"
+            android:src="@drawable/ic_action_image" />
+
+    </RelativeLayout>
 
 </LinearLayout>

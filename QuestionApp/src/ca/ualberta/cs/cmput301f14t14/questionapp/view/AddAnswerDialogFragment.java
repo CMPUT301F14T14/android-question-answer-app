@@ -1,5 +1,8 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.view;
 
+import java.io.File;
+
+import ca.ualberta.cs.cmput301f14t14.questionapp.MainActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.QuestionActivity;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
@@ -8,6 +11,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -16,19 +21,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 /**
  * Fragment that allows inputting data to create an answer.
  */
 public class AddAnswerDialogFragment extends DialogFragment {
-
+	private Image img = null;
+	private View text;
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 		LayoutInflater inflater = getActivity().getLayoutInflater();
-		final View text = inflater.inflate(
+		text = inflater.inflate(
 				R.layout.addanswerdialogfragmentlayout, (ViewGroup) getView());
 		
 		builder.setView(text)
@@ -62,5 +69,31 @@ public class AddAnswerDialogFragment extends DialogFragment {
 						});
 		return builder.create();
 	}
+	
+	public void onResume(){
+		super.onResume();
+		QuestionActivity ma = (QuestionActivity) getActivity();
+		img = ma.img;
+		
+		if(img != null){
+			File imgFile = new File(img.getLocalUrl().getPath());
+			long len = imgFile.length();
+		    int width=100;
+		    int height=100;
+		    ImageView imgV = (ImageView) text.findViewById(R.id.imageViewAns);
+			if(img.getType() == 1){
+				BitmapFactory.Options op = new BitmapFactory.Options();
+				op.inPreferredConfig = Bitmap.Config.ARGB_8888;
+				Bitmap bmp = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), op);
+				bmp=Bitmap.createScaledBitmap(bmp, width,height, true);
+				imgV.setImageBitmap(bmp);
+			}
+			else if(img.getType() == 2){
+				imgV.setImageURI(img.getLocalUrl());
+			}
+			
+		}
+		}
+		
 
 }
