@@ -33,6 +33,7 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 		else{
 			((ImageView)convertView.findViewById(R.id.question_favourite)).setVisibility(View.VISIBLE);
 		}
+		//Set the views with data
 		TextView qTitle = (TextView) convertView.findViewById(R.id.question_title); 
 		TextView qText = (TextView) convertView.findViewById(R.id.question_body);
 		TextView qAuthor = (TextView) convertView.findViewById(R.id.question_username);
@@ -48,6 +49,8 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 		if(q.getLocation() != null){
 			qLocation.setText("near: " + DataManager.getInstance(getContext()).getCityFromLocation(q.getLocation()));
 		}
+		
+		//Add Read later functionality
 		final ImageButton readLaterbutton = (ImageButton)convertView.findViewById(R.id.list_question_read_later);
 		readLaterbutton.setTag(q);
 		String readlaterfilename = "readlaterlist";
