@@ -42,8 +42,9 @@ public class SearchActivity extends Activity {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						// run off to the question view if you tap an item
+						// run off to the correct view if you tap an item
 						final GenericSearchItem gItem = listAdapter.getItem(position);
+						
 						if (gItem.getType().toLowerCase(Locale.US).trim().equals("question")) {
 							UUID qId = gItem.getId();
 							Intent intent = new Intent(getApplicationContext(),

@@ -24,7 +24,7 @@ public class AnswerListAdapter extends ArrayAdapter<Answer> implements IView {
 		if (convertView == null) {
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_answer, parent, false);
 		}
-		
+		//Add data to views
 		Answer a = getItem(position);
 		TextView aText = (TextView) convertView.findViewById(R.id.answer_body);
 		TextView aAuthor = (TextView) convertView.findViewById(R.id.answer_username);
@@ -33,6 +33,7 @@ public class AnswerListAdapter extends ArrayAdapter<Answer> implements IView {
 		aAuthor.setText(a.getAuthor());
 		aLocation.setText("near: " + DataManager.getInstance(getContext()).getCityFromLocation(a.getLocation()));
 		
+		//Add read later functionality
 		final ImageButton readLaterbutton = (ImageButton)convertView.findViewById(R.id.list_answer_read_later);
 		readLaterbutton.setTag(a);
 		String readlaterfilename = "readlaterlist";

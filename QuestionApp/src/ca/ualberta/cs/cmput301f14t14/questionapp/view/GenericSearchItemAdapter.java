@@ -33,6 +33,7 @@ public class GenericSearchItemAdapter extends ArrayAdapter<GenericSearchItem> im
 		else{
 			((ImageView)convertView.findViewById(R.id.question_favourite)).setVisibility(View.VISIBLE);
 		}
+		//Fill views with data
 		TextView gType = (TextView) convertView.findViewById(R.id.generic_type); 
 		TextView gText = (TextView) convertView.findViewById(R.id.generic_body);
 		TextView gLocation = (TextView) convertView.findViewById(R.id.generic_location);
