@@ -14,6 +14,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
+import android.location.Location;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -43,6 +44,47 @@ public class ESSearch {
 						"{\"type\": {\"value\": \"question\"}}," +
 						"{\"type\": {\"value\": \"answer\"}}" +
 						"]}}}}"));
+		
+		HttpResponse response;
+
+		try {
+			response = httpClient.execute(httpPost);
+			return getResultList(response, new TypeToken<SearchResponse<GenericSearchItem>>() {}.getType());
+		} catch (IOException e) {
+			throw new IOException("Search failed.", e);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	public List<GenericSearchItem> searchNearby(String query, Location location) throws IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(ES_BASE_URL + "_search");
+
+		httpPost.setEntity(new StringEntity(
+				"{\"query\":" +
+						"{\"filtered\":" +
+							"{\"query\":" +
+								"{\"match\": {\"_all\": \"" + query + "\"}}," +
+							"\"filter\": {" +
+								"\"and\": [" +
+									"{\"or\": [" +
+										"{\"type\": {\"value\": \"question\"}}," +
+										"{\"type\": {\"value\": \"answer\"}}" +
+									"]}, " +
+									"{\"geo_distance\": {" +
+										"\"distance\": \"30km\"," +
+										"\"location.location\": {" +
+											"\"lat\": "+ location.getLatitude() +"," +
+											"\"lon\": " + location.getLongitude() + "}" +
+										"}" +
+									"}" +
+								"]" +
+							"}" +
+						"}" +
+					"}"));
 		
 		HttpResponse response;
 
