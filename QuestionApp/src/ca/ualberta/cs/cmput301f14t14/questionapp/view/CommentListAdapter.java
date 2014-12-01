@@ -31,11 +31,6 @@ public class CommentListAdapter<T extends ICommentable> extends ArrayAdapter<Com
 		
 		return convertView;
 	}
-
-	@Override
-	public Comment<T> getItem(int position) {
-	   return super.getItem(super.getCount() - position - 1);
-	}
 	
 	@Override
 	public void update() {

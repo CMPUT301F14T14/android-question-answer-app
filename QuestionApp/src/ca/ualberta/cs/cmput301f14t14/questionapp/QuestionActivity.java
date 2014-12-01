@@ -1,6 +1,8 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,8 +74,10 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		// Set up lists and adapters
 		answerList = new ArrayList<Answer>();
 		commentList = new ArrayList<Comment<Question>>();
+		
 		aListAdapter = new AnswerListAdapter(this, R.layout.list_answer, answerList);
 		cListAdapter = new CommentListAdapter<Question>(this, R.layout.list_comment, commentList);
+
 
 		// Set up list views
 		ListView answerView = (ListView) findViewById(R.id.answerSummaryList);
@@ -317,6 +321,14 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 			commentList.clear();
 			commentList.addAll(list);
 			cListAdapter.update();
+			cListAdapter.sort(new Comparator<Comment<Question>>() {
+
+				@Override
+				public int compare(Comment<Question> c1, Comment<Question> c2) {
+					return c2.getDate().compareTo(c1.getDate());
+				}
+				
+			});
 		}
 		
 	}
