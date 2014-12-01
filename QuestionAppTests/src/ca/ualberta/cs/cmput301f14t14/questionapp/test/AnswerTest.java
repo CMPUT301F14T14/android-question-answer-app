@@ -53,7 +53,7 @@ public class AnswerTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	 */
 	public void testInvalidBody() {
 		// Test invalid body
-		Image image = new Image(null,null, 0);
+		Image image = new Image(null);
 		try {
 			new Answer(mQuestion.getId(), null, "Author", image);
 			fail();
