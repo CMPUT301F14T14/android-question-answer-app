@@ -26,7 +26,7 @@ public class Question extends Model implements Serializable, ICommentable {
 	@SerializedName("comments") private List<UUID> commentList;
 	private Date date;
 	private int upvotes;
-	private Location location = null;
+	private Location location;
 
 	public Question() {
 		id = new UUID(0L, 0L);
@@ -51,6 +51,7 @@ public class Question extends Model implements Serializable, ICommentable {
 		this.setCommentList(new ArrayList<UUID>());
 		upvotes = 0;
 		setDate(new Date());
+		setLocation(null);
 	}
 
 	//Add an answer if it already hasn't been

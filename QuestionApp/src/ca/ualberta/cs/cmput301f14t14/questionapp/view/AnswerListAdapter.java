@@ -32,6 +32,8 @@ public class AnswerListAdapter extends ArrayAdapter<Answer> implements IView {
 		aAuthor.setText(a.getAuthor());
 		if(a.getLocation() != null){
 			aLocation.setText(a.getLocation().toString());
+		}else{
+			aLocation.setVisibility(View.INVISIBLE);
 		}
 		
 		final ImageButton readLaterbutton = (ImageButton)convertView.findViewById(R.id.list_answer_read_later);

@@ -49,6 +49,7 @@ public class Answer extends Model implements Serializable, ICommentable {
 		setCommentList(new ArrayList<UUID>());
 		setDate(new Date());
 		upvotes = 0;
+		setLocation(null);
 	}
 	
 	public Image getImage() {

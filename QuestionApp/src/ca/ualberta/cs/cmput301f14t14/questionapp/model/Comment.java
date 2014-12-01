@@ -35,6 +35,7 @@ public class Comment<T extends ICommentable> implements Serializable {
 		this.author = username;
 		this.parent = parent;
 		setDate(new Date());
+		setLocation(null);
 	}
 
 	public String getBody() {

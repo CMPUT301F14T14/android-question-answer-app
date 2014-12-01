@@ -28,6 +28,6 @@
         android:id="@+id/answerLocationBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Include Location?" />
+        android:text="@string/include_location_" />
 
 </LinearLayout>

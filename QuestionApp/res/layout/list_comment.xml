@@ -31,4 +31,11 @@
         android:text="@string/commentlist_author_placeholder"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
+    <TextView
+        android:id="@+id/commentLocationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/location_not_set"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
 </LinearLayout>
