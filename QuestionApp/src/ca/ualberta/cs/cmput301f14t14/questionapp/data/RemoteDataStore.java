@@ -196,7 +196,7 @@ public class RemoteDataStore implements IDataStore {
 	}
 
 	@Override
-	public Question getQuestion(UUID id) {
+	public Question getQuestion(UUID id) throws IOException {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(ES_BASE_URL + QUESTION_PATH
 				+ id.toString());
@@ -210,10 +210,8 @@ public class RemoteDataStore implements IDataStore {
 			return sr.getSource();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new IOException("Failed to get question", e);
 		}
-
-		return null;
 	}
 
 	@Override
