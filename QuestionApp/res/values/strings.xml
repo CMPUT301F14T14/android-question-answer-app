@@ -65,4 +65,7 @@
 	<string name="aboutbox_tagline">The friendly Q/A app!</string>
 	<string name="aboutbox_version">Version 1.0</string>
 	<string name="aboutbox_authorheading">Authors:</string>
+	<string name="question_title">Question Title</string>
+	<string name="question_body">Question Body</string>
+	<string name="location_not_set">Location not set</string>
 </resources>

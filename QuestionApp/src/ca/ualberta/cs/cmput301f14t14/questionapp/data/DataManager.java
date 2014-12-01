@@ -1,10 +1,16 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp.data;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.eventbus.EventBus;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.threading.AddAnswerCommentTask;
@@ -273,6 +279,27 @@ public class DataManager {
 		return remoteDataStore;
 
 
+	}
+	
+	public String getCityFromLocation(Location l) {
+		//Go to here: http://stackoverflow.com/questions/2296377/how-to-get-city-name-from-latitude-and-longitude-coordinates-in-google-maps
+		
+		Geocoder g = new Geocoder(context, Locale.getDefault());
+		if (Geocoder.isPresent()){
+			//ROck and roll bitches we can find the place!
+			List<Address> la = null;
+			try {
+				la = g.getFromLocation(l.getLatitude(), l.getLongitude(), 1);
+			} catch (IOException e) {
+				//It's due in 14 hours! FML!!!!
+			}
+			if (la != null && la.size() > 0){
+				return la.get(0).getLocality();
+			}
+		} 
+		return "a Universe";
+	
+		
 	}
 
 }

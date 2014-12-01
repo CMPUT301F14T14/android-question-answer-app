@@ -26,7 +26,7 @@ public class Question extends Model implements Serializable, ICommentable {
 	@SerializedName("comments") private List<UUID> commentList;
 	private Date date;
 	private int upvotes;
-	private Location location;
+	private Location location = null;
 
 	public Question() {
 		id = new UUID(0L, 0L);

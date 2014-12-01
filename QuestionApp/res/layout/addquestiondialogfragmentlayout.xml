@@ -22,11 +22,33 @@
         android:scrollbars="vertical"
         android:singleLine="false" />
 
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="116dp"
         android:gravity="start"
         android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="takeAPhoto"
+            android:src="@android:drawable/ic_menu_camera" />
+
+        <ImageButton
+            android:id="@+id/add_question_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/add_question_image"
+            android:onClick="addImage"
+            android:src="@drawable/ic_action_image" />
+
+    </LinearLayout>
 
         <ImageView
             android:id="@+id/imageView1"
@@ -37,25 +59,16 @@
             android:scaleType="fitXY"
             android:src="@drawable/ic_action_image" />
 
-        <ImageButton
-            android:id="@+id/imageButton1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:onClick="takeAPhoto"
-            android:src="@android:drawable/ic_menu_camera" />
-
-        <ImageButton
-            android:id="@+id/add_question_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/imageButton1"
-            android:contentDescription="@string/add_question_image"
-            android:onClick="addImage"
-            android:src="@drawable/ic_action_image" />
+       <CheckBox
+           android:id="@+id/questionLocationBox"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignBottom="@+id/imageView1"
+           android:layout_alignParentLeft="true"
+           android:text="Include Location?" />
 
     </RelativeLayout>
+
+    
 
 </LinearLayout>

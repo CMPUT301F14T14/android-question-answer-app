@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,8 +82,10 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		// Set up lists and adapters
 		answerList = new ArrayList<Answer>();
 		commentList = new ArrayList<Comment<Question>>();
+		
 		aListAdapter = new AnswerListAdapter(this, R.layout.list_answer, answerList);
 		cListAdapter = new CommentListAdapter<Question>(this, R.layout.list_comment, commentList);
+
 
 		// Set up list views
 		ListView answerView = (ListView) findViewById(R.id.answerSummaryList);
@@ -199,11 +202,14 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 		dialogFragment.show(getFragmentManager(), "addanswerdialogfragmentlayout");
 	}
 	
-	public void addAnswerCallback(String body, Image img) {
+	public void addAnswerCallback(String body, Image img, Location location) {
 		ClientData cd = new ClientData(this);
 		Answer answer = null;
 		try {
 			answer = new Answer(question.getId(), body, cd.getUsername(), img);
+			if(location != null){
+				answer.setLocation(location);
+			}
 		} catch (IllegalArgumentException e) {
 			Toast.makeText(getApplicationContext(), R.string.add_answer_err_invalid, Toast.LENGTH_SHORT).show();
 		}
@@ -341,6 +347,14 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 			commentList.clear();
 			commentList.addAll(list);
 			cListAdapter.update();
+			cListAdapter.sort(new Comparator<Comment<Question>>() {
+
+				@Override
+				public int compare(Comment<Question> c1, Comment<Question> c2) {
+					return c2.getDate().compareTo(c1.getDate());
+				}
+				
+			});
 		}
 		
 	}
