@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 
@@ -54,16 +55,27 @@ public class AddImage {
 		return intent;
 	}
 	
-	private Bitmap scaleImage(File file, double scale){
-		Bitmap bp = BitmapFactory.decodeFile(file.getAbsolutePath());
-		
-		int newWidth = (int)(bp.getWidth() * scale);
-		int newHeight = (int)(bp.getHeight() * scale);
-		
-		Bitmap newbp = Bitmap.createScaledBitmap(bp, newWidth, newHeight, false);
-		
+	public Bitmap scaleImage1(Image img){
+		File imgFile = new File(img.getLocalUrl().getPath());
+		long len = imgFile.length();
+	    int width=100;
+	    int height=100;
+	    //ImageView imgV = (ImageView) findViewById(R.id.imageView1);
+		if(img.getType() == 1){
+			BitmapFactory.Options op = new BitmapFactory.Options();
+			op.inPreferredConfig = Bitmap.Config.ARGB_8888;
+			Bitmap bmp = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), op);
+			bmp=Bitmap.createScaledBitmap(bmp, width,height, true);
+			//imgV.setImageBitmap(bmp);
+			return null;
+		}
+		else if(img.getType() == 2){
+			//imgV.setImageURI(img.getLocalUrl());
+			return null;
+		}
 		return null;
 	}
+	
 	
 	public void scaleImage(){
 		

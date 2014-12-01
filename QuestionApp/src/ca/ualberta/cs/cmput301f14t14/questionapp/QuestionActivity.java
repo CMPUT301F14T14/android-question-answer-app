@@ -1,5 +1,6 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,11 +16,14 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.Image;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Question;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddAnswerDialogFragment;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddCommentDialogFragment;
+import ca.ualberta.cs.cmput301f14t14.questionapp.view.AddImage;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.AnswerListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.CommentListAdapter;
 import ca.ualberta.cs.cmput301f14t14.questionapp.view.ViewCommentDialogFragment;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,6 +52,8 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 	private ClientData clientData;
 	private List<Comment<Question>> commentList;
 	private List<Answer> answerList;
+	
+	private AddImage AI;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -293,11 +299,9 @@ implements AddCommentDialogFragment.AddCommentDialogCallback {
 			upvotes.setText(question.getUpvotes().toString());
 			TextView date = (TextView) findViewById(R.id.questionDate);
 			date.setText(question.getDate().toString());
-			ImageView img = (ImageView) findViewById(R.id.questionImage);
-			
 			dataManager.getAnswerList(question, new AnswerListUpdateCallback());
 			dataManager.getCommentList(question, new CommentListUpdateCallback());
-
+			
 			// Set status of favorite button
 			ClientData cd = new ClientData(getApplicationContext());
 			if (cd.getFavoriteQuestions().contains(question.getId())) {

@@ -102,7 +102,6 @@ implements IView{
 				imgV.setImageURI(img.getLocalUrl());
 			}
 			
-			
 		}
 		}
 		

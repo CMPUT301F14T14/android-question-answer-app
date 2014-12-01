@@ -1,6 +1,7 @@
 package ca.ualberta.cs.cmput301f14t14.questionapp;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -380,14 +381,16 @@ public class MainActivity extends Activity {
 		//String path = AI.getImgUri().getPath();
 		//File imageFile = new File(path);
 		//long len = imageFile.length();
+		if(resultCode == Activity.RESULT_OK){
 			if (requestCode == CAMERA){
-				img = new Image(AI.getImgUri() ,null, 1);
+				img = new Image(AI.getImgUri(), null, 1);
 			}
 			else if(requestCode == ADD_IMAGE){
-				Uri u = data.getData();
-				img = new Image(u, null, 2);
+				Uri uri = data.getData();
+				img = new Image(uri, null, 2);
 
 			}
+		}
 		//else{
 			//Toast.makeText(getApplicationContext(), "Image too Large", Toast.LENGTH_SHORT).show();
 		//}
