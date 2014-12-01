@@ -16,6 +16,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -31,6 +32,8 @@ import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.AnswerDeserial
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.CommentDeserializer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.ImageDeserializer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.ImageSerializer;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.LocationDeserializer;
+import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.LocationSerializer;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.serializer.QuestionDeserializer;
 
 /**
@@ -61,6 +64,8 @@ public class RemoteDataStore implements IDataStore {
 				new CommentDeserializer<Answer>());
 		gb.registerTypeAdapter(Image.class, new ImageSerializer());
 		gb.registerTypeAdapter(Image.class, new ImageDeserializer());
+		gb.registerTypeAdapter(Location.class, new LocationSerializer());
+		gb.registerTypeAdapter(Location.class, new LocationDeserializer());
 		gson = gb.create();
 	}
 

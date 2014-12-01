@@ -4,6 +4,7 @@ import java.util.List;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.model.Answer;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -30,11 +31,7 @@ public class AnswerListAdapter extends ArrayAdapter<Answer> implements IView {
 		TextView aLocation = (TextView) convertView.findViewById(R.id.answerLocationText);
 		aText.setText(a.getBody());
 		aAuthor.setText(a.getAuthor());
-		if(a.getLocation() != null){
-			aLocation.setText(a.getLocation().toString());
-		}else{
-			aLocation.setVisibility(View.INVISIBLE);
-		}
+		aLocation.setText("near: " + DataManager.getInstance(getContext()).getCityFromLocation(a.getLocation()));
 		
 		final ImageButton readLaterbutton = (ImageButton)convertView.findViewById(R.id.list_answer_read_later);
 		readLaterbutton.setTag(a);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import ca.ualberta.cs.cmput301f14t14.questionapp.R;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.ClientData;
+import ca.ualberta.cs.cmput301f14t14.questionapp.data.DataManager;
 import ca.ualberta.cs.cmput301f14t14.questionapp.data.GenericSearchItem;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ public class GenericSearchItemAdapter extends ArrayAdapter<GenericSearchItem> im
 		gType.setText(item.getTitle() + " <" + item.getType() + ">");
 		gText.setText(item.getBody());
 		if (item.getLocation() != null){
-			gLocation.setText(item.getLocation().toString());
+			gLocation.setText("near: " + DataManager.getInstance(getContext()).getCityFromLocation(item.getLocation()));
 		}
 		gDate.setText(item.getDate().toString());
 		return convertView;
