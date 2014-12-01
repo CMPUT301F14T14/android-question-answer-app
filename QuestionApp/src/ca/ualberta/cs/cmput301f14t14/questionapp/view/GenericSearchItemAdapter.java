@@ -27,7 +27,7 @@ public class GenericSearchItemAdapter extends ArrayAdapter<GenericSearchItem> im
 		GenericSearchItem item = getItem(position);
 		ClientData cd = new ClientData(getContext());
 
-		if(!cd.getFavoriteQuestions().contains(item.getId())){
+		if(!cd.getFavorites().contains(item.getId())){
 			((ImageView)convertView.findViewById(R.id.question_favourite)).setVisibility(View.INVISIBLE);
 		}
 		else{

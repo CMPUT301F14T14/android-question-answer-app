@@ -36,9 +36,8 @@ public class AnswerListAdapter extends ArrayAdapter<Answer> implements IView {
 		//Add read later functionality
 		final ImageButton readLaterbutton = (ImageButton)convertView.findViewById(R.id.list_answer_read_later);
 		readLaterbutton.setTag(a);
-		String readlaterfilename = "readlaterlist";
 		ClientData clientData = new ClientData(getContext());
-		if(clientData.getItems(readlaterfilename).contains(a.getParent())){
+		if(clientData.isReadLater(a.getParent())) {
 			readLaterbutton.setImageResource(R.drawable.ic_read_later_set);
 		}
 		else{
@@ -53,13 +52,12 @@ public class AnswerListAdapter extends ArrayAdapter<Answer> implements IView {
 				Answer answer = (Answer) readLaterbutton.getTag();
 				//Question question = (Question) readLaterbutton.getTag();
 				ClientData clientData = new ClientData(getContext());
-				String readlaterfilename = "readlaterlist";
-				if (clientData.getItems(readlaterfilename).contains(answer.getParent())) {
+				if (clientData.isReadLater(answer.getParent())) {
 					//Question/Answer is already flagged read later.
-					clientData.unmarkQuestionReadLater(answer.getParent());
+					clientData.unmarkReadLater(answer.getParent());
 					readLaterbutton.setImageResource(R.drawable.ic_action_readlater);
 				} else {
-					clientData.markQuestionReadLater(answer.getParent());
+					clientData.markReadLater(answer.getParent());
 					readLaterbutton.setImageResource(R.drawable.ic_read_later_set);
 				}
 			}

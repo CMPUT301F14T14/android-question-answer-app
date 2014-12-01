@@ -27,7 +27,7 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 		}
 		ClientData cd = new ClientData(getContext());
 		Question q = getItem(position);
-		if(!cd.getFavoriteQuestions().contains(q.getId())){
+		if(!cd.getFavorites().contains(q.getId())){
 			((ImageView)convertView.findViewById(R.id.question_favourite)).setVisibility(View.INVISIBLE);
 		}
 		else{
@@ -53,9 +53,8 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 		//Add Read later functionality
 		final ImageButton readLaterbutton = (ImageButton)convertView.findViewById(R.id.list_question_read_later);
 		readLaterbutton.setTag(q);
-		String readlaterfilename = "readlaterlist";
 		ClientData clientData = new ClientData(getContext());
-		if(clientData.getItems(readlaterfilename).contains(q.getId())){
+		if(clientData.isReadLater(q.getId())) {
 			readLaterbutton.setImageResource(R.drawable.ic_read_later_set);
 		}
 		else{
@@ -69,13 +68,12 @@ public class QuestionListAdapter extends ArrayAdapter<Question> implements IView
 			public void onClick(View arg0) {
 				Question question = (Question) readLaterbutton.getTag();
 				ClientData clientData = new ClientData(getContext());
-				String readlaterfilename = "readlaterlist";
-				if (clientData.getItems(readlaterfilename).contains(question.getId())) {
+				if (clientData.isReadLater(question.getId())) {
 					//Question is already flagged read later.
-					clientData.unmarkQuestionReadLater(question.getId());
+					clientData.unmarkReadLater(question.getId());
 					readLaterbutton.setImageResource(R.drawable.ic_action_readlater);
 				} else {
-					clientData.markQuestionReadLater(question.getId());
+					clientData.markReadLater(question.getId());
 					readLaterbutton.setImageResource(R.drawable.ic_read_later_set);
 				}
 			}

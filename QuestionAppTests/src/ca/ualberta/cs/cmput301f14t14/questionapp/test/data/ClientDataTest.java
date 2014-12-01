@@ -39,9 +39,9 @@ public class ClientDataTest extends ActivityInstrumentationTestCase2<MainActivit
 		Question q = new Question("Test", "Body", "Boris", null);
 		List<UUID> l = new ArrayList<UUID>();
 		l.add(q.getId());
-		clientData.saveFavoriteQuestions(l);
+		clientData.saveFavorites(l);
 		
-		assertTrue(clientData.getFavoriteQuestions().contains(q.getId()));
+		assertTrue(clientData.getFavorites().contains(q.getId()));
 	}
 	
 	public void testGetFavorite() {
@@ -49,8 +49,8 @@ public class ClientDataTest extends ActivityInstrumentationTestCase2<MainActivit
 		Question q = new Question("Test", "Body", "Boris", null);
 		List<UUID> l = new ArrayList<UUID>();
 		l.add(q.getId());
-		clientData.saveFavoriteQuestions(l);
-		assertTrue(clientData.getFavoriteQuestions().contains(q.getId()));
+		clientData.saveFavorites(l);
+		assertTrue(clientData.getFavorites().contains(q.getId()));
 		
 	}
 

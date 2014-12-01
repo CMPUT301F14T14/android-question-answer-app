@@ -56,7 +56,7 @@ public class ClientData {
 	 * Get a list UUIDs for favorite items
 	 * @return List of UUIDs
 	 */
-	public List<UUID> getFavoriteQuestions() {
+	public List<UUID> getFavorites() {
 		return getItems(VAL_FAVORITES_LIST);
 	}
 
@@ -64,7 +64,7 @@ public class ClientData {
 	 * Set the list of UUIDs for favorite items
 	 * @param list List of UUIDs
 	 */
-	public void saveFavoriteQuestions(List<UUID> list){
+	public void saveFavorites(List<UUID> list){
 		saveItems(list, VAL_FAVORITES_LIST);
 	}
 
@@ -72,7 +72,7 @@ public class ClientData {
 	 * Set the list of UUIDs for items to read later
 	 * @return List of UUIDs
 	 */
-	public List<UUID> getReadLaterQuestions() {
+	public List<UUID> getReadLaterItems() {
 		return getItems(VAL_READ_LATER_LIST);
 	}
 
@@ -80,7 +80,7 @@ public class ClientData {
 	 * Add a UUID to the read later list
 	 * @param u UUID
 	 */
-	public void markQuestionReadLater(UUID u) {
+	public void markReadLater(UUID u) {
 		List<UUID> appendlist = getItems(VAL_READ_LATER_LIST);
 		appendlist.add(u);
 		saveItems(appendlist, VAL_READ_LATER_LIST);
@@ -90,7 +90,7 @@ public class ClientData {
 	 * Remove a UUID from the read later list
 	 * @param u UUID
 	 */
-	public void unmarkQuestionReadLater(UUID u){
+	public void unmarkReadLater(UUID u){
 		List<UUID> list = getItems(VAL_READ_LATER_LIST);
 		list.remove(u);
 		saveItems(list,VAL_READ_LATER_LIST);
@@ -104,7 +104,7 @@ public class ClientData {
 	 * @param id UUID of item
 	 * @return True if the item is in the list, false otherwise.
 	 */
-	public boolean isQuestionReadLater(UUID id) {
+	public boolean isReadLater(UUID id) {
 		List<UUID> rllist = getItems(VAL_READ_LATER_LIST);
 		if (rllist.contains(id)) {
 			return true; 
@@ -138,7 +138,7 @@ public class ClientData {
 	 * @param name Name of list
 	 * @return List of UUIDs
 	 */
-	public List<UUID> getItems(String name) {
+	private List<UUID> getItems(String name) {
 		// Get set of data from SharedPreferences
 		Set<String> set = prefs.getStringSet(name, null);
 
@@ -165,7 +165,7 @@ public class ClientData {
 	 * @param list List of UUIDs
 	 * @param name Name of list
 	 */
-	public void saveItems(List<UUID> list, String name) {
+	private void saveItems(List<UUID> list, String name) {
 		Editor e = prefs.edit();
 		Set<String> set = new HashSet<String>();
 
