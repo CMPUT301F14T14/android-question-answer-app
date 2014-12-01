@@ -35,7 +35,7 @@ public class CommentListAdapter<T extends ICommentable> extends ArrayAdapter<Com
 		
 		return convertView;
 	}
-
+	
 	@Override
 	public void update() {
 		//This is proper MVC
