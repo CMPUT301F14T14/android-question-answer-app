@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head><title>Report</title><style>body {background-color:white}h1   {color:black}p    {color:green}div.top {min-height: 40px;padding-left: 20px;padding-right: 20px;background-color: #fafafa;background-image: -moz-linear-gradient(top, #00CC00, #66FF33);background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#00CC00), to(#66FF33));background-image: -webkit-linear-gradient(top, #00CC00, #66FF33);background-image: -o-linear-gradient(top, #00CC00, #66FF33);background-image: linear-gradient(to bottom, #00CC00, #66FF33);background-repeat: repeat-x;border: 1px solid #d4d4d4;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);text-align:center}table {width:80%;  margin-left:10%;     margin-right:10%; }table, th, td {border: 1px solid black;border-collapse: collapse;}th, td {padding: 5px;text-align: left; font-family: 'Inconsolata', sans-serif;}table#t tr:nth-child(even) {background-color:white;}table#t tr:nth-child(odd) {background-color:#f9f9f9;}table#t th {background-color: #f9f9f9;color: #3399FF;}div.dot {border:2px solid grey;margin: 10px auto;border-radius: 5px;width: 1100px;padding:8px;-moz-box-shadow: 0 0 5px 5px #888;-webkit-box-shadow: 0 0 5px 5px#888;box-shadow: 0 0 5px 5px #888;}.dot{font-size:12pt;font-family:sans-serif;color:#660066;}.dot {background:#CCFF99;/*background-image: -moz-linear-gradient(to right, #FFFFCC, #CCFF99); /* FF3.6 */background-image: -webkit-gradient(linear,left,right,color-stop(0, #FFFFCC),color-stop(1, #CCFF99));}#list { background-color: aqua; }.horizontal { display: inline; border-left: 2px solid; border-color: #ff0000; padding-left: 0.3em; }.first { border-left: none; padding-left: 0; }hr.big {height: 12px;border: 0;box-shadow: inset 0 12px 12px -12px rgba(0,0,0,0.5);}hr.small {border: 0;height: 1px;background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); }pre {font-family:  "Droid Sans Mono",Constantia,"Segoe UI","DejaVu Sans Mono";}h2 {text-align: center;}div.energy{background-color: #fafafa;border:2px solid grey;margin: 10px auto;border-radius: 5px;width: 1100px;padding:8px;-moz-box-shadow: 0 0 5px 5px #888;-webkit-box-shadow: 0 0 5px 5px#888;box-shadow: 0 0 5px 5px #888;background-image: -moz-linear-gradient(top, #99CCFF, #9999FF);background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#99CCFF), to(#9999FF));background-image: -webkit-linear-gradient(top, #99CCFF, #9999FF);background-image: -o-linear-gradient(top, #99CCFF, #9999FF);background-image: linear-gradient(to bottom, #99CCFF, #9999FF);background-repeat: repeat-x;filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff99CCFF', endColorstr='#ff9999FF', GradientType=0);border: 1px solid #d4d4d4;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);text-align:center}h2 {    color: white;    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;     text-shadow: 0 0 15px rgba(255, 255, 255, 1);}h3 {    color: black;    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;}</style></head></head><body><div class="top"><h2>Green Advisor<h2></div><br><br><center><h3>System Call Change Data and recommendation</h3></center><table id="t">
+<tr>
+<th>System Call</th>
+<th>Significance rating</th>
+<th>%Change(in no of Calls)</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><a href="#close">close</a></td>
+<td>***</td>
+<td>-7.11</td>
+<td>Doing fewer number of file operations than the previous version</td>
+</tr>
+<tr>
+<td><a href="#epoll_wait">epoll_wait</a></td>
+<td>*</td>
+<td>-6.36</td>
+<td>Doing fewer number of I/O operations  than the previous version</td>
+</tr>
+<tr>
+<td><a href="#ioctl">ioctl</a></td>
+<td>***</td>
+<td>-18.02</td>
+<td>Probably using less file operations than the previous version</td>
+</tr>
+<tr>
+<td><a href="#madvise">madvise</a></td>
+<td>***</td>
+<td>-16.58</td>
+<td>Probably using less file/memory operations than the previous version</td>
+</tr>
+<tr>
+<td><a href="#mmap2">mmap2</a></td>
+<td>*</td>
+<td>4.69</td>
+<td>Using more memory operations than the previous version</td>
+</tr>
+<tr>
+<td><a href="#mprotect">mprotect</a></td>
+<td>*</td>
+<td>-6.45</td>
+<td>Using fewer memory operations than the previous version</td>
+</tr>
+<tr>
+<td><a href="#munmap">munmap</a></td>
+<td>**</td>
+<td>3.97</td>
+<td>Using more memory operations than the previous version</td>
+</tr>
+<tr>
+<td><a href="#open">open</a></td>
+<td>***</td>
+<td>-5.29</td>
+<td>Opening less often than the previous version</td>
+</tr>
+<tr>
+<td><a href="#pread">pread</a></td>
+<td>**</td>
+<td>17.14</td>
+<td>No information about the call</td>
+</tr>
+<tr>
+<td><a href="#rename">rename</a></td>
+<td>*</td>
+<td>-72.92</td>
+<td>No information about the call</td>
+</tr>
+<tr>
+<td><a href="#sigprocmask">sigprocmask</a></td>
+<td>***</td>
+<td>-6.55</td>
+<td>Possibly using fewer threads than the previous version</td>
+</tr>
+<tr>
+<td><a href="#stat64">stat64</a></td>
+<td>***</td>
+<td>-23.52</td>
+<td>Probably using fewer file or I/O operations than the previous version</td>
+</tr>
+</table><div style="background-color:white; color:black; margin:20px; padding:20px;font-family:sans-serif"> <h4>Significance of * rating:</h4>*&nbsp;&nbsp;&nbsp;&nbsp;Significantly Different (0.05 &le; p-value < 0.10)<br>**&nbsp;&nbsp;&nbsp;Moderately Significantly Different (0.01 < p-value &le; 0.05)<br>***&nbsp;Highly Significantly Different (p-value &le; 0.01)<br><br>&nbsp;&nbsp;%<div style="float:left;"><sup>+</sup>&nbsp;&nbsp;&nbsp; Calculated as:&nbsp;&nbsp;</div><div style="float:left"><div style="border-bottom:1px solid;font-size:small;text-align:center;">(Number of invocations in Current Commit - Number of invocations in Previous Commit)&nbsp;&nbsp;</div><div style="font-size:small;text-align:center;">Invocations in Previous commit</div></div></div><br><br><div class="energy"><h3>Energy consumption Prediction:</h3><h3>Your application's energy consumption seems to <font color="white"><b>have changed significantly</b></font> since the last recorded commit<br></h3></div><br><br> <div class="dot"><pre><center><h3>Code Change Associated with System calls between Commits</h3>92af505fadfccd9d5bf0c1adb31148480b5941fa<font color="black"><b> and </b></font>8e701df70bbe5dd36304fb94f5ba1c857e282821 :</center><br><br>Change inducing lines are highlighted<br><hr class="big"><br><b><a name="open"><h3>open:</h3></a></b><br>Unable to locate the associated code<br><hr class="big"><br><b><a name="mprotect"><h3>mprotect:</h3></a></b><br>Unable to locate the associated code<br><hr class="big"><br><b><a name="epoll_wait"><h3>epoll_wait:</h3></a></b><br>Unable to locate the associated code<br><hr class="big"><br><b><a name="stat64"><h3>stat64:</h3></a></b><br>Unable to locate the associated code<br><hr class="big"><br><b><a name="sigprocmask"><h3>sigprocmask:</h3></a></b><br>Unable to locate the associated code<br><hr class="big"><br><b><a name="rename"><h3>rename:</h3></a></b><br>Unable to locate the associated code<br><hr class="big"><br><b><a name="ioctl"><h3>ioctl:</h3></a></b><br>Unable to locate the associated code<br><hr class="big"><br><b><a name="mmap2"><h3>mmap2:</h3></a></b><br>Unable to locate the associated code<br><hr class="big"><br><b><a name="madvise"><h3>madvise:</h3></a></b><br>Unable to locate the associated code<br><hr class="big"><br><b><a name="close"><h3>close:</h3></a></b><br>Unable to locate the associated code<br><hr class="big"><br><b><a name="munmap"><h3>munmap:</h3></a></b><br>Unable to locate the associated code<br><hr class="big"><br><b><a name="pread"><h3>pread:</h3></a></b><br>Unable to locate the associated code<br></pre></div></body></html>
